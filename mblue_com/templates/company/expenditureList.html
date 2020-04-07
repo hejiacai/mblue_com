@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>支出</title>
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+    <style>
+        html{background: #fff;}
+        .table{padding: 0 20px;}
+        .table table{width: 960px;}
+        .table table tr{border-bottom: 1px dashed #e8e8e8;}
+        .table table tr td{padding: 18px 0;text-align: left;}
+        .table table tr td.left{color: #666;width: 200px;}
+        .table table tr td.center span{color: #fb5957;}
+        .table table tr td.center{color: #999;}
+        .table table tr td.right{color: #999;}
+    </style>
+</head>
+<body>
+<div  class="table">
+    {/if !empty($out_list)/}
+    <table>
+        {/foreach $out_list as $k=>$v/}
+            {/if $v.remark != '技术部--手动设置到期'/}
+                <tr>
+                    <td class="left" width="360">{/$usetype[$v['use_type']]/}</td>
+                    <td class="center" width="180"><span>-{/$v['amount']/}米币</span></td>
+                    <td class="center" width="280" title="{/$v['remark']/}"><span style="cursor: pointer" class="center-tit">{/base_lib_BaseUtils::cutstr($v['remark'],40,'utf-8','','…')/}</span> </td>
+                    <td class="right" width="140">{/$v['use_time']/}</td>
+                </tr>
+            {//if/}
+        {//foreach/}
+    </table>
+    {//if/}
+
+    {/if empty($out_list)/}
+    <div class="noData">
+        暂无数据
+    </div>
+    {//if/}
+
+    {/$pager/}
+</div>
+</body>
+</html>

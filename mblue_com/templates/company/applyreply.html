@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简历管理-待回复</title>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-widge.css'/}"/>
+
+    <script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+    <script type="text/javascript" src="{/version file='common.js'/}"></script>
+    <script type="text/javascript" src="{/version file='dialog.js'/}"></script>
+    <script type="text/javascript" src="{/version file='version.js'/}"></script>
+    <script type="text/javascript">
+      window.CONFIG = {
+        HOST: '{/$siteurl.style/}',
+        COMBOPATH: '/js/v2/'
+      }
+    </script>
+    <script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+    <script type="text/javascript">
+      hbjs.loadJS('{/$siteurl.style/}/js/v2/cqjob/common.js');
+    </script>
+    <style>
+        .resume-top select.drop {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            border: 1px solid #e8e8e8;
+            background: url({/$siteurl.style/}/img/company/triangle.png) 220px center no-repeat #fff;
+            height: 30px;
+            line-height: 30px;
+            padding: 0px 5px;
+            outline: none;
+            text-align: left;
+            text-indent:0px;
+            width: 245px;
+        }
+        .resume-top label{float: left;}
+        .resume-top select.drop option::-ms-expand{ display: none; }
+        .resume-top select.drop option{
+            -moz-appearance:none; /* Firefox */
+            -webkit-appearance:none; /* Safari 和 Chrome */
+            appearance:none;
+            padding: 3px 5px;
+            color: #333;
+            text-align:left;
+        }
+        /* --背景色字体颜色--*/
+        .resume-top select.drop option:hover{
+            color:#333;
+            background-color:#f1f1f1;
+        }
+        input.has_stop{
+            vertical-align: -3px;
+        }
+        .resume-top label{margin-top: 5px;}
+        .resume-list-info{ padding-bottom: 5px!important;}
+		.resume-list ul li{ position: relative;}
+    </style>
+</head>
+<body bgcolor="#ececec">
+{/include file='./company/company_head.html'/}
+<div class="jobList-content">
+    <div class="wrap clearfix resume-bg">
+        <div class="resume-menu">
+            <dl>
+                <dt><em class="icon"></em>收到的简历</dt>
+                <dd  class="hover">
+                    <a href="{/get_url rule="/resume/ResumeManage/"/}">
+                        <em class="circle"></em>
+                        <span>待回复简历</span>
+                    {/if $apply_count>0/}<i>{/$apply_count/}</i>{//if/}
+                    </a>
+                </dd>
+                <dd>
+                    <a href="{/get_url rule="/resume/ResumeManage/"/}status-4">
+                        <em class="circle"></em>
+                        <span>不合适简历</span>
+                    </a>
+                </dd>
+            </dl>
+            <ul>
+                <li>
+                    <a href="{/get_url rule="/resume/DownLoadResume/"/}">
+                        <em class="icon icon1"></em>
+                        获取的简历
+                    </a>
+                </li>
+                <li>
+                    <a href="{/get_url rule="/invite/index/"/}">
+                        <em class="icon icon2"></em>
+                        面试管理
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="resume-container">
+            <div class="resume-top resume-top-bottom">
+                <form action="{/get_url rule='/resume/ResumeManage'/}" class="clearfix">
+                <label style="float: left;margin-top: 3px;">职位</label>
+                <select name="job_flag" class="drop">
+                    <option  value="0" {/if 0==$job_flag/}selected{//if/}>不限</option>
+                    {/foreach $job_list as $k=>$v/}
+                    <option value="{/$v['job_flag']/}" {/if $v['job_flag'] == $job_flag/}selected{//if/}>{/if $v['status']==0/}<span>(停用)</span>{//if/}{/$v['station']/}</option>
+                    {//foreach/}
+                </select>
+                <label for="has_stop">
+                    <input type="checkbox" value="1" {/if $has_stop==1/}checked{//if/} id="has_stop" class="has_stop" name="has_stop"/>
+                    包含停招职位
+                </label>
+                <button type="submit" class="search-btn" >搜索</button>
+                </form>
+            </div>
+            <div class="all-btn">
+                <a href="{/get_url rule="/resume/ResumeManage/"/}job_flag-{/$job_flag/}" class="all-btn-one {/if $status==0/}cut{//if/}">不限</a>
+                <a href="{/get_url rule="/resume/ResumeManage/"/}status-1-job_flag-{/$job_flag/}" class="all-btn-one {/if $status==1/}cut{//if/}">未读</a>
+                <a href="{/get_url rule="/resume/ResumeManage/"/}status-2-job_flag-{/$job_flag/}" class="all-btn-one {/if $status==2/}cut{//if/}">已读（未回复）</a>
+                <a href="{/get_url rule="/resume/ResumeManage/"/}status-3-job_flag-{/$job_flag/}" class="all-btn-one {/if $status==3/}cut{//if/}">待定（未回复）</a>
+            </div>
+            {/if empty($apply_data)/}
+            <div class="noData" style="margin-top: 40px;">
+                暂无数据
+            </div>
+            {//if/}
+            {/if !empty($apply_data)/}
+            <div class="resume-list">
+                <p>
+                    <label for="selectAll">
+                        <input type="checkbox" class="personCheckAll">
+                        全选
+                    </label>
+                    <a href="javascript:;" onclick="allNot()" class="all-btn-one">不合适</a>
+                </p>
+                <ul>
+                    {/foreach $apply_data as $k=>$v/}
+                    <li>
+                        <h6 class="clearfix">
+							<span><label><input type="checkbox" value="{/$v['apply_id']/}" class="personCheck"/>应聘职位：{/$v['station']/} </label><i>{/$v['create_time']|date_format:'%Y-%m-%d %H:%M'/}</i></span>
+							<!-- 2019.8.22代投标签 -->
+							{/if $v.apply_type==3/}<div class="proxySend" title="快米招聘顾问在后台代替求职者投递的简历">代投</div>{//if/}
+							<em>{/if $v['re_status']==3/}待定(未回复){/else/}{/if $v['has_read']==0/}未读{/else/}已读（未回复）{//if/}{//if/}</em></h6>
+                        <div class="resume-list-info clearfix">
+                            <a href="{/get_url rule='/resume/index'/}person_id-{/$v['person_id']/}-apply_id-{/$v['apply_id']/}" target="_blank">
+                                <div class="resume-list-img">
+                                    <img src="{/if !empty($v['person']['photo'])/}{/base_lib_Constant::YUN_ASSETS_URL/}/{/$v['person']['photo']/}{/else/}{/base_lib_Constant::STYLE_URL/}/img/appeal/default_head.jpg{//if/}" alt="">
+                                </div>
+                                <div class="resume-list-msg">
+                                    <h4>{/$v['person']['user_name']/}</h4>
+                                    <p>{/if $v['person']['sex']==1/}男{/elseif $v['person']['sex']==2/}女{//if/}{/if $v['person']['sex']/}<span>|</span>{//if/} {/if $v['person']['age']/}{/$v['person']['age']/}岁 <span>|</span>{//if/} 
+                                        {/if $v['person']['stature']/}{/$v['person']['stature']/}cm <span>|</span>{//if/}{/$degree[$v['person']['max_degree_id']]/}  {/if !empty($work_time)/}<span>|</span>{/$work_time/}{//if/}</p>
+                                    {/if !empty($v['work'])/}<p>{/$v['work']['station']/}<span>|</span>{/$v['work']['company_name']/}<span>|</span>{/$v['work']['start_time']/}-{/$v['work']['end_time']/}</p>{//if/}
+                                </div>
+                                <div class="resume-list-btn">
+                                    <a href="javascript:sendInvite('{/$v['person_id']/}','{/$v['apply_id']/}');">邀请面试</a>
+                                    <a href="javascript:setStatus('{/$v['apply_id']/}',1)" >不合适</a>
+                                    <a href="javascript:setStatus('{/$v['apply_id']/}',2)">待定</a>
+                                </div>
+                            </a>
+                        </div>
+
+                        {/if $is_redpacket_active_effect && $v['person']['has_join_reapacket']/}
+                        <span class="resumeinfoTips">
+                        	（该用户参与了面试领红包补贴活动，请通过快米系统发送面试邀请
+                        	<i class="infoQuery"></i>)
+                        </span>
+                        <div class="alert-warniong">
+							<i class="arrdown-icon"></i>
+							<span>为了提高求职者面试到达率，快米开展“面试领红包补贴”活动：<br />
+凡是得到企业系统发送的面试邀请，并到场面试的求职者，可领取<em>10~50元交通补贴</em></span>
+						</div>
+                        {//if/}
+                    </li>
+                    {//foreach/}
+                </ul>
+            </div>
+            {//if/}
+        </div>
+    </div>
+    {/$pager/}
+</div>
+{/include file="common/showloading.html"/}
+{/include file='./company/footer.html'/}
+</body>
+<script>
+    var confirmBox,
+        fontSize,
+        pWidth;
+    hbjs.use(' @confirmBox', function (m) {
+        confirmBox = m['widge.overlay.confirmBox'];
+        fontSize = 18;
+        pWidth = 70;
+    });
+
+    function setStatus(apply_id, type) {
+        var msg = type == 1 ? "确定设置为不合适？" : "将该简历标记为待定状态，确认后再邀请面试或回绝？";
+        $.confirm(msg, "操作提示", function () {
+            showLoading();
+            $.post(type == 1 ? "{/get_url rule='/resume/SetNotSuitable/'/}" : "{/get_url rule='/resume/SetWait/'/}", {apply_id: apply_id}, function (data) {
+                closeLoading()
+                if (!data.status) {
+                    confirmBox.timeBomb(data.msg, {
+                        name: 'fail',
+                        timeout: 1000,
+                        width: fontSize * data.msg.length + pWidth
+                    });
+//            alert(data.msg);
+                    return;
+                }
+                window.location.reload();
+            }, 'json');
+        })
+    }
+
+    $('.personCheckAll').click(function () {
+        $('.personCheck').prop('checked', $(this).prop('checked'));
+    });
+
+    $('.infoQuery').hover(function () {
+        $(this).parent().next('.alert-warniong').toggle();
+    })
+
+    $('.personCheck').click(function () {
+        var isCheck = $('.personCheck').size() == $('.personCheck:checked').size() ? true : false;
+        $('.personCheckAll').prop('checked', isCheck);
+    });
+
+    function allNot() {
+        var chk = $('.personCheck:checked');
+        var apply_id = new Array();
+
+        $.each(chk, function (i, obj) {
+            apply_id[i] = $(obj).val();
+        });
+        if (apply_id == '') {
+            confirmBox.timeBomb('请勾选需要设置的简历', {
+                name: 'fail',
+                timeout: 3000,
+                width: 230
+            });
+            //alert("请勾选需要设置的简历");
+            return false;
+        }
+        $.confirm("确定将勾选简历批量设置成不合适", "操作提示", function () {
+            showLoading();
+            $.post("{/get_url rule='/resume/SetNotSuitable/'/}", {apply_id: apply_id.join(',')}, function (data) {
+                closeLoading();
+                if (!data.status) {
+                    confirmBox.timeBomb(data.msg, {
+                        name: 'fail',
+                        timeout: 3000,
+                        width: fontSize * data.msg.length + pWidth
+                    });
+//            alert(data.msg);
+                    return false;
+                }
+                window.location.reload();
+            }, 'json');
+        })
+    }
+
+    //    $('#allBtn').click(function () {
+    //      allNot();
+    //    })
+
+    function sendInvite(person_id, apply_id) {
+        $.showModal("{/get_url rule="/resume/InvitePerson/"/}person_id-" + person_id + '-apply_id-' + apply_id, {title: '面试邀请'});
+    }
+
+    //    //面试邀请
+    //    $('#sendInvite').click(function () {
+    //      sendInvite('{/$v['person_id']/}','{/$v['apply_id']/}');
+    //    })
+
+
+</script>
+</html>

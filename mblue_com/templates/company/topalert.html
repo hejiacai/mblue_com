@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <script type="text/javascript" language="javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+</head>
+<body>
+<style>
+    .dialogCont {text-align: left}
+    .dialogCont img {margin: 0 auto; display: block;}
+    .ui_dialog_title {text-align: left;}
+    .dialogCont .set-top {padding: 10px 25px 20px 25px;}
+    .dialogCont .set-top p {margin: 10px 0px;}
+    .dialogCont .set-top .know {display: inline;}
+    .set-top-foot {padding-left: 20px; background: no-repeat; overflow: hidden; padding-bottom: 20px;}
+    .hb_ui_dialog .ui_dialog_container {padding: 0px;}
+    .dialogCont select {height: 30px;}
+    .dialogCont ul li span {line-height: 30px; height: 30px;}
+    .set-top .mgl5 {padding: 0 3px;}
+    .dialogCont span.clearfix.orange {color:#999;margin-top:10px;line-height: 20px;}
+    i.alert-icon {background: #fff url({/$siteurl.style/}/img/company/promotions.png) no-repeat;display: inline-block;width: 18px;height: 18px;vertical-align: middle;margin-right: 5px}
+    .update-top .name { padding-right: 10px; color: #3D84B8; font-weight: bold;}
+</style>
+<form id="formjob">
+    <input type="hidden" value="{/$job_id/}" name="hiddenjob" />
+    <div style="display: block;">
+        <div class="dialogCont">
+            <div class="set-top" id="set-top">
+                <ul id="tops">
+                    <li class="clearfix mgt10 list">
+                        <span class="left">置顶</span>
+                        <select class="mgl5 left" name="dllday" style="width: 140px;">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                        <span class="left mgl5">天</span>
+                    </li>
+                </ul>
+                <p class="gray6">（置顶一天{/$price/}米币）</p>
+            </div>
+        </div>
+        <div class="dialogFooter set-top-foot">
+            <a id="ok" class="present top-submit" href="javascript:void(0);">确定</a>
+            <a id="cancel" class="gray cancel" href="javascript:void(0);">取消</a>
+        </div>
+    </div>
+</form>
+
+</body>
+<script>
+
+    $('.text').change(function(){
+        var text_val = $(this).val();
+        if (/^([\u4e00-\u9fa5]+|[0-9a-zA-Z\/.\-\\#\+]+)$/.test(text_val)) {
+        } else {
+            var new_val = '';
+            for(var i=0;i<text_val.length;i++)
+            {
+                if (/^([\u4e00-\u9fa5]+|[0-9a-zA-Z\/.\-\\#\+]+)$/.test(text_val.charAt(i))) {
+                    new_val += text_val.charAt(i);
+                }
+            }
+            $(this).val(new_val);
+        }
+    });
+</script>
+</html>
+

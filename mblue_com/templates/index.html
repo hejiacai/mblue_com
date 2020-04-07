@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>重庆找工作_最新招聘信息_招工信息-上快米工作</title>
+		<meta name="keywords" content="快米工作,汇博网,招工信息,找工作求职,普工招聘网,工人招聘网,最新招工信息,招聘网,重庆人才网,重庆找工作,快米招聘网" />
+		<meta name="description" content="快米工作招聘网是汇博网旗下，专注为企业提供司机、快递物流、物业房产、餐饮服务和普工技工等招工信息的专业招聘平台，重庆市服务业名企都在这里直招，重庆找工作就上快米工作招聘网。" />
+		<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}" />
+		<link rel="stylesheet" type="text/css" href="{/version file='kuaimi_pc.css'/}" />
+		<script type="text/javascript" src="{/version file='jquery-1.8.3.js'/}"></script>
+		<script type="text/javascript">
+            window.CONFIG = {
+                HOST: '{/$siteurl.style/}',
+                COMBOPATH: '/js/v2/'
+            }
+		</script>
+		<script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+		<script type="text/javascript" src="{/version file='global.js'/}"></script>
+		<script type="text/javascript">
+            hbjs.loadJS('{/$siteurl.style/}/js/v2/cqjob/common.js');
+		</script>
+		<script type="text/javascript" src="{/version file='kuaimi_pc.js'/}"></script>
+	</head>
+	<body style="padding-top: 54px;">
+		<!-- 头部 -->
+		{/include file="common/header.html"/}
+		<!-- 搜索 -->
+		<div class="kuaimiSearchContent">
+			<div class="kuaimiSearch">
+				<input type="text" name="kmSearch" id="kmSearch" value="" placeholder="职位或公司关键字" />
+				<button type="button" id="job_search">搜 索</button>
+			</div>
+			<div class="hotSearch">
+				<span>热搜职位：</span>
+				{/foreach $hot_keyworlds as $v/}
+				<a href="{/$siteyurl.kmcompany/}/wjob/search?key={/$v/}" target="_blank">{/$v/}</a>
+				{//foreach/}
+			</div>
+		</div>
+		
+		<!-- 浮动搜索 -->
+		<div class="kuaimiSearchPop">
+			<div class="kuaimiSearch">
+				<input type="text" name="kmSearch" id="km_earch_float" value="" placeholder="职位或公司关键字" />
+				<button type="button" id="job_search_float">搜 索</button>
+			</div>
+		</div>
+		
+		<div class="kmContentxf">
+
+		<!--jobsort-->
+		<div class="newBannerMage">
+			<div class="newLeft">
+				<ul>
+					<li class="first">
+						<i class="magIcon magIcon01"></i>
+						<p>
+							<b>普工<u></u>技工</b>
+							<span>
+								<em>临时工</em>
+								<em class="orange">普工</em>
+								<em>机修工</em>
+								<em>焊工</em>
+								<em>电工</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+					<li>
+						<i class="magIcon magIcon02"></i>
+						<p>
+							<b>物业<u></u>家政<u></u>安保</b>
+							<span>
+								<em class="orange">保安</em>
+								<em>维修工</em>
+								<em>家政</em>
+								<em>保洁</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+					<li>
+						<i class="magIcon magIcon03"></i>
+						<p>
+							<b>司机<u></u>物流<u></u>仓储</b>
+							<span>
+								<em class="orange">仓库管理员</em>
+								<em>叉车工</em>
+								<em>配送员</em>
+								<em>货车司机</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+					<li>
+						<i class="magIcon magIcon04"></i>
+						<p>
+							<b>餐饮<u></u>酒店</b>
+							<span>
+								<em class="orange">服务员</em>
+								<em>收银员</em>
+								<em>迎宾</em>
+								<em>厨师</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+					<li>
+						<i class="magIcon magIcon05"></i>
+						<p>
+							<b>超市<u></u>百货<u></u>零售</b>
+							<span>
+								<em class="orange">促销导购</em>
+								<em>营业员</em>
+								<em>收银员</em>
+								<em>理货员</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+					<li>
+						<i class="magIcon magIcon06"></i>
+						<p>
+							<b>汽车服务<u></u>维修</b>
+							<span>
+								<em>汽车美容</em>
+								<em>维修漆工</em>
+								<em>机电维修</em>
+								<em>维修钣金工</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+					<li>
+						<i class="magIcon magIcon07"></i>
+						<p>
+							<b>服装<u></u>编织<u></u>食品<u></u>印刷</b>
+							<span>
+								<em>包装工</em>
+								<em>裁剪工</em>
+								<em>印刷操作</em>
+								<em>染工</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+					<li>
+						<i class="magIcon magIcon08"></i>
+						<p>
+							<b>美容美发</b>
+							<span>
+								<em>美容师/化妆师</em>
+								<em>美甲师</em>
+								<em>发型师</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+					<li class="last">
+						<i class="magIcon magIcon09"></i>
+						<p>
+							<b>休闲<u></u>娱乐</b>
+							<span>
+								<em>调酒师</em>
+								<em>按摩师</em>
+								<em>足疗师</em>
+								<em>针灸推拿</em>
+							</span>
+						</p>
+						<font class="hbFntWes"></font>
+					</li>
+				</ul>
+			</div>
+			<!-- 浮动内容 -->
+			<div class="homeCategoryPos" data-id='0'>
+				{/foreach $jobsorts as $k=>$v/}
+				<div class="categoryList">
+					<span>{/$v['jobsort_name_v2']/}</span>
+					<p>
+						{/foreach $v['next'] as $v1/}
+						<a href="{/$siteyurl.kmcompany/}/wjob/search?params=a{/$v1['jobsort']/}">{/$v1['jobsort_name']/}</a>
+						{//foreach/}
+					</p>
+				</div>
+				{//foreach/}
+			</div>
+			
+			<div class="newRight">
+				<div class="kmBanner01">
+					
+					<!--大广告1号位开始-->
+					<div class="newcontainer">
+					    <div class="newexample">
+					        <div id="slides">
+					            <div class="slides_container">
+									{/foreach $adverts[1] as $v/}
+									<div>
+										<a  target="_blank" href="{/$v['link']/}" area="index_carousels" >
+											<img class="slider_ad_item"  src="{/$v['picture']/}"  width="592" height="220"/>
+										</a>
+									</div>
+									{//foreach/}
+
+					            </div>
+					        </div>
+					        <div id="slidesPage" class="slidesPage">
+								{/if count($adverts[1])>1/}
+								{/foreach $adverts[1] as $k=>$v/}
+								<a class="{/if $k==0/}current{//if/}" href="javascript:">{/$k/}</a>
+								{//foreach/}
+								{//if/}
+
+					        </div>
+					    </div>
+					</div>
+					
+				</div>
+				<div class="kmBanner02">
+					
+					<!--小广告2号位开始-->
+					<div class="newcontainer02">
+					    <div class="newexample02">
+					        <div id="slides02">
+					            <div class="slides_container slides_container02">
+									{/foreach $adverts[2] as $v/}
+									<div>
+										<a  target="_blank" href="{/$v['link']/}" area="index_carousels" >
+											<img class="slider_ad_item"  src="{/$v['picture']/}"  width="210" height="220"/>
+										</a>
+									</div>
+									{//foreach/}
+					            </div>
+					        </div>
+					        <div id="slidesPage02" class="slidesPage">
+								{/if count($adverts[2])>1/}
+								{/foreach $adverts[2] as $k=>$v/}
+								<a class="{/if $k==0/}current{//if/}" href="javascript:">{/$k/}</a>
+								{//foreach/}
+								{//if/}
+					        </div>
+					    </div>
+					</div>
+					
+				</div>
+				<div class="kmBanner03">
+					
+					<!--大广告3号位开始-->
+					<div class="newcontainer">
+					    <div class="newexample">
+					        <div id="slides03">
+					            <div class="slides_container">
+									{/foreach $adverts[3] as $v/}
+									<div>
+										<a  target="_blank" href="{/$v['link']/}" area="index_carousels" >
+											<img class="slider_ad_item"  src="{/$v['picture']/}"  width="592" height="220"/>
+										</a>
+									</div>
+									{//foreach/}
+					            </div>
+					        </div>
+					        <div id="slidesPage03" class="slidesPage">
+								{/if count($adverts[3])>1/}
+								{/foreach $adverts[3] as $k=>$v/}
+								<a class="{/if $k==0/}current{//if/}" href="javascript:">{/$k/}</a>
+								{//foreach/}
+								{//if/}
+					        </div>
+					    </div>
+					</div>
+					
+				</div>
+				<div class="kmBanner04">
+					
+					<!--小广告4号位开始-->
+					<div class="newcontainer02">
+					    <div class="newexample02">
+					        <div id="slides04">
+					            <div class="slides_container slides_container02">
+									{/foreach $adverts[4] as $v/}
+									<div>
+										<a  target="_blank" href="{/$v['link']/}" area="index_carousels" >
+											<img class="slider_ad_item"  src="{/$v['picture']/}"  width="210" height="220"/>
+										</a>
+									</div>
+									{//foreach/}
+					            </div>
+					        </div>
+					        <div id="slidesPage04" class="slidesPage">
+								{/if count($adverts[4])>1/}
+								{/foreach $adverts[4] as $k=>$v/}
+								<a class="{/if $k==0/}current{//if/}" href="javascript:">{/$k/}</a>
+								{//foreach/}
+								{//if/}
+							</div>
+					    </div>
+					</div>
+					
+				</div>
+				<div class="clear"></div>
+				<div class="kmWelfareZone">
+					<p class="zoneFirst">
+						<span><i></i>福利专区</span>
+						{/foreach $hot_rewards as $k=>$v/}
+						<a href="{/$siteyurl.kmcompany/}/wjob/search?params={/$k/}">{/$v/}</a>{/if $k!='d08'/}<em></em>{//if/}
+						{//foreach/}
+					</p>
+					<p>
+						<span><i></i>招聘区域</span>
+						{/foreach $hot_area as $k=>$v/}
+						<a href="{/$siteyurl.kmcompany/}/wjob/search?params={/$k/}">{/$v/}</a>{/if $k!='b0308'/}<em></em>{//if/}
+						{//foreach/}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- 热招职位 -->
+		<div class="reZhaoPosition">
+			<div class="reZhaoTit">热招职位</div>
+			<div class="reZhaoTab">
+				<span class="hot_calling_select cut" data-callingid="01">电子<i></i></span>
+				<span class="hot_calling_select" data-callingid="02">整车制造<i></i></span>
+				<span class="hot_calling_select" data-callingid="03">汽摩配件<i></i></span>
+				<span class="hot_calling_select" data-callingid="04">服装<i></i></span>
+				<span class="hot_calling_select" data-callingid="05">食品加工<i></i></span>
+				<span class="hot_calling_select" data-callingid="06">机械制造<i></i></span>
+				<span class="hot_calling_select" data-callingid="07">化工<i></i></span>
+				<span class="hot_calling_select" data-callingid="08">物流<i></i></span>
+				<span class="hot_calling_select" data-callingid="11">物业<u></u>家政<u></u>安保<i></i></span>
+				<span class="hot_calling_select" data-callingid="12">餐饮<u></u>酒店<i></i></span>
+				<span class="hot_calling_select" data-callingid="13">超市<u></u>百货<u></u>零食<i></i></span>
+			</div>
+
+			<div class="reZhaoContent">
+				{/foreach $hot_calling_jobs as $calling_id=>$_jobs/}
+				<ul class="reZhaoList" style="{/if $calling_id=='01'/}display: block;{//if/}">
+					{/foreach $_jobs as $job/}
+						<li>
+							<a href="{/$siteyurl.kmcompany/}/zhiwei/{/$job['job_flag']/}.html" target="_blank" class="subJob">
+								<span class="jobx01">{/$job['station']/}</span>
+								<span class="jobx02">
+								<em>{/$job['degree_name']/}</em><i></i>
+								<em>{/$job['age_text']/}</em>
+								</span>
+								{/if $job['rewards']/}
+								<span class="jobx03">
+									{/foreach $job['rewards'] as $reward/}
+										<em>{/$reward/}</em>
+									{//foreach/}
+								</span>
+								{//if/}
+								<span class="jobx04">{/$job['salary_text']/}</span>
+							</a>
+							<a href="{/$siteyurl.kmcompany/}/qiye/{/$job['company_flag']/}.html" target="_blank" class="subCompany">
+								<img src="{/$job['company_photo']/}" alt="">
+								<p>
+								<span class="jobx05">
+									<em>{/$job['company_shortname']/}</em>
+									{/if $job['is_famous']==1/}<i class="famous">名企</i>{//if/}
+									{/if !empty($job['company_tags'])/}
+										{/foreach  $job['company_tags'] as $tag/}
+											<i class="orange">{/$tag/}</i>
+										{//foreach/}
+									{//if/}
+
+								</span>
+									<span class="jobx06">
+									<em>{/$job['company_size']/}</em><i></i>
+									<em>{/$job['property_name']/}</em><i></i>
+									<em>{/$job['company_callings']/}</em>
+								</span>
+								</p>
+							</a>
+						</li>
+					{//foreach/}
+				</ul>
+				{//foreach/}
+			</div>
+
+			<a href="javascript:;" data-callingid="01" class="reZhaoMore" id="hot_job_search">查看更多</a>
+			<div class="reZhaoTit reZhaoTitTop60">名企热招</div>
+			<ul class="famousList">
+				{/foreach $famous_companys as $company/}
+				<li>
+					<a href="{/$siteyurl.kmcompany/}/qiye/{/$company['company_flag']/}.html">
+						<img src="{/$company['company_photo']/}" >
+						<span class="famx01">
+							<em>{/$company['company_shortname']/}</em>
+
+							{/if !empty($company['company_tags'])/}
+								{/foreach  $company['company_tags'] as $tag/}
+									<i >{/$tag/}</i>
+								{//foreach/}
+							{//if/}
+						</span>
+						<span class="famx02">
+							<em>{/$company['property_id']/}</em><i></i>
+							<em>{/$company['size_id']/}</em><i></i>
+							<em>{/$company['calling_id']/}</em>
+						</span>
+						<span class="famx03">
+							<em>{/base_lib_BaseUtils::cutstr($company['job_station'],11,'utf-8','','…')/}</em><i>等</i><em>{/$company['job_num']/}</em><i>个职位在招</i>
+						</span>
+					</a>
+				</li>
+				{//foreach/}
+			</ul>
+			<a href="{/$siteyurl.kmcompany/}/wjob/search?params=r1/" class="reZhaoMore">查看更多</a>
+		</div>
+		</div>
+		{/include file="common/footer.html"/}
+        <div id='load_page' style='display:none;'></div>
+	</body>
+<script  type="text/javascript">
+    var action_url = '{/$siteurl.style/}';
+    action_dom = [
+        ['#load_page', 430]
+    ];
+</script>
+<script type="text/javascript" language="javascript" src="{/version file='action.js'/}"></script>
+<script>
+	$("#job_search").click(function () {
+		window.location.href = '{/$siteurl.kmcompany/}/wjob/search?key='+$("#kmSearch").val();
+    })
+
+    $("#load_page").click();
+
+    $("#job_search_float").click(function () {
+        window.location.href = '{/$siteurl.kmcompany/}/wjob/search?key='+$("#km_earch_float").val();
+    })
+
+	$('.hot_calling_select').click(function () {
+		$('#hot_job_search').attr('data-callingid',$(this).attr('data-callingid'));
+    })
+	$('#hot_job_search').click(function () {
+		var url = "{/$siteurl.kmcompany/}/wjob/search?params=c"+$(this).attr('data-callingid');
+		window.location.href = url;
+    })
+
+</script>
+</html>

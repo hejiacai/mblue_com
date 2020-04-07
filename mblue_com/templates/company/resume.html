@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简历管理-简历详情</title>
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-widge.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file="resumeTate.css"/}" />
+	<!–[if lt IE9]>
+	<script src="{/version file='html5.js'/}"></script>
+	<![endif]–>
+	<script type="text/javascript" src="{/version file='version.js'/}"></script>
+<script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+<!--    <script type="text/javascript" language="javascript"  src='{/version file="aliyun-webrtc-sdk-1.10.1.min.js"/}'></script>-->
+    <script type="text/javascript" src="{/version file='common.js'/}"></script>
+    <script type="text/javascript" src="{/version file='dialog.js'/}"></script>
+    <script type="text/javascript" src="{/version file='layer.js'/}"></script>
+	
+    <script type="text/javascript">
+        window.CONFIG = {
+            HOST: '{/$siteurl["style"]/}',
+            COMBOPATH: '/js/v2/'
+        }
+    </script>
+    <script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+    <script type="text/javascript" src="{/version file='global.js'/}"></script>
+	
+    <style>
+        .kuaimi-logo{width: 180px;}
+        .hb_ui_dialog .ui_dialog_title{ text-align: left; font-size: 14px;}
+		.pre-info-msg p{text-align: left;}
+        .ques-mark {
+            width: 16px;
+            height: 14px;
+            display: inline-block;
+            position: relative;
+            background: url({/$siteurl.style/}/img/blue/company/question-mark.png) 1px 0px no-repeat;
+            top: 2px;
+            left: 3px;
+        }
+        .save-comp-box{padding:20px;}
+        .save-comp-box li {
+
+            margin: 10px auto;
+            _display: inline;
+            width: 120px;
+            height: 120px;
+            border-radius: 5px;
+            background: #f2f2f2 url({/$siteurl.style/}/img/v2/resumeM/doc.jpg) center 10px no-repeat;
+        }
+        .save-comp-box li a {
+            display: block;
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            padding-top: 95px;
+            height: 25px;
+        }
+
+
+
+        /*米币tip解释*/
+        .mi-icon-tip-2 {
+            display: block;
+            position: absolute;
+            width: 325px;
+            height: 363px;
+            background: url({/$siteurl.style/}/img/blue/companyindex/mi-icon-bg.png) 0 0 no-repeat;
+            top: 35px;
+            left: 183px;
+            box-sizing: border-box;
+            padding: 22px 0  0 35px;
+            text-align: left;
+        }
+        .mi-icon-tip-2 h3 {
+            font-size: 16px;
+            color: #fb5958;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 25px;
+        }
+        .mi-icon-tip-2 p {
+            font-size: 13px;
+            line-height: 23px;
+        }
+        .wrap{
+            min-height: 780px;
+        }
+
+
+        div.dialog {
+            background: #a3a3a3;
+            padding: 0;
+        }
+        .alert-warniong{
+        	bottom: inherit;
+        	top: 0px;
+        	text-align: left;
+        	font-family: "微软雅黑";
+        }
+        .resumeinfoTips{ text-align: left;}
+    </style>
+</head>
+<body style="background: #ececec;">
+<div class="header pre-resume">
+    <div class="wrap clearfix">
+        <a href="{/get_url rule='/company/index'/}">
+            <div class="kuaimi-logo">
+                <img src="{/base_lib_Constant::STYLE_URL/}/img/blue/company/kuaimi_white.png" alt="" width="27" height="27">
+                <h1>快米工作 | 简历</h1>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="pre-resume-content" style="padding: 40px 0; padding-bottom: 30px;">
+    <div class="wrap clearfix pre-resume-main">
+        <div class="pre-resume-left">
+
+            {/if $remark_count > 0/}
+            <!-- 展开操作记录 -->
+            <div id="historyContainer" class="smNumberUp" style='display:block'>
+                <a {/if $remark_count <= 0/}data-status="0"{/else/}data-status="1"{//if/} href="javascript:;" class="sberUp">收起操作记录<i></i></a>
+                <ul>
+                    {/foreach $remark_list as $key => $value/}
+                    <li class="remark_li" {/if $key>5/}style="display: none" {//if/}>
+                        <span>{/$value['update_time']/}</span>
+                        <em style="width: auto;">添加备注：{/$value['remark']/}</em>
+                    </li>
+                    {//foreach/}
+                    {/if count($remark_list)>6/}
+                        <li id="moreHistory" class="fot"><a href="javascript:" id="btnMoreHistory">查看更早记录</a></li>
+                    {//if/}
+                </ul>
+            </div>
+            {//if/}
+            
+            <div class="smNumber" style="background: #fff">
+                <span>简历编号：{/$person['person_id']/}</span>
+                {/if $remark_count > 0/}
+                    <a style='display:none' href="javascript:;">展开操作记录<i></i></a>
+                {//if/}
+                {/if !empty($person['last_login_time'])/}<span class="sberRt">最近登录：{/$person['last_login_time']|date_format:'%Y-%m-%d'/}</span>{//if/}
+            </div>
+            
+            <div class="pre-info clearfix">
+                <div class="pre-info-img">
+                    <img src="{/if !empty($person['photo'])/}{/base_lib_Constant::YUN_ASSETS_URL/}/{/$person['photo']/}{/else/}{/base_lib_Constant::STYLE_URL/}/img/appeal/default_head.jpg{//if/}" alt="">
+                </div>
+                <div class="pre-info-msg">
+                    <h4>{/$person['user_name']/}</h4>
+                    <p>{/if $person['sex']==1/}男{/elseif $person['sex']==2/}女{//if/} {/if $person['age']/}<span>|</span>{//if/} {/if $person['age']/}{/$person['age']/}岁{//if/} 
+                         {/if $person['stature']/}<span>|</span>{/$person['stature']/}cm{//if/} {/if $person['weight']/}<span>|</span>{/$person['weight']/}kg{//if/}{/if $degree[$person['max_degree_id']]/}<span>|</span>{//if/} {/$degree[$person['max_degree_id']]/} {/if $person['work_year']/}<span>|</span>{//if/} {/$person['work_year']/} </p>
+                    {/if !empty($cur_area_name)/}<p>现居地：{/$cur_area_name/}</p>{//if/}
+                    <div><span class="pre-resume-tel" style=" float: left;">
+                        <img src="{/base_lib_Constant::STYLE_URL/}/img/blue/company/resume-icon-tel.png" alt="" width="12" style="margin-right: 6px;
+"><span id="mobile">{/$person['mobile_phone']/}</span></span><div id="get" style=" float: left;">
+                        {/if $is_audit/}
+                            {/if !$is_get/}
+                                {/if $is_apply/}
+                                <a href="javascript:getlinkway()" >免费获取电话</a>
+                                {/else/}
+                                <a href="javascript:" id="downLoad">获取电话</a>
+                                {//if/}
+                            {//if/}
+                        {/else/}
+                            <a href="javascript:" class="not_audit">获取电话</a>
+                        {//if/}
+                    </div></div>
+                </div>
+            	<div class="clear"></div>
+            	{/if $is_redpacket_active_effect && $has_join_reapacket/}
+	                <span class="resumeinfoTips">
+	                                （该用户参与了面试领红包补贴活动，请通过快米系统发送面试邀请
+	                                <i class="infoQuery"></i>)
+	                            </span>
+	                <div class="alert-warniong">
+	                    <i class="arrdown-icon"></i>
+	                    <span>为了提高求职者面试到达率，快米开展“面试领红包补贴”活动：<br />
+	                    凡是得到企业系统发送的面试邀请，并到场面试的求职者，可领取<em>10~50元交通补贴</em></span>
+	                </div>
+	            {//if/}
+            </div>
+
+            
+
+            <div class="pre-resume-list">
+                <h5><i class="icon pre-job-position"></i>求职意向</h5>
+                <div class="pre-reume-position">
+                    {/if !empty($str_expect_jobsorts)/}<p><em>期望类别：</em> <span>{/$str_expect_jobsorts/}</span> </p>{//if/}
+                    {/if !empty($person['exp_station'])/}<p><em>期望职位：</em> <span>{/$person['exp_station']/}</span> </p>{//if/}
+                    {/if !empty($salary[$person['exp_salary']])/}<p><em>期望薪资：</em><span class="pre-resume-salary"><i>{/$salary[$person['exp_salary']]/}</i>元/月</span></p>{//if/}
+                    {/if !empty($str_expect_areas)/}<p><em>工作地点：</em><span>{/$str_expect_areas/}</span></p>{//if/}
+                    {/if !empty($applystatus[$person['job_state_id']])/}<p><em>求职状态：</em><span>{/$applystatus[$person['job_state_id']]/}</span></p>{//if/}
+                </div>
+            </div>
+            {/if !empty($certificate_list)/}
+            <div class="pre-resume-list">
+                <h5><i class="icon pre-job-work"></i>证书</h5>
+                <ul>
+                    {/foreach $certificate_list as $v/}
+                    <li>
+                        <h6><em class="pre-circle"></em>{/$v['gain_time']/}</h6>
+                        <div class="pre-list-job">
+                            <p>{/$v['certificate_name']/}</p>
+                        </div>
+                    </li>
+                    {//foreach/}
+                </ul>
+            </div>
+            {//if/}
+            {/if !empty($work_data)/}
+            <div class="pre-resume-list">
+                <h5><i class="icon pre-job-work"></i>工作/实习经历</h5>
+                <ul>
+                    {/foreach $work_data as $k=>$v/}
+                    <li>
+                        <h6><em class="pre-circle"></em>{/$v['start_time']/}~{/$v['end_time']/}  {/$v['work_time']/}</h6>
+                        <div class="pre-list-job">
+                            <p>{/$v['station']/}</p>
+                            <p>{/$v['company_name']/}</p>
+                        </div>
+                    </li>
+                    {//foreach/}
+                </ul>
+            </div>
+            {//if/}
+        </div>
+        <div class="pre-resume-right">
+            <ul>
+                <li>{/if $is_audit/}<a href="javascript:void(0)" id="showInviteBtn"><em class="icon pre-right1"></em>邀请面试</a>{/else/}<a href="javascript:;" class="not_audit"><em class="icon pre-right1"></em>邀请面试</a>{//if/}</li>
+                {/if $apply_id&&$re_status!=3&&$re_status!=2/}<li class="hide1"><a href="javascript:setStatus('{/$apply_id/}','2');" class="preLi02"><em class="icon pre-right2"></em>待定</a></li>{//if/}
+                {/if $apply_id&&$re_status!=2/}<li class="hide2"><a href="javascript:setStatus('{/$apply_id/}','1');" class="preLi03"><em class="icon pre-right3"></em>不合适</a></li>{//if/}
+                <li><a href="javascript:void(0)" id="videoInterview"  class="preLi04 inviteVideo" ><em class="videoicon"></em>视频面试</a></li>
+				<li><a href="javascript:void(0)" class="preLi04" id="btnsavecomputer"><em class="icon pre-right4"></em>保存到电脑</a></li>
+                <li><a href="javascript:void(0)" class="preLi04" id="btnRemark"><em class="icon pre-right4" style="background: url({/base_lib_Constant::STYLE_URL/}/img/resumetate/resumetate.png) -125px -51px no-repeat;vertical-align: -9px;position: relative;left: 3px;"></em>备注{/if $remark_count>0/}<font>({/$remark_count/})</font>{//if/}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{/include file='./company/footer.html'/}
+</body>
+<script>
+  var person_id = '{/$person.person_id/}';
+  var confirmBox,
+    fontSize,
+    pWidth;
+  hbjs.use(' @confirmBox', function(m) {
+    confirmBox = m['widge.overlay.confirmBox'];
+    fontSize = 18;
+    pWidth = 70;
+  });
+
+  $('.infoQuery').hover(function(){
+      $(this).parent().next('.alert-warniong').toggle();
+      $('.alert-warniong').css({'top':$(this).offset().top+20,'left':$(this).offset().left-234});
+  });
+  //视频面试
+  $("#videoInterview").on('click',function () {
+
+      $.ajax({
+          url: "{/get_url rule='/video/CanVideo/'/}",
+          type: "post",
+          data: {person_id: person_id},
+          dataType: 'json',
+          success: function (res) {
+              if(res&&!res.status){
+//                                alert(res.msg);
+                  confirmBox.alert(res.msg,'', {
+                      title : '提示',
+                      width: 300
+                  });
+                  return false;
+              }
+              if(res&&res.status){
+                  //console.log("跳转");
+                  window.open("{/get_url rule='/video/'/}?person_id="+person_id,"blank");
+                  //window.location.href = "{/get_url rule='/video/'/}?person_id="+person_id;
+                 
+              }
+          }
+      })
+  });
+    function setStatus(apply_id,type){
+        var msg = type==1? "确定设置为不合适？" : "将该简历标记为待定状态，确认后再邀请面试或回绝？";
+        $.confirm(msg,"操作提示",function(){
+            $.post(type==1?"{/get_url rule='/resume/SetNotSuitable/'/}":"{/get_url rule='/resume/SetWait/'/}",{apply_id:apply_id},function(data){
+                if(!data.status){
+                  confirmBox.timeBomb(data.msg, {
+                    name : 'fail',
+                    timeout :3000,
+                    width: fontSize * data.msg.length + pWidth
+                  });
+//                    alert(data.msg);
+                    return;
+                }
+              confirmBox.timeBomb(data.msg, {
+                name : 'success',
+                timeout :3000,
+                width: fontSize * data.msg.length + pWidth
+              });
+
+              setTimeout(function () {
+                window.location.reload();
+              },1200)
+            },'json');
+        })
+    }
+	$('#showInviteBtn').click(function(){
+		invite();
+	})
+    function invite(){
+        $.showModal("{/get_url rule='/resume/inviteperson/'/}person_id-{/$person['person_id']/}-apply_id-{/$apply_id/}",{title:'面试邀请'});
+    }
+
+    function getlinkway(){
+        $.post("{/get_url rule='/resume/getLinkway/'/}",{person_id:"{/$person['person_id']/}",apply_id:'{/$apply_id/}'},function(data){
+            if(data&&!data.status){
+//                alert(data.msg);
+                  confirmBox.timeBomb(data.msg, {
+                    name : 'success',
+                    timeout :3000,
+                    width: fontSize * data.msg.length + pWidth
+                  });
+                return;
+            }
+            $('#mobile').html(data.mobile_phone);
+            $('#get').hide();
+        },'json');
+    }
+
+    hbjs.use('@orderActions,@confirmBox',function(m){
+
+        var Dialog = m['widge.overlay.hbDialog'];
+        //保存到电脑
+        var saveComp = new Dialog({
+            idName: 'save-comp',
+            title: '保存到电脑',
+            close: 'x',
+            isAjax: false,
+            initHeight: 100,
+            width: 300
+        });
+        var dialog = new Dialog({
+            idName: 'save-comp',
+            title: '保存到电脑',
+            close: 'x',
+            isAjax: true
+        });
+
+        $("#btnsavecomputer").click(function() {
+            saveComp.setContent('<div class="save-comp-box" style="padding:10px 0"><span class="gray9" style="text-align: left ">文件另存为：</span><ul class="clearfix"><li class="doc"><a href="{/get_url rule="/resume/worddown/"/}person_id-{/$person['person_id']/}">.doc</a></li></ul></div>');
+            saveComp.show();
+            return false;
+        });
+
+
+        var _dialog = {
+            params: {},//自定义传递参数 titel:弹框标题 width:弹框宽度 getHtml:弹框主体内容 request:点击确定的请求 其他自定义
+            alert: null,
+            init: function () {
+                if (!_dialog.alert) {
+                    _dialog.alert = new Dialog({
+                        close: 'X',
+                        idName: 'stop_job_dialog',
+                        title: _dialog.params.titel,
+                        width: _dialog.params.width || 400,
+                        isOverflow: false,
+                        isAjax: true
+                    });
+                }
+                _dialog.alert.on('closeX', function () {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.setContent(_dialog.params.getHtml);
+                _dialog.alert.query('#ok').off('click');
+                _dialog.alert.query('#cancel').off('click');
+                _dialog.alert.query('#cancel').on('click', function (e) {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.query('#ok').on('click', function (e) {
+                    _dialog.params.request();
+                });
+                _dialog.alert.query('#jump').off('click');
+                _dialog.alert.query('#jump').on('click', function (e) {
+//                    window.location.href="{/get_url rule='/licencevalidate/index/'/}";
+                    window.open("{/get_url rule='/licencevalidate/index/'/}");
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.show();
+            }
+        };
+
+        var down_load_clcik_type = '{/$down_load_clcik_type/}';
+        //职位停招
+        $("#downLoad").click(function () {
+
+            switch(down_load_clcik_type){
+
+                case 'free_member_day_limit':
+                    //免费会员-日下载不足
+                    var _this = this;
+                    _dialog.params = {
+                        titel: '获取电话',
+                        getHtml: [
+                            '<div class="get-info">',
+                            '<div style="padding:20px 20px 10px 20px;color:#666;text-align:left"><p class="get-info-tit" style=" color:#444">当前已超过免费会员每天下载简历的限额!!</p><p style="color: #999">(如需继续获取简历，请在首页联系招聘顾问购买会员套餐服务)</p></div>',
+                            '<div id="inviteFormBtn" class="formBtn">',
+                            '<div class="dialogFooter set-top-foot"><a href="javascript:void(0);" id="ok" class="present">确定</a>',
+                            '<a id="cancel" href="javascript:;" class="gray">取消</a></div>',
+                            '</div>',
+                            '</div>'
+                        ].join(''),
+                        request: function () {
+                            _dialog.alert.hide();
+                        }
+                    },
+                    _dialog.init();
+                    break;
+
+                case 'free_member_month_limit':
+                    //免费会员-月下载不足
+                    var _this = this;
+                    _dialog.params = {
+                        titel: '获取电话',
+                        getHtml: [
+                            '<div class="get-info">',
+                            '<div style="padding:20px 20px 10px 20px;color:#666;text-align:left"><p class="get-info-tit" style=" color:#444">当前已超过免费会员每月下载简历的限额!</p><p style="color: #999">(如需继续获取简历，请在首页联系招聘顾问购买会员套餐服务)</p></div>',
+                            '<div id="inviteFormBtn" class="formBtn">',
+                            '<div class="dialogFooter set-top-foot"><a href="javascript:void(0);" id="ok" class="present">确定</a>',
+                            '<a id="cancel" href="javascript:;" class="gray">取消</a></div>',
+                            '</div>',
+                            '</div>'
+                        ].join(''),
+                        request: function () {
+                            _dialog.alert.hide();
+                        }
+                    },
+                    _dialog.init();
+                    break;
+
+                case 'free_member_no_mb':
+                    //免费会员-米币不足
+                    var _this = this;
+                    _dialog.params = {
+                        titel: '获取电话',
+                        getHtml: [
+                            '<div class="get-info">',
+                            '<div style="padding:20px 20px 10px 20px;color:#666;text-align:left"><p class="get-info-tit" style=" color:#444">确认花费{/$spend/}米币下载联系方式？</p><p style="color: #999">(当前米币余额不足（米币余额：{/$mb_account/}），如需继续获取简历，请在首页联系招聘顾问购买会员套餐服务)</p></div>',
+                            '<div id="inviteFormBtn" class="formBtn">',
+                            '<div class="dialogFooter set-top-foot"><a href="javascript:void(0);" id="ok" class="present">确定</a>',
+                            '<a id="cancel" href="javascript:;" class="gray">取消</a></div>',
+                            '</div>',
+                            '</div>'
+                        ].join(''),
+                        request: function () {
+                            _dialog.alert.hide();
+                        }
+                    },
+                    _dialog.init();
+                    break;
+
+
+                default:
+                    //非免费会员
+                    var _this = this;
+                    _dialog.params = {
+                        titel: '获取电话',
+                        getHtml: [
+                            '<div class="get-info">',
+                            '<div style="padding:20px 20px 10px 20px;color:#666;text-align:left"><p class="get-info-tit" style=" color:#444">确认花费{/$spend/}米币下载联系方式？</p><p style="color: #999">（你的米币余额：{/$mb_account/}米币，充值米币请在首页联系招聘顾问）</p></div>',
+                            '<div id="inviteFormBtn" class="formBtn">',
+                            '<div class="dialogFooter set-top-foot"><a href="javascript:void(0);" id="ok" class="present">确定</a>',
+                            '<a id="cancel" href="javascript:;" class="gray">取消</a></div>',
+                            '</div>',
+                            '</div>'
+                        ].join(''),
+                        request: function () {
+                            $.ajax({
+                                url: "{/get_url rule="/resume/getResume/"/}",
+                                type: "post",
+                                data: {person_id: "{/$person['person_id']/}"},
+                                dataType: 'json',
+                                success: function (res) {
+                                    if(res&&!res.status){
+//                                alert(res.msg);
+                                        confirmBox.timeBomb(res.msg, {
+                                            name : 'fail',
+                                            timeout :3000,
+                                            width: fontSize * res.msg.length + pWidth
+                                        });
+                                        return false;
+                                    }
+                                    $('#mobile').html(res.mobile_phone);
+                                    $('#get').hide();
+                                    _dialog.alert.hide();
+                                }
+                            })
+                        }
+                    },
+                    _dialog.init();
+                    break;
+
+            }
+        });
+
+        //待启会员弹窗
+        $(".not_audit").click(function () {
+            var _this = this;
+            _dialog.params = {
+                titel: '去验证',
+                getHtml: [
+                    '<div class="get-info">',
+                    '<div style="padding:20px 20px 10px 20px;color:#666;text-align:left"><p class="get-info-tit">您还未认证营业执照，暂时不能联系求职者</p></div>',
+                    '<div id="inviteFormBtn" class="formBtn" style="margin-top: 30px;">',
+                    '<div class="dialogFooter set-top-foot"><a href="javascript:void(0);" id="jump" class="present">去验证</a>',
+                    '<a id="cancel" href="javascript:;" class="gray">取消</a></div>',
+                    '</div>',
+                    '</div>'
+                ].join('')
+            }
+                    _dialog.init();
+        });
+
+        //备注
+        $("#btnRemark").click(function(){
+            if (person_id != undefined && person_id > 0) {
+                dialog.resetSize('auto').setContent({
+                    title:'备注',
+                    content:'{/get_url rule="/resume/remarkhtml/"/}person_id-' + person_id
+                }).off('loadComplete').on('loadComplete',function () {
+                    this.oneCloseEvent('#btnCancel');
+                }).show();
+            
+            } else {
+                showModel('fail', '请选择一个简历后再进行备注');
+            }
+        });
+
+        //备注
+        $('.smNumber a').click(function(){
+            $('.smNumberUp').slideDown();
+            $(this).hide();
+        });
+        //超过6个隐藏
+        $('.smNumberUp ul li.remark_li:gt(5)').hide();
+        //查看更早记录
+        $('.smNumberUp #moreHistory').on('click',function () {
+            $('.smNumberUp ul li.remark_li:gt(5)').slideDown();
+            $(this).hide();
+        });
+
+        $('.sberUp').click(function(){
+            $('.smNumberUp').slideUp(300);
+            setTimeout(function () {
+                $('#historyContainer').find('li[isMore="1"]').hide();
+                $('#moreHistory').show();
+                $('.smNumber a').slideDown(100);
+                $('.smNumberUp ul li.remark_li:gt(5)').hide();
+            },100);
+
+        })
+    });
+
+    function showModel(icon, msg) {
+        confirmBox.timeBomb(msg, {
+            name: icon,
+            width: pWidth + msg.length * fontWidth
+        });
+    }
+</script>
+</html>

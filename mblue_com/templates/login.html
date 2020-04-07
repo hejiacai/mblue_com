@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{/$companyName/}-登录</title>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+    <script type="text/javascript">
+      window.CONFIG = {
+        HOST: '{/$siteurl["style"]/}',
+        COMBOPATH: '/js/v2/'
+      }
+    </script>
+    <script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+    <script type="text/javascript" src="{/version file='global.js'/}"></script>
+    <script type="text/javascript">
+      hbjs.loadJS('{/$siteurl["style"]/}/js/v2/cqjob/common.js');
+    </script>
+    <style>
+        
+        body{
+            line-height: normal;
+        }
+        .ui_dialog_container{
+            color: #666;
+        }
+        .wrap{position: relative;z-index: 1;background: transparent;}
+        .login-form{width: 310px;}
+        .login-form-input{width: 294px;}
+        .login-wrap h6{margin-bottom: 20px;}
+        .login-form-input label{float: left;}
+        .copyright{ background: #fff;padding: 15px 0;}
+        .login-footer{padding: 0px;}
+
+
+        /*messageTip弹出样式修改*/
+        div.hb_ui_prt_fail {
+            background: #666;
+            box-shadow: none;
+        }
+        div.ui_dialog_container {
+            color: #fff;
+        }
+        div.hb_ui_prt_success {
+            background: #666;
+            box-shadow: none;
+        }
+        .error span{ padding-top: 10px;margin-top: 3px;}
+        .ui_dialog_message{color: #333;}
+        div.hb_ui_prt_success .ui_dialog_message{ color: #fff;}
+		html{ background: #fff;}
+body{height: 100%; background: #fff; position: relative;}
+       </style>
+</head>
+<body style="background: #fff;">
+
+<div class="header">
+    <div class="wrap clearfix">
+        <a href="/" class="kuaimi-logo">
+            <img src="{/$siteurl['style']/}/img/blue/company/kuaimi_logo.png" alt="" width="29" height="28" />
+            <h1>{/$companyName/}</h1>
+        </a>
+    </div>
+</div>	
+	
+<div class="login-header">
+    <div class="login-bg01"></div>
+    <div class="login-bg02"></div>
+</div>
+<div class="login-wrap">
+    <h6>登录</h6>
+    <form id="loginFrom">
+    <div class="login-form">
+        <div class="login-form-input clearfix">
+            <label for="username">
+                用户名：
+                <input type="text" id="username" name="txtUsername">
+            </label>
+        </div>
+        <div class="login-form-input clearfix">
+            <label for="pwd">
+                密&nbsp;&nbsp;&nbsp;码：
+                <input type="password" id="pwd" name="txtPassword">
+            </label>
+        </div>
+        <input type="hidden" name="hidSeed" value="{/$seed/}">
+
+        <div id="verify_div" class="login-form-input clearfix" style="display:none;border-bottom-color: white;margin-bottom: -43px;">
+            <div style="width: 10px;height: 30px;background: #fff;float: left;"></div>
+            <div class="reg-input" style="width: 100px;margin-top: 6px;">
+                <input type="text" id="imgCode" style="width: 100px;" name="txtCatcha" value=""/>
+            </div>
+            <img id="change_code" style="float: left;margin-left: 5px;" src="{/$siteurl['kmcompany']/}/register/verify/seed-{/$seed/}" alt="">
+            <div class="clear"></div>
+            <p class="error error-txtCatcha"></p>
+        </div>
+
+        <p class="error">
+            <span class="errorTipx"></span>
+        </p>
+        <a href="javascript:void(0);"  class="forget-pwd">忘记密码？</a>
+        <a href="javaScript:;" class="login-btn" id="loginBtn">确定</a>
+        <a href="{/$siteurl['kmcompany']/}/register" class="to-register">没有账号？立即注册</a>
+    </div>
+    </form>
+</div>
+
+<div class="login-footer">
+    <div class="copyright">
+        <p>©2020&nbsp;汇博网&nbsp;版权所有&nbsp;&nbsp;|&nbsp;&nbsp;增值电信业务经营许可证：渝B2-20060063&nbsp;&nbsp;|&nbsp;&nbsp;<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50010502001182" rel="nofollow" style="color:#999;">渝公网安备 50010502001182号</a></p>
+        <p>招聘单位无权收取任何费用,请求职人员加强自我保护意识,按劳动法规保护自身权益,警惕虚假招聘,避免上当受骗!</p>
+    </div>
+</div>
+{/include file="common/showloading.html"/}
+</body>
+<script>
+	
+  hbjs.use('@jobDialog, @hbCommon, @form, @validator, @areaDrop, @confirmBox', function(m){
+    var $ = m['product.hbCommon'].extend(m['cqjob.jobDialog'], m['cqjob.jobForm']);
+      var confirmBox = m['widge.overlay.confirmBox'],
+          fontSize = 18,
+          pWidth = 70;
+	// 获取屏幕高	  
+	var windowHeight = window.screen.height;
+	if(windowHeight < 800){
+		$('body,html').css('height','800px');
+	}
+    //水印
+      $('input:text,input:password').placeHolder();
+		
+	  $("body").keydown(function(event) {
+		 if(event.keyCode == "13"){
+			$("#loginBtn").click();
+		 }
+	  });
+
+      var get_code_url = '';
+      $('#change_code').click(
+          function () {
+              if (!get_code_url)
+                  get_code_url = $('#change_code')[0].src;
+              var url = get_code_url + "?v=" + Math.random();
+              $('#change_code').attr('src', url);
+          }
+      )
+
+	  $('#username').keyup(function () {
+          var user_name = $('#username').val();
+          if(!user_name)
+              return false;
+            $.post('/login/isNeedVerify',{txtUsername:user_name},function(e){
+                if(e.status && e.is_need_verify){
+                    $('#verify_div').show();
+                }else{
+                    $('#verify_div').hide();
+                }
+            },'json')
+      })
+
+      $("#loginBtn").click(function () {
+          var uername = $("input[name='txtUsername']").val(),
+              pwd = $("input[name='txtPassword']").val();
+          if (uername == '') {
+              errorTipx('请输入用户名');
+
+          } else if (pwd == '') {
+              errorTipx('请输入密码');
+          } else {
+              errorTipx('');
+
+              //验证码判断
+              if($('#verify_div').is(':visible')){
+                  var imgcode = $('input[name=txtCatcha]').val();
+                  if(!/^[0-9]{4}$/.test(imgcode)){
+                      errorTipx('请输入四位数字图片验证码');
+                      return false;
+                  }
+
+              }
+
+              showLoading()
+              $.ajax({
+                  url: "{/get_url rule="/login/AjaxLoginDo/"/}",
+                  type: "post",
+                  data: $("#loginFrom").serialize(),
+                  dataType: 'json',
+                  success: function (res) {
+                      closeLoading()
+
+                      if(res.error){
+                          confirmBox.timeBomb(res.error, {
+                              name : "fail",
+                              timeout : 1000,
+                              width: fontSize * res.error.length+pWidth
+                          });
+                          if(res.need_verify){
+                              $('#verify_div').show();
+                          }
+                          $('#change_code').click();
+                      }
+                      if(res.success){
+
+                          confirmBox.timeBomb(res.success, {
+                              name : "success",
+                              timeout : 1000,
+                              width: fontSize * res.success.length + pWidth
+                          });
+                          setTimeout(function () {
+                              var url = '{/$redirect/}';
+                              if(url){
+                                  window.location.href = url;
+                                  return;
+                              }
+
+                              if(res.return_url)
+                                window.location.href = res.return_url;
+                              else
+                                window.location.href = "{/$siteurl['kmcompany']/}/account/BindCompanyWx";
+                          },1000);
+
+                      }
+                  }
+              })
+          }
+       
+      })
+    function errorTipx(msg) {
+      if(msg){
+        $('.errorTipx').css("display",'block').text(msg)
+      }else{
+        $('.errorTipx').css("display",'none')
+      }
+    }
+    $('.forget-pwd').click(function () {
+        confirmBox.alert('如忘记密码或用户名，请致电：{/$gorgetPasslinkTel/}','',{title:'账号密码找回',width:380})
+    })
+  })
+</script>
+</html>

@@ -1,0 +1,29 @@
+<div class="kuaimi_pc_header">
+    <div class="headerContent">
+        <a href="/"> <img src="{/$siteurl.style/}/img/blue/person/jobdetail_logo.png" aalt="快米首页" class="kuaimi_pc_log"></a>
+        {/if $search/}
+        <input type="text" placeholder="" id="search_key" class="hc_ipt"><span class="icon-115 job_search"></span>
+        <a class="job_search_btn" href="javascript:void(0);" id="job_search_btn">搜索</a>
+        {//if/}
+        <a href="{/$siteyurl.kmcompany/}/login" class="job_inCompany"><img src="{/$siteurl.style/}/img/blue/company/icon_home.png" alt="" class="kuaimi_home_icon">企业招聘入口</a>
+    </div>
+</div>
+<script type="text/javascript">
+	var search_submit = document.getElementById("job_search_btn");
+	if(search_submit){
+		search_submit.onclick = function(){
+			var key = document.getElementById("search_key").value;
+			window.location.href = '{/get_url rule="/wjob/search/" data="key='+key+'"/}';
+		}
+	}
+	var search_key = document.getElementById("search_key");
+	if(search_key){
+		search_key.onkeydown = function(e){
+			var keyNum = window.event ? e.keyCode :e.which;  //获取被按下的键值 
+			if(keyNum==13){
+				var key = document.getElementById("search_key").value;
+				window.location.href = '{/get_url rule="/wjob/search/" data="key='+key+'"/}';
+			} 
+		}
+	}
+</script>

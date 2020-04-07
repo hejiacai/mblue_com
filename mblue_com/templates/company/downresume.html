@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简历管理-获取的简历</title>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-widge.css'/}"/>
+
+    <script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+    <script type="text/javascript" src="{/version file='common.js'/}"></script>
+    <script type="text/javascript" src="{/version file='dialog.js'/}"></script>
+    <script type="text/javascript" language="javascript" src="{/version file='ui_dropdownlist.js'/}"></script><!--下拉模拟-->
+</head>
+<body bgcolor="#ececec" style="margin: 0px;">
+{/include file='./company/company_head.html'/}
+<div class="jobList-content">
+    <div class="wrap clearfix resume-bg">
+        <div class="resume-menu">
+            <dl>
+                <dt><em class="icon"></em>收到的简历</dt>
+                <dd>
+                    <a href="{/get_url rule="/resume/ResumeManage/"/}">
+                        <em class="circle"></em>
+                        <span>待回复简历</span>
+                    {/if $apply_count>0/}<i>{/$apply_count/}</i>{//if/}
+                    </a>
+                </dd>
+                <dd>
+                    <a href="{/get_url rule="/resume/ResumeManage/"/}status-4">
+                        <em class="circle"></em>
+                        <span>不合适简历</span>
+                    </a>
+                </dd>
+            </dl>
+            <ul>
+                <li class="hover">
+                    <a href="{/get_url rule="/resume/DownLoadResume/"/}">
+                        <em class="icon icon1"></em>
+                        获取的简历
+                    </a>
+                </li>
+                <li>
+                    <a href="{/get_url rule="/invite/index/"/}">
+                        <em class="icon icon2"></em>
+                        面试管理
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="resume-container">
+            {/if empty($resume_list)/}
+            <div class="noData" style="margin-top: 40px;">
+                暂无数据
+            </div>
+            {//if/}
+            {/if !empty($resume_list)/}
+            <div class="resume-list">
+                <ul>
+                    {/foreach $resume_list as $k=>$v/}
+                    <li>
+                        <h6 class="clearfix"> <span><i>{/$v['down_time']|date_format:'%Y-%m-%d %H:%M'/}</i></span> <em class="resume-tel"><img
+                                src="{/base_lib_Constant::STYLE_URL/}/img/blue/company/resume-icon-tel.png" alt="" width="12" style="vertical-align: -1px;margin-right: 6px;">{/$v['person']['mobile_phone']/}</em></h6>
+                        <div class="resume-list-info clearfix">
+                            <a href="{/get_url rule='/resume/index'/}person_id-{/$v['person_id']/}" target="_blank">
+                                <div class="resume-list-img">
+                                    <img src="{/if !empty($v['person']['photo'])/}{/base_lib_Constant::YUN_ASSETS_URL/}/{/$v['person']['photo']/}{/else/}{/base_lib_Constant::STYLE_URL/}/img/appeal/default_head.jpg{//if/}" alt="">
+                                </div>
+                                <div class="resume-list-msg">
+                                    <h4>{/$v['person']['user_name']/}</h4>
+                                    <p>{/if $v['person']['sex']==1/}男{/elseif $v['person']['sex']==2/}女{//if/}{/if $v['person']['sex']/}<span>|</span>{//if/} {/if $v['person']['age']/}{/$v['person']['age']/}岁 <span>|</span>{//if/} {/$degree[$v['person']['max_degree_id']]/}  {/if !empty($work_time)/}<span>|</span>{/$work_time/}{//if/}</p>
+                                    {/if !empty($v['work'])/}<p>{/$v['work']['station']/}<span>|</span>{/$v['work']['company_name']/}<span>|</span>{/$v['work']['start_time']/}-{/$v['work']['end_time']/}</p>{//if/}
+                                </div>
+                                <div class="resume-list-btn">
+                                    <a href="javascript:sendInvite('{/$v['person_id']/}');" >邀请面试</a>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    {//foreach/}
+                </ul>
+            </div>
+            {//if/}
+        </div>
+    </div>
+    {/$pager/}
+</div>
+{/include file='./company/footer.html'/}
+
+</body>
+<script>
+    function sendInvite(person_id){
+        $.showModal("{/get_url rule="/resume/InvitePerson/"/}person_id-"+person_id, {title:'面试邀请'});
+    }
+
+</script>
+</html>

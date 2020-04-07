@@ -1,0 +1,24 @@
+<div style="display: none" class="company-dialog" id="refresh-dialog">
+    <div class="company-dialog-header">
+        刷新提示<img class="icon-close ser_cancel" style="cursor: pointer" src="{/$siteurl.style/}/img/blue/companyindex/dialog-close.png">
+    </div>
+    <div class="company-dialog-body">
+        <div class="refresh-content" style="width: 390px">
+            <h3>本次共批量刷新{/$has_refresh_total/}个职位</h3>
+            <p>
+                以下职位由于超过72小时没有回复（面试邀请或不合适）过简历，故需依次手动刷新：
+            </p>
+            <div class="need-refresh-jobs">
+                {/foreach $no_refresh as $job/}
+                <div>
+                    {/$job['station']/}<a class="refresh_single" data-job_id="{/$job['job_id']/}">刷新</a>
+                </div>
+                {//foreach/}
+            </div>
+        </div>
+        <div class="btns">
+            <button class="ser_confirm confirm" style="margin-left:150px;">确定</button>
+            <!--<button class="ser_cancel cancel" style="color: #fff">取消</button>-->
+        </div>
+    </div>
+</div>

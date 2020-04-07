@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+		<link rel="stylesheet" type="text/css" href="{/version file='kuaimi_pc.css'/}"/>
+		<style type="text/css">
+			html,body{margin: 0;padding: 0;}
+			img{border: 0;margin: 0;padding: 0;}
+			.notfind-box{width: 100%;text-align: center;padding-top: 100px;}
+			.notfind-box img{display: block;margin: 0 auto;}
+			.wrImg{width: 100%;}
+			.notfind-box p{text-align: center;font-size: 14px;margin-top: 20px;line-height: 14px;}
+		</style>
+	</head>
+	<body>
+	{/if $search404/}
+	{/include 'common/header.html' search="true"/}
+	{/else/}
+	{/include 'common/header.html'/}
+	{//if/}
+
+		<div class="notfind-box">
+			<div class="wrImg">
+				<img src="{/$siteurl.style/}/img/blue/wr404.png" >
+			</div>
+			{/if $msg404/}
+			<p>{/$msg404/}</p>
+			{/else/}
+			<p>网络不给力，请稍后重试</p>
+			{//if/}
+
+		</div>
+		{/include 'common/footer.html'/}
+	</body>
+</html>

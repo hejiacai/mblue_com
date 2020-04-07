@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>{/$title/}</title>
+	<link rel="stylesheet" type="text/css" href="{/version file='oastyle.css'/}"/>
+	<script src="http://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{/version file='layer.js'/}"></script>
+	<link rel="stylesheet" type="text/css" href="{/version file='layer.css'/}">
+	<script type="text/javascript" src="{/version file='WdatePicker.js'/}"></script>
+	<script type="text/javascript" src="{/version file='ui_uploadify.js'/}"></script>
+	<script type="text/javascript" src="{/version file='base_script.js'/}"></script>
+	<link rel="stylesheet" type="text/css" href="{/version file='jquery.searchableSelect.css'/}"/>
+	<script type="text/javascript" src="{/version file='jquery.searchableSelect.js'/}"></script>
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css"/>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="{/version file='fileinput.css'/}"/>
+	<script type="text/javascript" src="{/version file='fileinput.js'/}"></script>
+	<script type="text/javascript" src="{/version file='theme.js'/}"></script>
+
+	<script charset="utf-8" src="{/version file='kindeditor-all.js'/}"></script>
+	<script charset="utf-8" src="{/version file='zh-CN.js'/}"></script>
+
+	<script type="text/javascript">
+
+		//时间插件
+		var start_times = {
+			skin: 'whyGreen',
+			dateFmt: 'yyyy-MM-dd',
+//			maxDate: "%y-%M-%d", //最大日期
+			readOnly: true,
+			onpicking: function (datas) {
+				end_times.minDate = datas.cal.newdate.y + "-" + datas.cal.newdate.M + "-" + datas.cal.newdate.d;
+				//开始日选好后，重置结束日的最小日期
+			}
+		};
+		var end_times = {
+			skin: 'whyGreen',
+			dateFmt: 'yyyy-MM-dd',
+//			maxDate: '%y-%M-{%d+2}',
+			readOnly: true,
+			onpicking: function (datas) {
+				start_times.maxDate = datas.cal.newdate.y + "-" + datas.cal.newdate.M + "-" + datas.cal.newdate.d;
+				//开始日选好后，重置结束日的最小日期
+			}
+		};
+	</script>
+	<style type="text/css">
+		.file-input {
+			width: 100%;
+		}
+
+		.file-preview {
+			background: white;
+		}
+	</style>
+</head>
+
+<body class="bodyBg">
+<form method="post"  enctype="multipart/form-data" id="AddDispatchbusinessPost" class="form" style="margin:0px;">
+	<input name="fair_id" type="hidden" value="{/$company_id/}"/>
+		<div  style="background: white;width: 100%">
+			<input id="dispatch_img" name="fileDate[]" accept="image/*"
+				   type="file" multiple>
+		</div>
+</form>
+<script type="text/javascript">
+	$(function(){
+			var obj = $($(this).closest('file-preview').find("input:hidden[name='count']"));
+			var count = 0;
+			obj.each(function (i) {
+				if (!isNaN(this.value)) {
+					count = this.value;
+				}
+			});
+	});
+	function custom_close() {
+		if (confirm("您确定要关闭本页吗？")) {
+			window.opener = null;
+			window.open('', '_self');
+			window.close();
+		}
+	}
+
+	is_layer_index = false;
+	var List = new Array();//定义一个全局变量去接受文件名和id
+	console.log($);
+	$('#dispatch_img').fileinput({
+		theme: 'fa',
+		uploadUrl: '{/get_url  rule='/company/UploadFileV2/'/}company_id={/$company_id/}',
+		allowedFileExtensions: ['jpg', 'png' ,'jpeg'],
+		uploadAsync: true, //设置上传同步异步
+		showUpload: true,//是否显示上传总按钮
+		showRemove: false,//是否显示移除总按钮
+		browseOnZoneClick: true,
+		uploadLabel: "上传",//设置上传按钮的汉字
+		uploadClass: "btn btn-primary",//设置上传按钮样式
+		showCaption: false,//是否显示标题
+		dropZoneEnabled: true,//是否显示拖拽区域
+		layoutTemplates: {
+		actionDelete: '', //去除上传预览的缩略图中的删除图标
+		}
+	}).on("fileuploaded", function (event, e, previewId, index) {
+	    if(typeof (e) =="string")
+	        e = JSON.parse(e);
+        if(window.parent.window.queueLenth > window.parent.window.maxFileCount){
+            return;
+        }
+
+		id = (new Date()).valueOf();
+        var fileHTML = [
+            '<li id="SWFUpload_4'+ id +'">',
+            '<a href="javascript:"><i>×</i></a>',
+            '<img src="'+ e.response.path +'">',
+            '<input data-img="array_img" type="hidden" imgdata="photo" data-newname="'+ e.response.name +'" name="hddNewPhotoName[]" value="'+ e.response.name +'" />',
+            '</li>'
+        ].join('');
+        window.parent.window.addImg(fileHTML);
+
+
+	}).on('filesuccessremove', function (event, key, jqXHR, data) {
+		if (!confirm("确定删除原文件？删除后不可恢复")) {
+			return false;
+		}
+		$.each(List, function (k, value) {
+			if (value && value.KeyID == key) {
+				$("[img_id=" + key + "]").remove();
+				del_up_img(value.FileName);
+				delete  List[k];
+			}
+		});
+	});
+
+	function del_up_img(obj,type) {
+//		var fair_id=$("#fair_id").val();
+//		$.ajax({
+//			url: "{/get_url rule='/blucompany/DelTempFile'/}",
+//			type: "post",
+//			dataType: "json",
+//			data: {'file_path':obj, type:type,fair_id:fair_id},
+//			success: function (json) {
+//				if (!(json.success || false)) {
+//					layer.msg('删除失败！', {time: 5000, icon: 5});
+//				} else {
+//					layer.msg('删除成功！', {time: 5000, icon: 6});
+//				}
+//			}
+//		});
+	}
+
+	var editor;
+	KindEditor.ready(function (K) {
+		editor = K.create('#contract_content', {
+			minWidth: '600px',
+			width: '850px',
+			height: '400px',
+			themeType: 'default',
+			uploadJson: '',
+			allowFileManager: true
+		});
+	});
+
+//	editor.sync();
+
+</script>
+</body>
+</html>

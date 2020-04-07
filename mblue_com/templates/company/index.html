@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{/$title/}</title>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+
+
+    <script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+    <script type="text/javascript" src="{/version file='common.js'/}"></script>
+    <script type="text/javascript" src="{/version file='dialog.js'/}"></script>
+	<script type="text/javascript" src="http://assets.huibo.com/min.js?f=/js/v2/hbjs.js,/js/v2/jquery.min.js,/js/v2/base/util.js,/js/v2/base/class.js,/js/v2/base/shape.js,/js/v2/base/event.js,/js/v2/base/aspect.js,/js/v2/base/attribute.js,/js/v2/tools/cookie.js&amp;v=181362724"></script>
+	<script type="text/javascript" src="http://assets.huibo.com/js/v2/global.js?v=20160118"></script>
+    <script type="text/javascript">
+        window.CONFIG = {
+            HOST: '{/$siteurl["style"]/}',
+            COMBOPATH: '/js/v2/'
+        }
+    </script>
+    <script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+    <script type="text/javascript" src="{/version file='global.js'/}"></script>
+    <style>
+        .person-recommend-list {
+            padding: 25px 20px;
+            background-color: #fff;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .person-recommend-list h3.title {
+            font-size: 16px;
+            text-align: left;
+            padding-bottom: 20px;
+        }
+        .person-recommend-list .date-con {
+            overflow: hidden;
+            padding-bottom: 20px;
+        }
+        .person-recommend-list .date-con li {
+            float: left;
+            width: 25%;
+            box-sizing: border-box;
+            padding: 14px 0px 14px 14px;
+            text-align: center;
+        }
+        .person-recommend-list .date-con li:hover .date{
+            color:#2b6fad ;
+        }
+        .person-recommend-list .date-con li:hover .desc {
+            color:#2b6fad ;
+        }
+
+        .person-recommend-list .date-con li .date {
+            font-size: 18px;
+        }
+        .person-recommend-list .date-con li .inner-item {
+            border:none;
+            padding-right: 14px;
+        }
+        /*.person-recommend-list .date-con li:last-child .inner-item {*/
+        /*border: none;*/
+        /*}*/
+
+
+
+
+        /*选中*/
+        .person-recommend-list .date-con li.active {
+            background: url(//assets.huibo.com/img/blue/company/selected-date-bg.png) no-repeat;
+            background-size: 100% 100%;
+            color: #fff;
+        }
+        .person-recommend-list .date-con li.active .inner-item {
+            border:none;
+        }
+        .person-recommend-list .date-con li.active .date {
+            color: #fff;
+        }
+        .person-recommend-list .date-con li.active .desc {
+            color: #fff;
+        }
+        /**/
+
+
+
+
+        .person-recommend-list .date-con li .desc {
+            color: #999;
+            font-size: 14px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .person-recommend-list .recommend-person-con {
+            overflow: hidden;
+            width: 670px;
+        }
+        .person-recommend-list .recommend-person-con .li {
+            width: 203.33px;
+            margin: 0 20px 20px 0;
+            box-sizing: border-box;
+            float: left;
+            border:1px solid #f1f1f1;
+            padding: 10px 15px;
+            color: #444;
+			max-height:72px;
+        }
+        .person-recommend-list .recommend-person-con .li:hover {
+            border-color: #4bb6e7;
+        }
+        .person-recommend-list .recommend-person-con .li .info {
+            margin-bottom: 2px;
+        }
+        .person-recommend-list .recommend-person-con .li .info span {
+            display: inline-block;
+        }
+        .person-recommend-list .recommend-person-con .li .name {
+            font-size: 16px;
+            color: #2b6fad;
+            margin-right: 5px;
+        }
+        .person-recommend-list .recommend-person-con .li .sex {
+            font-size: 14px;
+        }
+        .person-recommend-list .recommend-person-con .li .split {
+            height: 10px;
+            width: 2px;
+            background: #ccc;
+            margin: 0 3px;
+        }
+        .person-recommend-list .recommend-person-con .li .age {
+            font-size: 14px;
+        }
+        .person-recommend-list .recommend-person-con .li .order {
+            font-size: 14px;
+            color: #999;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .more-resume a{
+            color: #2b6fad
+        }
+
+
+    </style>
+    <!--edit by zly 18/9/27-->
+    <style>
+        #company-app .jobs-list li.job-name span{
+            display: inline-block;
+            max-width: 70%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        #company-app .jobs-list li.job-name em {
+            position: relative;
+            top: -15px;
+        }
+    </style>
+</head>
+<body style="background: #ececec;">
+<div id="cover" style="display:none;position: fixed;top: -100px;left: -100px;height: 5000px;width: 5000px;background-color: rgba(0,0,0,0.5);z-index: 5"></div>
+{/include file='./company/company_head.html'/}
+<div id="company-app">
+    <div id="refhresh_alert"></div>
+
+    <!--职位延时模态框-->
+    <div style="display: none" id="delay-dialog" class="company-dialog">
+        <div class="company-dialog-header">
+            职位延期<img class="icon-close" src="{/$siteurl.style/}/img/blue/companyindex/dialog-close.png">
+        </div>
+        <div class="company-dialog-body">
+            <div class="addtime-content" style="width: 300px">
+                延期天数：<input style="width: 45px" name="addtime"/> 天
+                <!--，有效期至 <em class="end_time_set"></em>-->
+            </div>
+            <div class="btns">
+                <button class="confirm">确定</button>
+                <button class="cancel">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!--关闭职位模态框-->
+    <div style="display: none" id="close-dialog" class="company-dialog">
+        <div class="company-dialog-header">
+            关闭职位<img class="icon-close" src="{/$siteurl.style/}/img/blue/companyindex/dialog-close.png">
+        </div>
+        <div class="company-dialog-body">
+            <div class="closejob-content" style="width: 280px;padding-bottom: 20px;">
+                是否关停该职位？
+            </div>
+            <div class="btns">
+                <button class="confirm">确定</button>
+                <button class="cancel">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body {/if ($is_redpacket_active_effect && $is_show_top_redpacket && $redpacket_apply_num>0) || ($company['is_audit'] ==3 || $company['is_audit'] === null) || $company['is_audit'] ===0/}body-hasMsg{//if/} {/if ($is_redpacket_active_effect && $is_show_top_redpacket && $redpacket_apply_num>0) && (($company['is_audit'] ==3 || $company['is_audit'] === null) || $company['is_audit'] ===0 )/}body-hasTwoMsg{//if/}">
+        {/if $is_redpacket_active_effect && $is_show_top_redpacket && $redpacket_apply_num>0/}
+        <a id="deal_redpacket_apply" href="javascript:void(0);" class="envelopeTips" style="position: absolute;top: 10px;left: 0;"><i></i>有<em id="redpacket_apply_num">{/$redpacket_apply_num/}</em>名用户已申请领取面试补贴红包，请尽快确认面试者是否到场面试，以便快米官方发放红包</a>
+        {//if/}
+        {/if $company['is_audit'] ==3 || $company['is_audit'] === null/}
+        <div class="com-unquality">
+            <img src="{/$siteurl.style/}/img/blue/companyindex/warn-2.png">
+            <span>您还未验证营业执照，验证后可免费招聘<a target="_blank" href="{/$siteurl.kmcompany/}/licencevalidate" style="color: #ff7574;text-decoration: underline;cursor: pointer">去验证</a></span>
+        </div>
+        {/elseif $company['is_audit'] ===0/}
+        <div class="com-unquality">
+            <img src="{/$siteurl.style/}/img/blue/companyindex/warn-2.png">
+            <span>您的营业执认证失败，请重新验证<a target="_blank" href="{/$siteurl.kmcompany/}/licencevalidate" style="color: #ff7574;text-decoration: underline;cursor: pointer">去验证</a></span>
+        </div>
+        {//if/}
+		<div class="videoInterviewTip">为渡疫情难关，<span class="font-weight">快米上线视频面试</span>功能，提高面试效率，减少人员接触！！具体操作流程及规则，<a href="{/get_url rule='/video/introduce'/}">请点击查看详情>></a></div>
+        <div class="left-con">
+
+            <!--搜索模块-->
+            <div class="search-con">
+
+                <div style="position: relative">
+                    <div class="search-input clearfix">
+                        <input name="resume_search" class="search-content"> </input>
+                        <div id="resume_search" class="search-button">
+                            搜索
+                        </div>
+                    </div>
+
+                    <div class="job-btns">
+                        <!--<p style="float: right;color: #999;font-size: 14px;margin: 20px 0 0 10px;">最近刷新时间：{/$company_last_refresh_time/}</p>-->
+                        <button id="refresh_jobs" class="refresh-job">
+                            刷新职位
+                        </button>
+                        <button  class="pub-job pubJobDo">
+                            发布职位
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <div class="jobs-list">
+                    <ul class="jobs-list-head clearfix">
+                        <li class="job-name">职位名称</li>
+                        <li class="reply-num">待回复</li>
+                        <li class="unread-num">未读</li>
+                        <li class="on-consider">待定</li>
+                        <li class="receive-num">收到</li>
+                        <li class="receive-num">刷新</li>
+                        <li class="dead-time">剩余天数</li>
+                        <li class="job-operation">操作</li>
+                    </ul>
+
+
+                    {/if empty($job_list)/}
+                    <div style="display: block" class="jobs-list-none">
+                        你还没有发布职位,<a href="javascript:;" class="pubJobDo">发布职位</a>
+                        {/if in_array($company_level,[0,1])/}
+                        <img class="toggle-mi-tip" id="toggle-mi-tip-2" style="position: relative;top: 2px;" src="{/$siteurl.style/}/img/blue/companyindex/ques.png" />
+                        {//if/}
+                        <div class="mi-icon-tip-2" style="display: none;top: 34px;left: 253px;">
+                            <img src="{/$siteurl.style/}/img/blue/companyindex/triangle_icon.png" alt="">
+                            {/include file='company/mbexplain.html'/}
+                        </div>
+
+                    </div>
+                    {/else/}
+                    <div style="display: block" class="jobs-list-body">
+                        {/foreach $job_list as $k=>$job/}
+                        <ul class="clearfix">
+                            <li class="job-name">
+                                <input type="checkbox"  name="checkedjobs[]" value="{/$job['job_flag']/}" />
+                            	<span>{/$job['station']/}</span>
+                            	{/if $job['is_top']/}<em class="tag">置顶</em>{//if/}
+                            	{/if $job['check_state']==2/}<em class="tag noTag">审核不通过</em>{//if/}
+                            </li>
+                            <li class="reply-num"><a {/if (int)$job['dhuifu']>0/}href="{/$siteurl.kmcompany/}/resume/resumeManage/job_flag-{/$job['job_flag']/}"{//if/}>{/(int)$job['dhuifu']/}</a></li>
+                            <li class="unread-num"><a {/if (int)$job['noread']>0/}href="{/$siteurl.kmcompany/}/resume/resumeManage/status-1{//if/}">{/(int)$job['noread']/}</a></li>
+                            <li class="on-consider"><a {/if (int)$job['dding']>0/}href="{/$siteurl.kmcompany/}/resume/resumeManage/status-3-job_flag-{/$job['job_flag']/}"{//if/}>{/(int)$job['dding']/}</a></li>
+                            <!--<li class="receive-num"><a {/if (int)$job['total']>0/}href="javascript:;"{//if/} style="color:#ccc;">{/(int)$job['total']/}</a></li>-->
+                             <li class="receive-num" style="color: #ccc;">{/(int)$job['total']/}</li>
+                            <li class="receive-num" style="color:#666;">{/$job['refresh_time']/}</li>
+                            <li class="dead-time">{/$job['remain_day_text']/}</li>
+                            <li class="job-operation">
+                                <a data-job_flag="{/$job['job_flag']/}" class="close-job" style="margin-right: 3px">关闭</a>
+                                <a data-job_flag="{/$job['job_flag']/}" data-endTime="{/date('Y-m-d',strtotime($job['end_time']))/}" class="delay-time">延期</a>
+                                <a data-job_flag="{/$job['job_flag']/}" class="refresh_job">刷新</a>
+                            </li>
+                        </ul>
+                        {//foreach/}
+                    </div>
+                    {//if/}
+
+
+                </div>
+            </div>
+
+
+            <!--企业列表模块-->
+            {/if empty($job_list) && !empty($recommon_companys)/}
+            <div class="company-list-con">
+                <h3 style="text-align: left;margin-bottom: 20px;font-size: 16px;">以下企业也发布了职位</h3>
+                <ul style="overflow: hidden" class="clearfix">
+                   {/foreach $recommon_companys as $k=>$re_company/}
+                    <li class="company-item">
+                        <div class="company-logo" >
+                            <img src="{/$re_company['company_logo_path']/}" >
+                        </div>
+                        <div class="company-content" >
+                            <div>
+                                <span >
+                                    {/if !empty($re_company['company_shortname'])/}{/$re_company['company_shortname']/}{/else/}{/$re_company['company_name']/}{//if/}</span>
+                                <img  src="{/$siteurl.style/}/img/blue/companyindex/authentication.png" />
+                            </div>
+                            <p >已发布{/$re_company['job_num']/}个职位</p>
+                        </div>
+                    </li>
+                    {//foreach/}
+                </ul>
+            </div>
+            {//if/}
+
+            <!--招聘会人才推荐-->
+            <div class="person-recommend-list">
+                <h3 class="title">
+                    近期招聘会人才推荐<span style="color: #999;font-size: 14px;margin-left: 15px;">包含近期四场招聘会所有蓝领求职者</span>
+                </h3>
+                <ul class="date-con">
+                    {/foreach $fairs as $fair/}
+                    <li class="">
+                        <div class="inner-item" title="{/$fair['subject']/}">
+                            <div class="date" >{/$fair['week_name']/}/{/$fair['date_show']/}</div>
+                            <div class="desc">{/$fair['subject']/}</div>
+                        </div>
+                    </li>
+                    {//foreach/}
+                </ul>
+
+                <div class="recommend-person-outer-con">
+                    {/foreach $fairs_persons as $k=>$fair_person/}
+                    <div class="recommend-person-con" style="{/if $fairs_persons_first_index == $k/}display:block;{/else/}display:none{//if/}">
+
+                        {/foreach $fair_person['persons'] as $person/}
+                        <a class="li" target="_blank" href="{/$siteurl.kmcompany/}/resume/index/person_id-{/$person['person_id']/}">
+                            <div class="info">
+                                <span class="name">{/$person['user_name']/}</span>
+                                <span class="sex">{/$person['sex']/}</span>
+                                <span class="split"></span>
+                                <span class="age">{/$person['birthday']/}岁</span>
+                            </div>
+                            <div class="order">
+                                期望职位：{/$person['exp_station']/}
+                            </div>
+                        </a>
+                        {//foreach/}
+
+                    </div>
+                    {//foreach/}
+                </div>
+                <div class="more-resume" style="text-align: right">
+                    <a href="{/$siteurl.kmcompany/}/resume/searchResume/from-fair?search=1">查看全部<i style="margin-left: 4px;font-size: 12px;" class="icon-uniE603"></i></a>
+                </div>
+            </div>
+            <script>
+                $('.person-recommend-list .date-con li').on('click',function (e) {
+                    $(this).siblings().removeClass('active').end().addClass('active');
+                    $('.recommend-person-outer-con').children().hide().end().find('.recommend-person-con').eq($(this).index()).show();
+                })
+
+                $(function () {
+                  $('.person-recommend-list .date-con li:first').addClass('active')
+				  $('.recommend-person-con').hide();
+				  $('.recommend-person-con:first').show();
+                })
+            </script>
+
+        </div>
+
+        <div class="right-con">
+            <div class="mi-icon-tip">
+                {/include file='company/mbexplain.html'/}
+            </div>
+            <div class="mi-icon-tip-3">
+                <img src="{/$siteurl.style/}/img/blue/companyindex/triangle_icon.png" alt="">
+                {/if in_array($company['com_level'],[0,1])/}
+                <p>1、最多发布{/$pub_job_num/}个职位</p>
+                <p>2、每个职位按照{/$pujob_spent_in_line/}米币/天扣除米币</p>
+                <p>3、若米币不足，相应职位自动停招</p>
+                {/else/}
+                <h3>{/$company_level_name/}</h3>
+                <p>1、前{/$pub_job_num/}个职位按照{/$pujob_spent_in_line/}米币/天扣除米币</p>
+                <p>2、超过{/$pub_job_num/}个职位的按照{/$pujob_spent_out_line/}米币/天扣除米币</p>
+                <p>3、若米币不足，相应职位自动停招。</p>
+                {//if/}
+            </div>
+			<div class="mi-icon-tip-video">
+			    <img src="{/$siteurl.style/}/img/blue/companyindex/triangle_icon.png" alt="">
+			    <p>1.视频面试将会消耗剩余时长</p>
+			    <p>2.剩余时长不足，无法进行视频面试</p>
+			</div>
+            <!--企业详细信息-->
+            <div class="company-detail">
+
+                {/if !$has_logo || !$has_envlop/}
+                <div class="edit-tip">
+                    完善logo，公司环境获得米币
+                    <img id="close-com-tip"  src="{/$siteurl.style/}/img/blue/companyindex/close.png" />
+                </div>
+                {//if/}
+
+                <div style="cursor: pointer" class="company-detail-top">
+                    <div id="upLOGO" class="company-own-logo">
+                        <input type="hidden" id="delete_logo" value='{/$company["company_logo_path"]/}'>
+                        <img src="{/$company_logo_path/}">
+                        {/if $logo_audit == 0/} <span class="upding">上传LOGO</span>{/else if $logo_audit == 3/}<span class="auditing">审核中</span>{/else if $logo_audit == 2/}<span class="auditing">审核不通过</span>{//if/}
+                    </div>
+                    <div class="company-own-info">
+                        <div>{/if !empty($company['company_shortname'])/}{/$company['company_shortname']/}{/else/}{/$company['company_name']/}{//if/}</div>
+                        <p>{/$company['link_mobile']/} &nbsp;&nbsp;{/base_lib_BaseUtils::cutstr($company['link_man'],1, 'utf-8', '', '')/}老师</p>
+                    </div>
+                </div>
+                <div class="company-other clearfix">
+                    {/if $company['is_audit'] == 1/}
+                    <div class="quality">已认证</div>
+                    {/elseif $company['is_audit'] === 0/}
+                    <div class="unquality">认证失败</div>
+                    {/elseif $company['is_audit'] == 2/}
+                    <div class="unquality">认证中</div>
+                    {/else/}
+                    <div class="unquality">未认证</div>
+                    {//if/}
+                    <div class="edit editCompany">编辑资料({/$completePercent/}%)</div>
+                </div>
+            </div>
+
+
+            <!---->
+            <div class="number-content">
+
+                <h3>
+                    {/if in_array($company_level,[0,1])/}
+                    (开通会员，全面提升招聘效果)
+                    {/else/}
+                     {/$company_level_name/}
+                    {//if/}
+                </h3>
+				<div class="freeGet_mb_tip">
+                {/if $mb_num/}
+                <a href='javascript:;' id='mb_center_a'>免费领{/$mb_num/}米币</a>（1米币=10元）
+                {//if/}
+				</div>
+                <ul class="cl">
+                    <li >
+                        <p><em>{/(int)$pubed_job_num/}</em>/{/$pub_job_num/}个</p>
+                        <div>职位数量
+                            <img id="toggle-mi-tip-3" class="toggle-mi-tip" src="{/$siteurl.style/}/img/blue/companyindex/ques.png">
+                        </div>
+
+                    </li>
+                    <li>
+                        <p>{/$company['mb_account']/}个</p>
+
+                        <div>
+                            米币
+                            <img id="toggle-mi-tip" class="toggle-mi-tip" src="{/$siteurl.style/}/img/blue/companyindex/ques.png">
+                        </div>
+
+                    </li>
+					<li>
+                        <p>{/$last_time/}分钟</p>
+
+                        <div>
+                            视频剩余时长
+                            <img id="toggle-mi-tip-video" class="toggle-mi-tip" src="{/$siteurl.style/}/img/blue/companyindex/ques.png">
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+
+            <div class="recommend-con">
+                <h3>招聘顾问</h3>
+                <p>{/$custormer['user_name']/} &nbsp;&nbsp; {/if !empty($custormer['tel'])/}{/$custormer['tel']/}{/else/}{/$custormer['mobile']/}{//if/}</p>
+                <!--{/if !empty($custormer['qq'])/}-->
+                <!--<img src="{/$siteurl.style/}/img/blue/companyindex/qq.png">-->
+                <!--{//if/}-->
+                <!--qq-->
+                {/if !empty($custormer['qq'])/}
+                <span><a style="padding-left:0px;" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={/trim($custormer['qq'])/}&site=qq&menu=yes">
+									<img border="0"  width="79" height="25" src="http://wpa.qq.com/pa?p=2:{/trim($custormer['qq'])/}:51" alt="点击这里给我发消息" title="点击这里给我发消息"/>
+								</a></span>
+                {/else/}
+                <script charset="utf-8" type="text/javascript" src="http://wpa.b.qq.com/cgi/wpa.php?key=XzkzODA0MDQyNl8xMjgzMTBfNDAwODg3Mjg4N18"></script>
+                {//if/}
+            </div>
+
+            {/if $is_redpacket_active_effect && $is_show_right_redpacket/}
+                <div class="envelopeTipx">
+                    <span class="viewTipx01"><i></i>活动通知</span>
+                    <span class="viewTipx02">
+                    为了提高面试达到率，快米开展面试补贴交通费<i>(微信现金红包)</i>活动：<br />
+                    1.请企业发送面试通知都通过系统发送<br />
+                    2.并在求职者面试后反馈其是否真实到场面试
+                    3.企业参与反馈可领取米币，反馈一次<i>奖励2米币</i>
+                </span>
+                </div>
+            {//if/}
+
+        </div>
+    </div>
+    <div class="footer">
+
+    </div>
+</div>
+{/include file="common/showloading.html"/}
+{/include file='./company/footer.html'/}
+<div style="display:none;" id="get_mb_center_div">
+
+	<div class="task-ul">
+        {/$num = 1/}
+    {/if $mb_status[1]['can_get'] && $mb_status[1]['mb_num']/}<div class="li"><em>{/$num++/}.上传营业执照认证成功</em><span class="MBcost">+{/$mb_status[1]['mb_num']/}米币</span>{/if $licence_status==2/}<a class="upload_btn upload_btn_shenheing" href="javascript:void(0);">审核中</a>{/else/}<a class="upload_btn" href="{/$siteurl.kmcompany/}/licencevalidate">去上传</a>{//if/}</div>{//if/}
+    {/if $mb_status[2]['can_get'] && $mb_status[2]['mb_num']/}<div class="li"><em>{/$num++/}.上传企业环境</em><span class="MBcost">+{/$mb_status[2]['mb_num']/}米币</span><a class="upload_btn" href="{/$siteurl.kmcompany/}/company/modify/">去上传</a></div>{//if/}
+    {/if $mb_status[4]['can_get'] && $mb_status[4]['wait_deal_num'] && $mb_status[4]['mb_num']/}<div class="li resumeAns"><a class="upload_btn resumeAns_upload_btn" href="{/$siteurl.kmcompany/}/resume/resumeManage/">去回复</a><div class="resumeAns-title">{/$num++/}.当前有{/$mb_status[4]['wait_deal_num']/}个简历未回复，全部回复<span class="MBcost">+{/$mb_status[4]['mb_num']/}米币</span></div>
+    <p class="resumeAns-con">（当日投递的简历，当日至次日全部处理 +4米币；第三日全部处理 +2米币 ）</p></div>{//if/}
+    {/if $mb_status[3]['can_get'] && $mb_status[3]['mb_num']/}<div class="li"><span>{/$num++/}.上传企业logo</span><span class="MBcost">+{/$mb_status[3]['mb_num']/}米币</span>{/if $logo_audit==3/}<a class="upload_btn upload_btn_shenheing" href="javascript:void(0);">审核中</a>{/else/} <a class="upload_btn" href="javascript:$('#upLOGO').click();" id="uplogo_a">去上传</a>{//if/}</div>{//if/}
+	</div>
+</div>
+<script>
+var can_modiy_delay = parseInt('{/$can_modiy_delay/}');
+    hbjs.use('@actions,@fileUploader, @hbCommon, @jobDialog, @jobDropList, @areaSimple, @validator, @imageEditor, @confirmBox', function(m) {
+        var $ = m['product.hbCommon'].extend(
+            m['cqjob.actions'], m['cqjob.areaSimple'], m['cqjob.jobDialog'], m['cqjob.jobDropList']
+        );
+        var fileUploader = m['widge.fileUploader'],
+            imageEditor = m['widge.imageEditor'],
+            ConfirmBox = m['widge.overlay.confirmBox'],
+            Dialog = m['widge.overlay.hbDialog'],
+            fontSize = 18,
+            pWidth = 70,
+            imgEditor;
+        var _dialog = {
+            params: {},//自定义传递参数 titel:弹框标题 width:弹框宽度 getHtml:弹框主体内容 request:点击确定的请求 其他自定义
+            alert: null,
+            init: function () {
+
+                _dialog.alert = new Dialog({
+                    close: 'X',
+                    idName: 'ui_company_dialog',
+                    title: _dialog.params.titel,
+                    width: _dialog.params.width || 400,
+                    isOverflow: false,
+                    content: _dialog.params.content,
+                    isAjax: true
+                });
+
+                _dialog.alert.on('closeX', function () {
+                    _dialog.alert.destory();
+                });
+                _dialog.alert.query('#ok').off('click');
+                _dialog.alert.query('#cancel').off('click');
+                _dialog.alert.query('#cancel').on('click', function (e) {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.query('#ok').on('click', function (e) {
+                    _dialog.params.request();
+                });
+                _dialog.alert.show();
+            }
+        };
+        //快米领取中心
+        $("#mb_center_a").on('click', function(e){
+            _dialog.params = {
+                titel: '当前还可免费领{/$mb_num/}米币',
+                width:700,
+                request: function () {},
+                content: $("#get_mb_center_div").html()
+            };
+            _dialog.init();
+//            _dialog.alert.after('hide', function(){
+//                this.query('#uplogo_a').off('click');
+//            });
+//            _dialog.alert.on('loadComplete', function(){
+//                this.query('#uplogo_a').on('click', function(){
+//                    console.log(1);
+//                    _dialog.alert.hide();
+//                });
+//            })
+        });
+        //企业logo上传
+        $('#upLOGO').on('click', function(e){
+            _dialog.params = {
+                titel: '请上传有识别性的logo图片',
+                width:700,
+                request: function () {},
+                content: '{/$siteurl.kmcompany/}/company/uploadCompanyLogo/'
+            };
+            _dialog.init();
+            _dialog.alert.after('hide', function(){
+                this.query('#newPopQuit').off('click');
+                imgEditor.destory();
+            });
+            _dialog.alert.on('loadComplete', function(){
+                var uploadPanel = this.query('#uplogo1'),
+                    editPanel = this.query('#dropImageContainer'),
+                    dropImage = this.query('#dropImage'),
+                    uploadingDialog;
+
+                imgEditor = new imageEditor({
+                    imageCroperConfig: {
+                        element: dropImage,//目标
+                        handle: '#dragDiv',
+                        color: '#f1f1f1',
+                        width: dropImage.width(),
+                        height: dropImage.height()
+                    },
+                    fileUploaderConfig: {
+                        imageURL: '{/$logo_virt_path/}'
+                    },
+                    trigger: this.query('#newPopSave')
+                });
+                imgEditor.on('startUpload', function(e){
+                    var msg = "正在上传...";
+                    uploadingDialog = ConfirmBox.timeBomb(msg, {
+                        name : "warning",
+                        timeout : 300000,
+                        width: fontSize * msg.length + pWidth
+                    });
+                }).on('progresed', function(e){
+                    this._imgFileName = e.data.name;
+                    this._imgType = e.data.thumb_type;
+                    this._imgRatio = e.data.thumb_ratio;
+                    this.loadImage(e.url);
+
+                    uploadingDialog.hide();
+                    uploadPanel.hide();
+                    editPanel.show();
+
+                    var preview1 = editPanel.find('#preview120'),
+                        preview2 = editPanel.find('#preview160');
+
+                    this.addPreview(preview1, 120, 120);
+                    this.addPreview(preview2, 160, 160);
+                }).on('progressError', function(e){
+                    var msg1 = '';
+                    if(e.errorMsg)
+                        msg1 = e.errorMsg;
+                    else if(e.data)
+                        msg1 = e.data.errorMsg
+                    ConfirmBox.timeBomb(msg1, {
+                        name : "fail",
+                        timeout : 3000,
+                        width: fontSize * msg1.length + pWidth
+                    });
+                }).on('save', function(e){
+                    var self = this;
+                    $.ajax({
+                        url: '{/$siteurl.kmcompany/}/company/saveLogo',
+                        data: {
+                            cropX: e.cropX,
+                            cropY: e.cropY,
+                            cropH: e.cropH,
+                            cropW: e.cropW,
+                            cropPH: e.cropPH,
+                            cropPW: e.cropPW,
+                            url: e.url,
+                            name: this._imgFileName,
+                            thumb_type: this._imgType,
+                            thumb_ratio: this._imgRatio
+                        },
+                        dataType:'json',
+                        success: function(e){
+                            if(e.state){
+                                var del_logo = $('#delete_logo').val();
+                                $.post("/company/editLogoPath", {'logo_path':e.image_path,'del_logo':del_logo},
+                                    function(data){
+                                        if (data.error) {
+                                            $.anchorMsg(data.error);return;
+                                        }
+                                        $('#delete_logo').val(e.image_path);
+                                        $('#upLOGO > img').attr('src', e.image_url);
+                                        _dialog.alert.hide();
+                                        delete self._imgFileName;
+                                        delete self._imgType;
+                                        delete self._imgRatio;
+
+                                        var msg = '';
+                                        //---审核通过后送
+                                       /* if(data.code && data.code=='hasLogo'){
+                                            msg = '企业logo上传成功'
+                                        }else{
+                                            msg = '企业logo上传成功，+'+data.get_mb+'米币'
+                                        }*/
+
+                                        msg = '企业logo上传成功'
+
+                                        ConfirmBox.timeBomb(msg, {
+                                            name : "success",
+                                            timeout : 3000,
+                                            width: fontSize * msg.length + pWidth
+                                        });
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        },3000)
+
+                                    }, "json");
+
+                            }else{
+                                ConfirmBox.timeBomb(e.msg, {
+                                    name : "fail",
+                                    timeout : 3000,
+                                    width: fontSize * e.msg.length + pWidth
+                                });
+                            }
+                        }
+                    });
+                });
+
+                imgEditor.imageCroper.on('loadSuccess', function(){
+                    uploadPanel.hide();
+                    editPanel.show();
+                }).on('loadError', function(){
+                    delete this._imgFileName;
+                    delete this._imgType;
+                    delete this._imgRatio;
+                    uploadPanel.show();
+                    editPanel.hide();
+                    var msg = '加载图片失败';
+                    ConfirmBox.timeBomb(msg, {
+                        name : "fail",
+                        timeout : 3000,
+                        width: fontSize * msg.length + pWidth
+                    });
+                });
+
+                this.query('#newPopQuit').on('click', function(){
+                    _dialog.alert.hide();
+                });
+
+            });
+
+        });
+
+
+        //处理申请红包的面试
+        var can_post_doNo = true;
+        var can_post_setOK = true;
+        var can_post_setOKs = true;
+        var result_html_deal = function (reduce_num, ids) {
+            var redpacket_apply_num = parseInt($("#redpacket_apply_num").text());
+            var last_num = redpacket_apply_num - reduce_num;
+            if (last_num <= 0) {
+                $('#deal_redpacket_apply').hide();
+                _dialog.alert.destory();
+            } else {
+                $('#redpacket_apply_num').text(last_num);
+            }
+            $.each(ids, function () {
+                $('#detail_' + this).remove();
+            });
+        }, getsec = function (name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg))
+                return unescape(arr[2]);
+            else
+                return null;
+        }, delCookie = function(name)
+        {
+            var exp = new Date();
+            exp.setTime(exp.getTime() - 20);
+            var cval=getsec(name);
+            if(cval!=null)
+                document.cookie= name + "="+escape (cval)+";expires="+exp.toGMTString()+';domain={/$cookie_domain/};'+";path=/";
+        }
+        $('#deal_redpacket_apply').on('click',function () {
+
+            //判断是否登录
+            var user_type = getsec('blue_usertype')
+            if(!user_type || user_type != 'km_c'){
+                window.location.href = '{/$siteurl.kmcompany/}/login';
+                return 0 ;
+            }
+
+            _dialog.params = {
+                titel: '确认是否到场面试',
+                width:950,
+                request: function () {},
+                content: '{/$siteurl.kmcompany/}/company/ReadPacketDeal/'
+            };
+            _dialog.init();
+            _dialog.alert.on('loadComplete',function () {
+                //未参加面试
+                this.query('.doNo').on('click',function(e){
+                    var _this = this;
+                    ConfirmBox.confirm('您确定将申请设置为【未参加面试】？', null, function(){
+                        if ( can_post_doNo) {
+                            can_post_doNo = false;
+                        }
+                        else {
+                            ConfirmBox.timeBomb('正在提交中....', {
+                                name : "fail",
+                                timeout : 3000,
+                                width: fontSize * '正在提交中....'.length + pWidth
+                            });
+                            return 0;
+                        }
+                        var id = $(_this).attr('data-id');
+                        showLoading();
+                        $.ajax({
+                            url: "{/$siteurl.kmcompany/}/company/SetRedPacketNo",
+                            type: "post",
+                            data: {redpacket_apply_id:id},
+                            dataType: 'json',
+                            success: function (res) {
+                                setTimeout(function () {
+                                    can_post_doNo = true;
+                                }, 1500)
+                                closeLoading()
+                                if(res.status){
+
+                                    ConfirmBox.timeBomb(res.msg, {
+                                        name : "true",
+                                        timeout : 3000,
+                                        width: fontSize * res.msg.length + pWidth
+                                    });
+                                    // 设置为未参加面试后的页面处理
+                                    result_html_deal(1,[id]);
+
+                                }else{
+                                    ConfirmBox.timeBomb(res.msg, {
+                                        name : "fail",
+                                        timeout : 3000,
+                                        width: fontSize * res.msg.length + pWidth
+                                    });
+                                }
+
+                            }
+
+                        })
+
+                        this.hide();
+                    });
+                })
+
+                // 参加面试
+                this.query('.doOK').on('click',function(e){
+                    var _this = this;
+                    ConfirmBox.confirm('您确定将申请设置为【已参加面试】？', null, function(){
+                        var id = $(_this).attr('data-id');
+                        if (can_post_setOK) {
+                            can_post_setOK = false;
+                        }
+                        else {
+                            ConfirmBox.timeBomb('正在提交中....', {
+                                name : "fail",
+                                timeout : 3000,
+                                width: fontSize * '正在提交中....'.length + pWidth
+                            });
+                            return 0;
+                        }
+                        showLoading()
+                        $.ajax({
+                            url: "{/$siteurl.kmcompany/}/company/SetRedPacketOK",
+                            type: "post",
+                            data: {redpacket_apply_id:[id]},
+                            dataType: 'json',
+                            success: function (res) {
+                                setTimeout(function () {
+                                    can_post_setOK = true;
+                                }, 1500)
+                                closeLoading()
+                                if(res.status){
+
+                                 ConfirmBox.timeBomb(res.msg, {
+                                        name : "success",
+                                        timeout : 3000,
+                                        width: fontSize * res.msg.length + pWidth
+                                    });
+                                    // 设置为未参加面试后的页面处理
+                                    result_html_deal(1,[id]);
+                                }else{
+                                    ConfirmBox.timeBomb(res.msg, {
+                                        name : "fail",
+                                        timeout : 3000,
+                                        width: fontSize * res.msg.length + pWidth
+                                    });
+                                }
+
+                            }
+
+                        })
+
+                        this.hide();
+                    });
+
+
+
+                })
+
+                //批量设置 参加面试
+                this.query('#redPacketApplys').on('click',function(e){
+
+                    var ids_obj = $('input[name="redPacketApply[]"]:checked');
+                    var ids = [];
+                    $.each(ids_obj,function () {
+                        ids.push($(this).val());
+                    })
+
+                    if(ids.length == 0){
+                        ConfirmBox.timeBomb('请先选择需要批量处理的申请', {
+                            name : "fail",
+                            timeout : 3000,
+                            width: fontSize * '请先选择需要批量处理的申请'.length + pWidth
+                        });
+                        return 0;
+                    }
+
+                    ConfirmBox.confirm('您确定批量将申请设置为【已参加面试】？', null, function(){
+                        if (can_post_setOKs) {
+                            can_post_setOKs = false;
+                        }
+                        else {
+                            ConfirmBox.timeBomb('正在提交中....', {
+                                name : "fail",
+                                timeout : 3000,
+                                width: fontSize * '正在提交中....'.length + pWidth
+                            });
+                            return 0;
+                        }
+                        showLoading()
+                        $.ajax({
+                            url: "{/$siteurl.kmcompany/}/company/SetRedPacketOK",
+                            type: "post",
+                            data: {redpacket_apply_id:ids},
+                            dataType: 'json',
+                            success: function (res) {
+                                setTimeout(function () {
+                                    can_post_setOKs = true;
+                                }, 1500)
+                                closeLoading()
+                                if(res.status){
+
+                                    ConfirmBox.timeBomb(res.msg, {
+                                        name : "success",
+                                        timeout : 5000,
+                                        width: fontSize * res.msg.length + pWidth
+                                    });
+                                    // 设置为未参加面试后的页面处理
+                                    result_html_deal(ids.length,ids);
+                                }else{
+                                    ConfirmBox.timeBomb(res.msg, {
+                                        name : "fail",
+                                        timeout : 3000,
+                                        width: fontSize * res.msg.length + pWidth
+                                    });
+                                }
+
+                            }
+
+                        })
+
+                        this.hide();
+                    });
+                })
+            })
+
+        })
+
+        {/if $is_redpacket_active_effect && $is_show_top_redpacket && $redpacket_apply_num>0/}
+        if(getsec('alert_redpacket') == 'show'){
+            $('#deal_redpacket_apply').click()
+            delCookie('alert_redpacket');
+        }
+        {//if/}
+
+        //批量刷新
+        var refresh_few_flag = true,
+             refresh_few_flag_buy = true,
+            refresh_sigle_flag = true,
+            refresh_sigle_flag_buy = true;
+        $('#refresh_jobs').on('click',function(e){
+
+            var pubed_job_num = parseInt('{/$pubed_job_num/}');
+            if (pubed_job_num == 0) {
+                ConfirmBox.timeBomb('暂无职位可刷新，请先发布职位', {
+                    name : "fail",
+                    timeout : 3000,
+                    width: fontSize * '暂无职位可刷新，请先发布职位'.length + pWidth
+                });
+                return false;
+            }
+
+            var ids_obj = $('input[name="checkedjobs[]"]:checked');
+            var jobflags = [];
+            $.each(ids_obj,function () {
+                jobflags.push($(this).val());
+            })
+            var job_num = jobflags.length;
+            if(job_num == 0){
+                ConfirmBox.timeBomb('请勾选需要刷新的职位', {
+                    name : "fail",
+                    timeout : 3000,
+                    width: fontSize * '请勾选需要刷新的职位'.length + pWidth
+                });
+                return 0;
+            }
+            if(refresh_few_flag){
+                refresh_few_flag = false;
+            }else{
+                ConfirmBox.timeBomb('正在提交中....', {
+                    name : "fail",
+                    timeout : 3000,
+                    width: fontSize * '正在提交中....'.length + pWidth
+                });
+                return 0;
+            }
+            showLoading();
+            $.ajax({
+                url: "{/$siteurl.kmcompany/}/budgeteservice/JobReshFast_CG",
+                type: "post",
+                data: {job_flags:jobflags},
+                dataType: 'json',
+                success: function (res) {
+                    setTimeout(function () {
+                        refresh_few_flag = true;
+                    }, 1500)
+                    closeLoading();
+                    if(res.status){
+                        ConfirmBox.confirm('本次将刷新'+res.data.deal_job_num+'个职位，消耗'+res.data.fast+'米币,是否刷新？', '提示', function(){
+                            //执行刷新请求
+                            if(refresh_few_flag_buy){
+                                refresh_few_flag_buy = false;
+                            }else{
+                                ConfirmBox.timeBomb('正在提交中....', {
+                                    name : "fail",
+                                    timeout : 3000,
+                                    width: fontSize * '正在提交中....'.length + pWidth
+                                });
+                                return 0;
+                            }
+                            showLoading();
+                            $.ajax({
+                                url: "{/$siteurl.kmcompany/}/budgeteservice/DoJobRefresh_CG",
+                                type: "post",
+                                data: {job_flags:jobflags},
+                                dataType: 'json',
+                                success: function (res) {
+                                    setTimeout(function () {
+                                        refresh_few_flag_buy = true;
+                                    }, 1500)
+                                    closeLoading();
+                                    if(res.status){
+
+                                        ConfirmBox.timeBomb(res.msg, {
+                                            name : "success",
+                                            timeout : 5000,
+                                            width: fontSize * res.msg.length + pWidth
+                                        });
+
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        }, 1500)
+
+                                    }else{
+                                        ConfirmBox.timeBomb(res.msg, {
+                                            name : "fail",
+                                            timeout : 3000,
+                                            width: fontSize * res.msg.length + pWidth
+                                        });
+                                    }
+                                }
+
+                            })
+
+                            this.hide();
+                        });
+                    }else{
+                        ConfirmBox.timeBomb(res.msg, {
+                            name : "fail",
+                            timeout : 3000,
+                            width: fontSize * res.msg.length + pWidth
+                        });
+                        return 0;
+                    }
+
+                }
+
+            })
+
+        })
+
+        $('.refresh_job').on('click',function(e){
+
+            var job_flag = $(this).attr('data-job_flag');
+
+            if(refresh_sigle_flag){
+                refresh_sigle_flag = false;
+            }else{
+                ConfirmBox.timeBomb('正在提交中....', {
+                    name : "fail",
+                    timeout : 3000,
+                    width: fontSize * '正在提交中....'.length + pWidth
+                });
+                return 0;
+            }
+            showLoading();
+            $.ajax({
+                url: "{/$siteurl.kmcompany/}/budgeteservice/JobReshFast_CG",
+                type: "post",
+                data: {job_flags:[job_flag]},
+                dataType: 'json',
+                success: function (res) {
+                    setTimeout(function () {
+                        refresh_sigle_flag = true;
+                    }, 1500)
+                    closeLoading();
+                    if(res.status){
+                        ConfirmBox.confirm('本次刷新将消耗'+res.data.fast+'米币,是否刷新？', '提示', function(){
+                            //执行刷新请求
+                            if(refresh_sigle_flag_buy){
+                                refresh_sigle_flag_buy = false;
+                            }else{
+                                ConfirmBox.timeBomb('正在提交中....', {
+                                    name : "fail",
+                                    timeout : 3000,
+                                    width: fontSize * '正在提交中....'.length + pWidth
+                                });
+                                return 0;
+                            }
+                            showLoading();
+                            $.ajax({
+                                url: "{/$siteurl.kmcompany/}/budgeteservice/DoJobRefresh_CG",
+                                type: "post",
+                                data: {job_flags:[job_flag]},
+                                dataType: 'json',
+                                success: function (res) {
+                                    setTimeout(function () {
+                                        refresh_sigle_flag_buy = true;
+                                    }, 1500)
+                                    closeLoading();
+                                    if(res.status){
+
+                                        ConfirmBox.timeBomb(res.msg, {
+                                            name : "success",
+                                            timeout : 5000,
+                                            width: fontSize * res.msg.length + pWidth
+                                        });
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        }, 1500)
+                                    }else{
+                                        ConfirmBox.timeBomb(res.msg, {
+                                            name : "fail",
+                                            timeout : 3000,
+                                            width: fontSize * res.msg.length + pWidth
+                                        });
+                                    }
+                                }
+
+                            })
+
+                            this.hide();
+                        });
+                    }else{
+                        ConfirmBox.timeBomb(res.msg, {
+                            name : "fail",
+                            timeout : 3000,
+                            width: fontSize * res.msg.length + pWidth
+                        });
+                        return 0;
+                    }
+
+                }
+
+            })
+        })
+
+    function DateToUnix(string) {
+        var f = string.split(' ', 2);
+        var d = (f[0] ? f[0] : '').split('-', 3);
+        var t = (f[1] ? f[1] : '').split(':', 3);
+        return (new Date(
+            parseInt(d[0], 10) || null,
+            (parseInt(d[1], 10) || 1) - 1,
+            parseInt(d[2], 10) || null,
+            parseInt(t[0], 10) || null,
+            parseInt(t[1], 10) || null,
+            parseInt(t[2], 10) || null
+        )).getTime() / 1000;
+    }
+    function UnixToDate(unixTime, isFull, timeZone) {
+        if (typeof (timeZone) == 'number') {
+            unixTime = parseInt(unixTime) + parseInt(timeZone) * 60 * 60;
+        }
+        var time = new Date(unixTime * 1000);
+        var ymdhis = "";
+        ymdhis += time.getUTCFullYear() + "-";
+        ymdhis += (time.getUTCMonth() + 1) + "-";
+        ymdhis += time.getUTCDate();
+        if (isFull === true) {
+            ymdhis += " " + time.getUTCHours() + ":";
+            ymdhis += time.getUTCMinutes() + ":";
+            ymdhis += time.getUTCSeconds();
+        }
+        return ymdhis;
+    }
+
+    $('#resume_search,.search-content').click(function(){
+        window.location.href= "{/$siteurl.kmcompany/}/resume/SearchResume/keyword-"+$('input[name=resume_search]').val();
+    })
+
+
+
+    $('.unquality').click(function () {
+        window.open( '{/$siteurl.kmcompany/}/licencevalidate');
+    })
+
+    $('.editCompany').click(function () {
+        window.location.href=( '{/$siteurl.kmcompany/}/company/modify');
+    })
+
+    $('#close-refresh-tip').click(function () {
+        $('.refresh-tip').hide();
+    })
+
+    $('#close-com-tip').click(function () {
+        $('.edit-tip').hide();
+    })
+
+    $('#toggle-mi-tip').mouseover(function () {
+        $('.mi-icon-tip ').show();
+    })
+    $('#toggle-mi-tip').mouseout(function () {
+        $('.mi-icon-tip ').hide();
+    })
+
+
+
+    $('#toggle-mi-tip-2').mouseover(function () {
+        $('.mi-icon-tip-2 ').show();
+    })
+    $('#toggle-mi-tip-2').mouseout(function () {
+        $('.mi-icon-tip-2 ').hide();
+    })
+
+
+    $('#toggle-mi-tip-3').mouseover(function () {
+        $('.mi-icon-tip-3 ').show();
+    })
+    $('#toggle-mi-tip-3').mouseout(function () {
+        $('.mi-icon-tip-3 ').hide();
+    })
+	
+    $('#toggle-mi-tip-video').mouseover(function () {
+        $('.mi-icon-tip-video').show();
+    })
+    $('#toggle-mi-tip-video').mouseout(function () {
+        $('.mi-icon-tip-video').hide();
+    })
+
+
+
+    $('.icon-close').click(function () {
+        $('.company-dialog').hide();
+        $('#cover').hide();
+    })
+
+    $('.cancel').click(function () {
+        $('.company-dialog').hide();
+        $('#cover').hide();
+    })
+
+
+    $('#refresh-dialog .confirm').click(function () {
+        console.log('confirm')
+    })
+
+    var this_job_flag = '';
+    $('#close-dialog .confirm').click(function () {
+        showLoading()
+        $.ajax({
+            url: "{/get_url rule="/job/StopJob/"/}",
+            type: "post",
+            data: {job_flag: this_job_flag},
+            dataType: 'json',
+            success: function (res) {
+                closeLoading()
+                if (res.status) {
+                    //alert(res.msg)
+                    ConfirmBox.timeBomb(res.msg, {
+                        name : "success",
+                        timeout : 3000,
+                        width: fontSize * res.msg.length + pWidth
+                    });
+                    window.location.reload();
+                } else {
+                    ConfirmBox.timeBomb(res.msg, {
+                        name : "fail",
+                        timeout : 3000,
+                        width: fontSize * res.msg.length + pWidth
+                    });
+                }
+            }
+        })
+    })
+
+
+    $('input[name=addtime]').die().live('keyup', function () {
+        var need_add_day = parseInt($(this).val());
+        if(need_add_day > 0){
+            var show_date = DateToUnix(cur_date) + 60*60*24*need_add_day
+            var show_date = UnixToDate(show_date,false,24);
+            $('.end_time_set').text(show_date);
+        }else{
+            $('.end_time_set').text(cur_date);
+        }
+
+    })
+    var cur_date = '';
+    $('#delay-dialog .confirm').click(function () {
+
+        if(can_modiy_delay == 0){
+            var msg = "抱歉，暂时不能延期职位，开通付费会员可获得更多权限";
+            ConfirmBox.timeBomb(msg, {
+                name : "fail",
+                timeout : 3000,
+                width: fontSize * msg.length + pWidth
+            });
+            return 0;
+        }
+
+        showLoading()
+        $.ajax({
+            url: "{/get_url rule="/job/DelayDo/"/}",
+            type: "post",
+            data: {job_flag: this_job_flag,txtValidDays:$('input[name=addtime]').val()},
+            dataType: 'json',
+            success: function (res) {
+                closeLoading()
+                if (res.status) {
+                    //alert(res.msg)
+                    ConfirmBox.timeBomb(res.msg, {
+                        name : "success",
+                        timeout : 3000,
+                        width: fontSize * res.msg.length + pWidth
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    },1200)
+                } else {
+                    //alert(res.msg)
+                    ConfirmBox.timeBomb(res.msg, {
+                        name : "fail",
+                        timeout : 3000,
+                        width: fontSize * res.msg.length + pWidth
+                    });
+                }
+            }
+        })
+    })
+
+
+    $(function () {
+        $('.close-job').on('click',function () {
+            this_job_flag = $(this).attr('data-job_flag');
+            $('#close-dialog').fadeIn();
+        })
+
+
+        $('.delay-time').on('click',function () {
+            this_job_flag = $(this).attr('data-job_flag');
+//            cur_date = UnixToDate(DateToUnix($(this).attr('data-endTime')),false,24);
+//            $(".end_time_set").text(cur_date);
+//            $('input[name=addtime]').val('');
+            $('#delay-dialog').fadeIn()
+        })
+
+
+        var $arr=$('#company-app .left-con .jobs-list .jobs-list-body ul');
+        console.log($arr);
+
+        for(var i=0;i<$arr.length;i++){
+            if(i%2==0){
+                console.log($arr[i]);
+                $($arr[i]).addClass('odd');
+            }
+        }
+
+
+        var $jobArr=$('body').find('#company-app .left-con .person-list ul li');
+        console.log($jobArr);
+        for(var j=0;j<$jobArr.length;j++){
+            if(j%2==1){
+                $($jobArr[j]).addClass('even');
+            }
+        }
+
+    })
+
+    $('.pubJobDo').click(function () {
+
+        var completePercent = parseInt('{/$completePercent/}');
+        if(completePercent >= 80){
+        	window.location.href = "{/$siteurl.kmcompany/}/job/AddJob";
+        	window.event.returnValue = false; 
+        }else{
+        	window.location.href = "{/$siteurl.kmcompany/}/company/modify";
+        	window.event.returnValue = false; 
+        }
+            
+    })
+
+
+
+
+    $('#company-app .company-detail .company-other .edit').hover(function (e) {
+        console.log(e.currentTarget);
+        $(e.currentTarget).toggleClass('edit-b-active')
+    })
+
+
+ });
+
+
+
+</script>
+</body>
+</html>

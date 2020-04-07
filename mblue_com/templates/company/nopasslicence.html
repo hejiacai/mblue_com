@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<title>{/$title/}</title>
+<!–[if lt IE9]>
+<script src="{/version file='html5.js'/}"></script>
+<![endif]–>
+<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}" />
+<link rel="stylesheet" type="text/css" href="{/version file='comback.css'/}" />
+<link rel="stylesheet" type="text/css" href="{/version file='icons.css'/}" />
+<link rel="stylesheet" type="text/css" href="{/version file='demo.css'/}" />
+
+
+<style type="text/css">
+.part{}
+.part .hd{border-bottom:1px solid #dadada;height:40px;}
+.part .hd a{height:38px;line-height:38px;font-size:14px;margin:0 10px;padding:0 10px;display:inline-block;float:left;display:inline;border:1px solid #dadada;border-top:2px solid #dadada;border-bottom:0;color:#666;}
+.part .hd a:hover{background:#f8f8f8;}
+.part .hd a.cu{font-weight:bold;border-top:2px solid #2b90d8;border-bottom:1px solid #fff;}
+.part .hd a.cu:hover{background:#fff;}
+
+.part .bd{padding:20px;zoom:1;}
+
+.bd .txt{margin:0 0 20px;}
+.bd .txt p.tit{font-weight:bold;}
+
+.bd .ser{width:680px;margin:0 auto;height:170px;}
+.bd .ser dl{float:left;display:inline;width:340px;}
+.bd .ser dl dt{float:left;display:inline;width:130px;}
+.bd .ser dl dd{float:left;display:inline;width:200px;margin:6px 0 0;}
+.bd .ser dl dd p{margin-bottom:5px;}
+.bd .ser dl dd p.serType{font-weight:bold;}
+
+/*引导*/
+.bd .guid{margin:0 92px 45px;}
+.bd .guid ul li{float:left;display:inline; text-align:center;background:#f3f3f3;width:360px;height:28px;border-top:1px solid #e0e0e0;border-left:1px solid #e0e0e0; position:relative; z-index:1;font-size:12px;line-height:28px;}
+.bd .guid ul li i{position:absolute;right:-14px;top:0;width:14px;height:28px;background:url({/$siteurl.style/}/img/c/c.gif) no-repeat -414px 0;}
+.bd .guid ul li.fst{ z-index:2;}
+.bd .guid ul li.cu{background:#55728d;border-left:1px solid #55728d;border-top:1px solid #55728d;color:#fff;}
+.bd .guid ul li.cu i{background-position:-400px 0;}
+
+.lic{padding:50px 0 50px 215px;zoom:1;}
+.lic p{line-height:30px;padding-left:40px;}
+.lic p.tit{font-size:20px;padding-left:0;}
+.lic p.tit i.hbFntWes{margin:0 10px 0 0;font-size:32px;}
+</style>
+</head>
+<body id="body" style="background-color: #ececec">
+{/include file='./company/company_head.html'/}
+<div class="content" id="content" style="margin-top:40px;">
+    <section class="section" style="overflow:hidden;margin-bottom: 40px;min-height: 780px;">
+
+    	<hgroup>
+        	<div class="part">
+            	<div class="hd" style="display: none;">
+                	<!--<a href="javascript:void(0)" class="cu" forid='infowirte'>有营业执照</a><a href="javascript:void(0)" forid='infoShow'>没有营业执照如何认证?</a><div class="clear"></div>-->
+                </div>
+                <div class="bd" id="infowirte">
+                    <div class="lic">
+                    	<p class="red tit"><i style="position: relative;left: -5px;top: 4px;color: #fb5958" class="hbFntWes">&#xf057;</i>审核未通过！</p>
+                        <p>原因：{/$reply/}</p>
+                        <p>请<a href="/licencevalidate/index/action-againUpload">重新提交</a>认证！</p>
+                    </div>
+                </div>
+
+            </div>
+        </hgroup>
+    </section>
+</div>
+{/include file='./company/footer.html'/}
+</body>
+</html>

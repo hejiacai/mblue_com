@@ -1,0 +1,22 @@
+<style>
+    .m_master{width:100%; height:100%; overflow:hidden; background:#000; filter:alpha(opacity=40);-moz-opacity:0.4;opacity: 0.4; position:fixed; top:0; left:0; z-index:99999;}
+    .juhua{ position: absolute; z-index: 11; left:50%; top:50%; margin:-40px;padding: 10px;border-radius: 4px;background: #fff;z-index: 99999;}
+</style>
+<div id="blue_master" class="m_master" style="display:none;filter:alpha(opacity=40);-moz-opacity:0.4;opacity: 0.4;"></div>
+<div id="blue_loading" class="juhua" style="display:none;position:fixed"><img src="{/$siteurl.style/}/img/blue\company\blue_com_loading.gif"></div>
+<script >
+    //z-index_m 背景框的 z-index;z-index-j 背景框的z-index
+    function showLoading(){
+        var target1=document.getElementById('blue_loading');
+        var target2=document.getElementById('blue_master');
+        target1.style.display="block";
+        target2.style.display="block";
+    }
+    //关闭loading
+    function closeLoading(){
+        var target1=document.getElementById('blue_loading');
+        var target2=document.getElementById('blue_master');
+        target1.style.display="none";
+        target2.style.display="none";
+    }
+</script>

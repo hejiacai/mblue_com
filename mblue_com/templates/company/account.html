@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>账户中心</title>
+    <link rel="stylesheet"  type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-widge.css'/}"/>
+
+    <script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+    <script type="text/javascript" src="{/version file='common.js'/}"></script>
+    <script type="text/javascript" src="{/version file='dialog.js'/}"></script>
+
+    <style>
+        div.formBtn a.btn1 {
+            padding: 0 18px;
+            margin: 20px 0;
+            height: 32px;
+            line-height: 32px;
+            display: block;
+            color: #fff;
+            border-radius: 4px;
+            display: inline-block;
+            text-align: center;
+            background: #fb5958;
+            box-shadow: none;
+            border: none;
+        }
+        div.formBtn a.btn1:hover {
+            background: #ef4544;
+        }
+    </style>
+</head>
+<body style="background: #ececec;">
+{/include file='./company/company_head.html'/}
+<div class="pre-resume-content">
+    <div class="wrap" style="background: #fff;">
+        <div class="account-top clearfix">
+            <div class="account-top-img">
+                <img src="{/if !empty($company['company_logo_path'])/}{/base_lib_Constant::STYLE_URL/}/{/$company['company_logo_path']/}{/else/}{/base_lib_Constant::STYLE_URL/}/img/blue/companyindex/default-company-logo.png{//if/}" alt="">
+            </div>
+            <div class="account-top-info">
+                <h4>{/$company['company_name']/}</h4>
+                <p>登录名： {/$company['user_id']/} <a href="javascript:;" id="btnModPassword">修改密码</a></p>
+            </div>
+        </div>
+        <div class="account-VIP">
+            <h6> <span>{/if !in_array($company['com_level'],[0,1])/}{/$company_level_name/}{/else/}开通会员，全面提升招聘效果{//if/}</span>{/if $company['com_level']>1 && !empty($company['end_time'])/}（会员到期时间：{/$company['end_time']|date_format:'%Y-%m-%d'/}）{//if/}</h6>
+            <p>职位数量：{/$company['pub_job_num']/}个 <em>（剩余{/$company['job_count']/}个）</em> 剩余米币：<em>{/$company['mb_account']/}个</em> 视频剩余时长：{/$last_time/}分钟</p>
+        </div>
+        <div class="account-mi">
+            <h4>米币账户</h4>
+            <div class="account-tab">
+                <a href="javascript:void(0);" onclick="tabcut(this,1)"  class="cut">收入</a>
+                <a href="{/get_url rule='/account/out'/}" target="recommendedWork" onclick="tabcut(this,2)">支出</a>
+            </div>
+            <!--收入-->
+            {/if empty($mbin_list)/}
+            <div class="noData" style="height: 30px;">
+        		暂无数据
+        	</div>
+            {//if/}
+            {/if !empty($mbin_list)/}
+            <div class="account-income table">
+                <table>
+                    {/foreach $mbin_list as $k=>$v/}
+                    <tr>
+                        <td class="left" width="360">{/$mbsource[$v['source_type']]/}</td>
+                        <td class="center" width="280"><span>+{/$v['amount']/}米币</span>（有效期至{/$v['end_time']|date_format:'%Y-%m-%d'/}）</td>
+                        <td class="right" width="140">{/$v['get_time']|date_format:'%Y-%m-%d'/}</td>
+                    </tr>
+                    {//foreach/}
+                </table>
+                {/$pager/}
+            </div>
+            {//if/}
+            <!--支出-->
+            <div class="account-expenditure" id="expenditure" style="width: 1100px;height: auto;display: none;">
+                <iframe id="expenditureList" name="recommendedWork" style="width: 1100px; visibility: inherit; z-index: 1;" frameborder="0"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{/include file='./company/footer.html'/}
+<script>
+
+    hbjs.use('@orderActions,@confirmBox',function(m){
+
+        var Dialog = m['widge.overlay.hbDialog'];
+		var	ConfirmBox = m['widge.overlay.confirmBox'],
+			fontSize = 18,
+			pWidth = 70;
+
+        var _dialog = {
+            params: {},//自定义传递参数 titel:弹框标题 width:弹框宽度 getHtml:弹框主体内容 request:点击确定的请求 其他自定义
+            alert: null,
+            init: function () {
+                if (!_dialog.alert) {
+                    _dialog.alert = new Dialog({
+                        close: 'X',
+                        idName: 'stop_job_dialog',
+                        title: _dialog.params.titel,
+                        width: _dialog.params.width || 400,
+                        isOverflow: false,
+                        isAjax: true
+                    });
+                }
+                _dialog.alert.on('closeX', function () {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.setContent(_dialog.params.getHtml);
+                _dialog.alert.query('#ok').off('click');
+                _dialog.alert.query('#cancel').off('click');
+                _dialog.alert.query('#cancel').on('click', function (e) {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.query('#ok').on('click', function (e) {
+                    _dialog.params.request();
+                });
+                _dialog.alert.show();
+            }
+        };
+
+
+        //修改密码
+        $("#btnModPassword").click(function () {
+            var _this = this;
+            _dialog.params = {
+                titel: '修改密码',
+                width: 500,
+                autoHeight:true,
+                getHtml: [
+                    '<div class="modify-pwd" id="modifyPwd">',
+                    '<div class="modify-pwd-input">',
+                        '<label>原密码：',
+                            '<div class="modify-pwd-box">',
+                                '<input type="text" id="password" name="oldPwd">',
+                            '</div>',
+                        '</label>',
+                    '</div>',
+                    '<div class="modify-pwd-input">',
+                        '<label>新密码：',
+                            '<div class="modify-pwd-box">',
+                                '<input type="text" id="newPassword" name="newPwd">',
+                            '</div>',
+                        '</label>',
+                    '</div>',
+                '</div>',
+                    '<div class="modify-pwd-input">',
+                        '<label>确认密码：',
+                            '<div class="modify-pwd-box">',
+                                '<input type="text" id="newPasswordC" name="confirmPwd">',
+                            '</div>',
+                        '</label>',
+                    '</div>',
+                    '<div class="formBtn" style="padding-bottom: 20px;">',
+                        '<a href="javascript:void(0)" id="ok" class="btn1 btnsF14">确定</a>',
+                        '<a href="javascript:void(0)" id="cancel" class="btn3 btnsF14">取消</a>',
+                    '</div>'
+                ].join(''),
+                request: function () {
+                    var _this = $(this);
+                    var password = $("#password").val();
+                    var newPassword = $("#newPassword").val();
+                    var newPasswordC = $("#newPasswordC").val();
+					var msg = '';
+                    if(password==''){
+                        msg = "请输入原密码";
+						ConfirmBox.timeBomb(msg,{
+						    name: 'fail',
+						    width:fontSize * msg.length + pWidth,
+						});
+                        return false;
+                    }
+                    if(newPassword==''){
+						msg = "请输入新密码";
+						ConfirmBox.timeBomb(msg,{
+						    name: 'fail',
+						    width:fontSize * msg.length + pWidth,
+						});
+                        return false;
+                    }
+                    if(newPasswordC==''){
+						msg = "请输入确认密码";
+						ConfirmBox.timeBomb(msg,{
+						    name: 'fail',
+						    width:fontSize * msg.length + pWidth,
+						});
+                        return false;
+                    }
+                    if(newPasswordC != newPassword){
+						msg = "两次密码输入不一致";
+						ConfirmBox.timeBomb(msg,{
+						    name: 'fail',
+						    width:fontSize * msg.length + pWidth,
+						});
+                        return false;
+                    }
+                    $.post("{/get_url rule='/account/ModPasswordDo/'/}",{user_id:'{/$company['user_id']/}',password:password,newPassword:newPassword,newPasswordC:newPasswordC},function(data){
+                        if(data&&!data.status){
+                            msg = data.msg;
+							ConfirmBox.timeBomb(msg,{
+							    name: 'success',
+							    width:fontSize * msg.length + pWidth,
+							});
+                        }else{
+							msg = data.msg;
+							ConfirmBox.timeBomb(msg,{
+							    name: 'fail',
+							    width:fontSize * msg.length + pWidth,
+							});
+                            _dialog.alert.hide();
+                            window.location.href="{/get_url rule='/login/index/'/}";
+                        }
+                    },'json');
+                }
+            }
+                    _dialog.init();
+        });
+    });
+//    function modPass(){
+//        $.showModal("{/get_url rule="/account/modPassword/"/}user_id-{/$company['user_id']/}", {title:'修改密码'});
+//    }
+    //
+
+
+  // 米币账户切换
+  var tabcut = function(obj,tag) {
+    $(obj).siblings().removeClass('cut').end().addClass('cut');
+    if(tag==1) {
+      $('.account-income').show();
+      $('.account-expenditure').hide();
+    }else {
+      $('.account-income').hide();
+      $('.account-expenditure').show();
+      $('#expenditureList').load(function () {
+        setIframeHeight(document.getElementById('expenditureList'),"#expenditureList");
+      });
+    }
+  }
+//  var main = $('#expenditure'),
+//    iframe = $('#expenditureList'),
+//    win = $(window);
+//    resizePage();
+//      win.on('resize', function(){
+//        resizePage();
+//      });
+//  function resizePage(){
+//    console.log(win.outerHeight());
+//    console.log($('.account-tab').outerHeight());
+//    var mainHeight = win.outerHeight()-$('.account-tab').outerHeight();
+//    main.css('height', mainHeight-30);
+//    iframe.css('height', mainHeight - 40);
+//  }
+    function setIframeHeight(iframe,jq_id) {
+      if (iframe) {
+        console.log(11)
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+          iframe.height = iframeWin.document.body.scrollHeight;
+          $(jq_id).contents().find('.page').on('click',function () {
+            $('#expenditureList', parent.document).on('load',function () {
+              window.parent.setIframeHeight(window.parent.document.getElementById('expenditureList'),"#expenditureList");
+            });
+          });
+        }
+      }
+    }
+</script>
+</body>
+</html>

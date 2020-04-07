@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<title>快米工作_招聘中心_企业认证</title>
+<!–[if lt IE9]>
+<script src="{/version file='html5.js'/}"></script>
+<![endif]–>
+<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}" />
+<link rel="stylesheet" type="text/css" href="{/version file='comback.css'/}" />
+{/$up_img.hand_html/}
+<style type="text/css">
+.part{}
+.part .hd{border-bottom:1px solid #dadada;height:40px;}
+.part .hd a{height:38px;line-height:38px;font-size:14px;margin:0 10px;padding:0 10px;display:inline-block;float:left;display:inline;border:1px solid #dadada;border-top:2px solid #dadada;border-bottom:0;color:#666;}
+.part .hd a:hover{background:#f8f8f8;}
+.part .hd a.cu{font-weight:bold;border-top:2px solid #2b90d8;border-bottom:1px solid #fff;}
+.part .hd a.cu:hover{background:#fff;}
+
+
+.part .bd{padding:20px;zoom:1;}
+
+.bd .txt{margin:20px 20px 40px 20px}
+.bd .txt p.tit{font-weight:bold;}
+
+.bd .ser{width:750px;margin:0 auto;height:170px;}
+.bd .ser dl{float:left;display:inline;width:360px;}
+.bd .ser dl dt{float:left;display:inline;width:110px;padding-top: 10px}
+.bd .ser dl dd{float:left;display:inline;width:220px;margin:6px 0 0;}
+.bd .ser dl dd p{margin-bottom:5px;}
+.bd .ser dl dd p.serType{font-weight:bold;}
+
+/*引导*/
+.bd .guid{margin:0 92px 45px;}
+.bd .guid ul li{float:left;display:inline; text-align:center;background:#f3f3f3;width:360px;height:28px;border-top:1px solid #e0e0e0;border-left:1px solid #e0e0e0; position:relative; z-index:1;font-size:12px;line-height:28px;}
+.bd .guid ul li i{position:absolute;right:-14px;top:0;width:14px;height:28px;background:url({/$siteurl.style/}/img/c/c.gif) no-repeat -414px 0;}
+.bd .guid ul li.fst{ z-index:2;}
+.bd .guid ul li.cu{background:#55728d;border-left:1px solid #55728d;border-top:1px solid #55728d;color:#fff;}
+.bd .guid ul li.cu i{background-position:-400px 0;}
+
+.form{margin:0 0 20px;}
+.formMod .l{width:184px;}
+.formMod .r{width:565px;}
+.form .formBtn{margin:20px 0 0 142px;}
+.formMod .r .picLoad{clear:both;width:450px;float:left;display:inline;margin:10px 0 0;}
+.formMod .r .picLoad .loadBox{width:300px;height:200px;border:1px solid #dadada;background:url({/$siteurl.style/}/img/common/loadBox.gif) no-repeat center center;}
+.formMod .r .picLoad .loadBox img{width:300px;height:200px;}
+.formMod .r .formFile{ position:relative; z-index:1;}
+.formMod .r .formFile .swfUploadBtn{ position:absolute;left:0;top:0;}
+
+
+.upLicBox{width:465px;}
+.upLicBox p{line-height:30px;}
+.upLicBox p i{color:#999}
+.upLicBox p.tit{font-weight:bold;}
+.upLicBox .upLicBtn{ text-align:right;margin:20px 0 0;}
+#infowirte .formMod .l{width:184px}
+
+div.formBtn a.btn1 {
+    padding: 0 50px;
+    margin: 20px 0 20px 50px;
+    height: 36px;
+    line-height: 36px;
+    display: block;
+    color: #fff;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+    background: #fb5958;
+    box-shadow: none;
+    border: none;
+}
+div.formBtn a.btn1:hover {
+    background: #ef4544;
+}
+   div.formMod  div.formText input.focus {
+       background: #fff;
+       box-shadow: none;
+   }
+</style>
+
+</head>
+<body id="body" style="background-color: #ececec">
+{/include file='./company/company_head.html'/}
+<script type="text/javascript" language="javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+<script type="text/javascript" language="javascript" src="{/version file='common.js'/}"></script>
+<script type="text/javascript" language="javascript" src="{/version file='dialog.js'/}"></script>
+<script type="text/javascript" language="javascript" src="{/version file='ui_inputFocus.js'/}"></script><!--输入框获取焦点-->
+<script type="text/javascript" language="javascript" src="{/version file='ui_hovchange.js'/}"></script><!--指向改变class-->
+<script type="text/javascript" language="javascript" src="{/version file='ui_drop.js'/}"></script><!--下拉模拟-->
+<script type="text/javascript" language="javascript" src="{/version file='jquery.form.js'/}"></script>
+<script type="text/javascript" language="javascript" src="{/version file='ui_validate.js'/}"></script>
+<script type="text/javascript" language="javascript" src="{/version file='ui_uploadify.js'/}"></script>
+<div class="content step-content" id="content" style="margin-top:40px;">
+    <section class="section" style="overflow:hidden;margin-bottom: 40px;min-height: 780px;">
+    	<hgroup>
+        	<div class="part">
+                <div class="bd" id="infowirte" style="position:relative">
+                   	 <div class="form">
+
+                   	   <form id="formlicenceValidate" action="{/$siteurl.kmcompany/}/licencevalidate/UploadLicence" method="post">
+                   	   <input type="hidden" id="hddLicenceurl" name="hddLicenceurl"  value=""/>
+                   	   <input type="hidden" name="hddvalidateid" value="{/$validateid/}"/>
+                    	<div class="formMod">
+                        	<div class="l">企业全称<i>&nbsp;</i></div>
+                            <div class="r">
+                            	<span class="formText">
+                                	<input type="text" value="{/$company['company_name']/}" name="txtCompanyName" id="comN"  class="text" style="width:214px;background: #fff;box-shadow: none;">
+                            	</span>
+                                <span class="tipPos">
+                                    <span class="tipLay">
+                                    	<!--<span class="tipArr"></span>
+                                    	<span class="tipLayTxt tipw245">请按照营业执照上的企业名称填写</span> -->
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="formMod">
+                        	<div class="l">注册号(统一社会信用代码)<i>&nbsp;</i></div>
+                            <div class="r">
+                            	<span class="formText">
+                                	<input type="text"  class="text" style="width:215px;background: #fff;box-shadow: none;" name="txtLicenceId">
+                            	</span>
+                                 <span class="tipPos">
+                                    <span class="tipLay">
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="formMod">
+                        	<div class="l">法人代表<i>&nbsp;</i></div>
+                            <div class="r">
+                            	<span class="formText">
+                                	<input type="text"  class="text" style="width:215px;" name="txtlegalperson">
+                            	</span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        </form>
+                        <div class="formMod">
+                        	<div class="l">上传营业执照副本<i>&nbsp;</i></div>
+                            <div class="r">
+                            	{/*
+                                <span style="margin:0 10px 0 0;" class="tipTxt formFile">
+                                    <a href="javascript:;" id="upload_licence" style="display: inline-block"/>
+                                        <img src="{/$siteurl.style/}/img/company/upload.png" alt="">
+                                    </a>
+                            	</span>
+                                <span class="tipTxt gray">最大3MB，支持jpg/png/jpeg格式</span>
+                                <span class="picLoad">
+                                	<div id="showImage" class="loadBox" style="display:none">
+                                        <img src="" id="licenceImage" style="display:none;" alt="上传失败" />
+                                	</div>
+                                </span>
+                                */}
+                                {/$up_img.html/}
+                                <span class="tipTxt orange" style="margin:0; clear:both;width:300px;height:auto;line-height:22px">营业执照副本扫描件中的注册号(统一社会信用代码)、企业名称、法人代表、年检章等需清晰可辨别，否则不能通过认证。</span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="formBtn">
+                        	<a href="javascript:void(0)" class="btn1 btnsF16" id="upLicLnk">提&nbsp;&nbsp;交</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </hgroup>
+    </section>
+</div>
+
+<div class="dgBox upLicBox" id="infoWin" style="display:none;">
+	<p class="tit">请再次核对以下信息是否与营业执照副本上一致，不一致将无法通过认证！</p>
+    <p><i>企业全称：</i><span id="companyName"></span></p>
+    <p><i>注册号(统一社会信用代码)：</i><span id="licence"></span></p>
+    <p><i>法人代表：</i><span id="legalperson"></span></p>
+    <div class="upLicBtn">
+    	<a href="javascript:void(0)" class="btn1 btnsF12" id="btnSave">确定</a><a href="javascript:void(0)" class="btn3 btnsF12" id="btnCancel">取消</a>
+    </div>
+</div>
+
+<!-------弹窗上传营业资质------>
+<div class="iphoneImg">
+    <form id="form1" action='{/$siteurl.kmcompany/}/licencevalidate/saveTempLicence/' method="post" enctype="multipart/form-data">
+        <input style="display:none" type="file" id="Filedata" name="Filedata">
+    </form>
+</div>
+{/include file='./company/footer.html'/}
+<script type="text/javascript">
+var $tSch = $('#tSch');
+var form1Valid = $('#formlicenceValidate').validate({
+    rules:{
+        txtCompanyName: { required: true, rangelength: [2, 20] },
+        txtLicenceId:{required: true}
+    },
+    messages:{
+        txtCompanyName:{
+            required: '请输入企业全称 <span class="tipArr"></span>',
+            rangelength: '请输入长度为2-20位的企业全称<span class="tipArr"></span>'
+        },
+        txtLicenceId:{required: '请输入注册码号<span class="tipArr"></span>'}
+    },
+    errorClasses:{
+        txtCompanyName:{
+            required: 'tipLayErr tipw150',
+            rangelength: 'tipLayErr tipw245'
+        },
+        txtLicenceId:{
+            required: 'tipLayErr tipw150'
+        }
+    },
+    tipClasses:{
+        txtCompanyName:'tipLayTxt tipw245',
+        txtLicenceId:'tipLayTxt tipw245'
+    },
+    errorElement:'span',
+    errorPlacement: function(error, element){
+        element.parent().next().find('.tipLay').append(error);
+    },
+    success: function(label){
+        label.text(" ");
+    }
+});
+$('#upLicLnk').click(function() {
+	var v =form1Valid.form();
+    if(!v) return false;
+	var name = $('input[name="txtCompanyName"]').val(),
+		licence =  $('input[name="txtLicenceId"]').val(),
+		legalperson	= $('input[name="txtlegalperson"]').val();
+	$('#companyName').html(name);
+	$('#licence').html(licence);
+	$('#legalperson').html(legalperson);
+	$.showModal('#infoWin',{title:'认证资料确认',contentType:'selector'});
+});
+    if(navigator.userAgent.indexOf("MSIE")>0) {
+        var version = $.browser.version;
+        if (version == "9.0" || version == "8.0" || version == "10.0") {
+            //$('#Filedata').hide();
+            $('#upload_licence').uploadify({
+                auto: true,
+                swf: '/swf/uploadify.swf',
+                uploader: '/licencevalidate/saveTempLicence/',
+                formData: {
+                    'upload_cookie_userid': '{/$upload_cookie_userid/}',
+                    'upload_cookie_nickname': '{/$upload_cookie_nickname/}',
+                    'upload_cookie_usertype': '{/$upload_cookie_usertype/}',
+                    'upload_cookie_userkey': '{/$upload_cookie_userkey/}',
+                    'upload_cookie_tick': '{/$upload_cookie_tick/}'
+                },
+                queueID: 'showImage',
+                fileSizeLimit: '3072kb',
+                fileTypeExts: '*.jpg;*.bmp;*.gif;*.jpeg;*.png',
+                buttonImage: '{/$siteurl.style/}/uploadify/submit.png',
+                fileTypeDesc: 'All Files',
+                removeCompleted: true,
+                queueSizeLimit: 5,
+                method: 'post',
+                cancelImage: '{/$siteurl.style/}/uploadify/cancel.png',
+                width: 85,
+                height: 27,
+                multi: false,
+                itemTemplate: '<img src="" id="imgView" style="display:none" />',
+                onSelect: function () {
+                    $('#showImage').show();
+                },
+                onUploadSuccess: function (file, data, response) {
+                    if (data != null && data != undefined && data != '') {
+                        var json = eval("(" + data + ")");
+                        if (json.error == 100) {
+                            $.anchorMsg("请选择您要上传的文件", {icon: "warning"});
+                        } else if (json.error == 101) {
+                            $.anchorMsg("文件超过最大限制", {icon: "warning"});
+                        } else if (json.error == 102) {
+                            $.anchorMsg("您上传的文件格式有误", {icon: "warning"});
+                        } else if (json.error == 104) {
+                            $.anchorMsg("文件上传失败", {icon: "warning"});
+                        } else {
+                            var path = json.path;
+                            $('#imgView').attr('src', path + '?' + Math.random().toString().replace('.', '0'));
+                            $('#imgView').show();
+                            $('#hddLicenceurl').val(json.name);
+                        }
+                    }
+                },
+                onSelectError: function (file, errorCode, errorMsg) {
+                    var settings = this.settings;
+                    switch (errorCode) {
+                        case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
+                          $.anchorMsg("文件超过最大限制", { icon: "warning" });
+                          //$.anchorMsg('抱歉 "' + file.name + '" 文件超过了大小限制 (' + settings.fileSizeLimit + ').', {icon: 'warning'});
+                            break;
+                        case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+                            $.anchorMsg('文件 "' + file.name + '" 为空.', {icon: 'warning'});
+                            break;
+                        case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
+                          $.anchorMsg("您上传的文件格式有误", { icon: "warning" });
+                          //$.anchorMsg('文件 "' + file.name + '" 类型不支持 (' + settings.fileTypeDesc + ').', {icon: 'warning'});
+                            break;
+                    }
+                }
+            });
+        }
+    };
+    $('#upload_licence').click(function () {
+        $("#Filedata").click();
+    });
+    $("input[name='Filedata']").on('change',function () {
+       // alert($('#Filedata').val());
+        if(checkFileExt($('#Filedata').val())){
+            $.anchorMsg("您上传的文件格式有误", { icon: "warning" });
+            $('#Filedata').attr('value','');
+            return;
+        }
+        var  obj_file = document.getElementById("Filedata");
+        var  filesize = obj_file.files[0].size;
+        var maxSize = 3*1024*1024;
+        if(filesize>maxSize){
+            $.anchorMsg("文件超过最大限制", { icon: "warning" });
+            $('#Filedata').attr('value','');
+            return;
+        }
+        $('#form1').ajaxSubmit({beforeSubmit: checkMe, data: {}, success: success, dataType: 'json'});
+    });
+
+
+    function checkFileExt(filename)
+    {
+        var flag = false; //状态
+        var arr = ["jpg","png","jpeg"];
+        //取出上传文件的扩展名
+        var index = filename.lastIndexOf(".");
+        var ext = filename.substr(index+1);
+        //循环比较
+        for(var i=0;i<arr.length;i++)
+        {
+            if(ext == arr[i])
+            {
+                flag = true; //一旦找到合适的，立即退出循环
+                break;
+            }
+        }
+        //条件判断
+        if(!flag)
+        {
+            return true;
+        }
+    }
+    function success(json){
+      if(json && json.error){
+          if(json.error==100){
+                $.anchorMsg("请选择您要上传的文件", { icon: "warning" });
+            }else if(json.error==101){
+                $.anchorMsg("文件超过最大限制", { icon: "warning" });
+            }else if(json.error==102){
+                $.anchorMsg("您上传的文件格式有误", { icon: "warning" });
+            }else if (json.error==104) {
+              $.anchorMsg("文件大小超过限制或格式不对", {icon: "warning"});
+          }
+          return false;
+      }
+      $("input[name='hddLicenceurl']").val(json.name);
+      $('#showImage').show();
+      $("#licenceImage").attr({'src':json.path}).show();
+      $("#uploadFile1").hide();
+    }
+
+    function checkMe(){
+      $(".iphoneImg").hide();
+      return true;
+    }
+//上传营业执照
+
+$('#btnSave').click(function(){
+    var licence_infor = get_licence_infor();
+    $.ajax({
+        url:$("#formlicenceValidate").attr("action"),
+        type:"post",
+        dataType:"json",
+        data:licence_infor,
+        success:function(json){
+            if(!(json.success||false)){
+                $.message(json.error,{title:'操作失败！'});
+                return false;
+            }
+            location.href="{/get_url rule='/licencevalidate'/}";
+            //$.anchorMsg("保存成功！");
+            return false;
+        }
+    });
+	$(this).closeDialog();
+});
+
+$('#btnCancel').click(function(){
+	$(this).closeDialog();
+});
+
+
+$(document).ready(function(e) {
+   // $.focusblur("#tSchText");
+	//$.focusColor('input.text');
+	//$.focusblur('#comN');
+	$('#tSchText').bind('focus',function(){
+		$(this).animate({'width':200});
+		$tSch.css({'background':'#fffdef','border':'1px solid #e8dd9e'})
+	}).bind('blur',function(){
+		$(this).animate({'width':150});
+		$tSch.css({'background':'#fff','border':'1px solid #dadada'})
+	});
+	$('div.hd').find('a').click(function(){
+		var id = $(this).attr('forid');
+		$(this).siblings('a').removeClass('cu').end().addClass('cu');
+		$('#'+id).siblings('.bd').hide().end().show();
+	});
+
+});
+
+
+function get_licence_infor(){
+    var licence_infor = {};
+    var $licence_form = $("#formlicenceValidate");
+    licence_infor.companyname   = $licence_form.find("input[name=txtCompanyName]").val();
+    licence_infor.licenceid     = $licence_form.find("input[name=txtLicenceId]").val();
+    licence_infor.legalperson   = $licence_form.find("input[name=txtlegalperson]").val();
+    licence_infor.hddLicenceurl = $licence_form.find("input[name=hddLicenceurl]").val();
+
+    return licence_infor;
+}
+
+    $(function () {
+        //上传截图
+        var up_options_{/$up_img.id/} = {
+            up_id: '.{/$up_img.id/}',
+            auto: {/$up_img.config.auto/},
+        BASE_URL: "{/$up_img.config.BASE_URL/}",
+            fileNumLimit: {/$up_img.config.fileNumLimit/},//文件数量 默认5个 每张1M fileSingleSizeLimit: 1024 * 1024,
+        fileSingleSizeLimit: {/$up_img.config.fileSingleSizeLimit/},//每个文件大小
+        file_name: '{/$up_img.config.file_name/}',//返回接收上传的文件名称隐藏域
+            fileVal: '{/$up_img.config.fileVal/}',//上传接收name
+            defaults_files: {/$up_img.config.defaults_files/},//默认文件
+        accept: {/$up_img.config.accept/},//允许文件类型
+        formData: {/$up_img.config.form_data/},//上传删除携带参数
+        server: '{/get_url rule="/licencevalidate/saveTempLicence/"/}',
+            deleteServer: '{/get_url rule="/licencevalidate/delTempLicence/"/}',
+            error_hint_fun: function (msg) {
+            msg_error(msg);
+        },
+        confirm_hint_fun: function (confirm_msg, deleteServerAjax) {
+            //询问框
+            layer.confirm(confirm_msg, {
+                btn: ['确定', '取消'], //按钮
+                title: null,
+                shade: [0.6, '#000']
+            }, function (id, e_obj) {
+                layer.close(id);
+                deleteServerAjax();
+            });
+        },
+        add_file_succeed_fun:function (file, ret) {
+            /*
+             var newname_path = $("#regAuditSubmit").val() + "," + ret.data.newname_path;
+             if (newname_path.substr(0,1) == ','){
+             newname_path = newname_path.substr(1);
+             }
+             $("#regAuditSubmit").val(newname_path);
+             */
+        }
+    };
+        up_img = $('.{/$up_img.id/}').powerWebUpload(up_options_{/$up_img.id/});
+
+    });
+</script>
+</body>
+</html>

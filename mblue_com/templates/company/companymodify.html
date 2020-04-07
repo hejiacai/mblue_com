@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>快米工作-完善企业资料</title>
+		<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+		<link rel="stylesheet" type="text/css" href="{/version file='bluestyle.css'/}"/>
+        <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+        <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+        <link rel="stylesheet" type="text/css" href="{/version file='m_font_style.css'/}"/>
+		<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=33f9256a1a1ba5a80eb40f8ed45bce3c"></script>
+
+<script type="text/javascript">
+window.CONFIG = {
+	HOST: '{/$siteurl.style/}',
+	COMBOPATH: '/js/v2/'
+}
+</script>
+
+
+
+
+<script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+<script type="text/javascript" src="{/version file='global.js'/}"></script>
+<script type="text/javascript">hbjs.loadJS('{/$siteurl.style/}/js/v2/cqjob/common.js');</script>
+
+
+
+
+<style>
+	*{ font-family: "微软雅黑";}
+	body,button,input,select,textarea{font-family: "Microsoft YaHei";}     
+    .imgLst{ height:auto; overflow:hidden;float: left}
+    .imgLst li img{ width:64px; height:64px;}
+    .imgLst li{ width:64px; height:64px; position:relative; margin:10px 10px 10px 0; float:left;}
+    .imgLst li i{background:#f75a53; display: inline-block; width:16px; height:16px; border-radius:10px; position:absolute; right:-5px; top:-5px;text-align: center;color: #fff;font-size: 16px;line-height: 16px}
+    .radioHuman em{ display: inline-block; vertical-align:middle; margin-right: 5px; width:12px; height: 12px; background: url({/$siteurl.style/}/img/blue/company/radio.png) -18px 0 no-repeat;}
+.radioHuman em.cut{background: url({/$siteurl.style/}/img/blue/company/radio.png) 0 0 no-repeat;}
+.postJob-bd{ background: #fff; overflow: hidden;}
+	#fileBtn{width:140px; height: 36px; background: #5baceb; line-height: 36px; text-align: center; display: block; font-size: 16px; border: none; color: #fff; border-radius: 4px; margin-left: 39px; cursor: pointer; font-family: "微软雅黑"; margin: 0 auto;}
+	#fileBtn:hover{ background: #4f95cb;}
+	.hb_ui_dialog,.layer-anim{ position: fixed!important; top: 25%!important; left: 50%!important; margin-left: -350px!important;}
+	.ui_dialog_message{ text-align: left; color: #666;}
+	.job-describe {
+				height: 64px;
+				line-height: 64px;
+				padding-left: 69px;
+				border-bottom: 1px solid #e8e8e8;
+				font-weight: bold;
+				font-size: 20px;
+				margin-bottom: 20px;
+				color: #666;
+				text-align: left;
+			}
+	.layui-layer-title,.hb_ui_dialog .ui_dialog_title{ background: #f3f3f3; border-bottom: none; color: #666; text-align: left;}
+	.layui-layer-setwin a{ color: #666;}
+	.layui-layer-setwin a{width:30px; height: 30px;}
+	.layui-layer-setwin .layui-layer-close1 {
+	    background-position: -149px -31px;
+	    cursor: pointer;
+	    margin-top: -8px;
+	}
+	.button_a_red,.formBtn #btnSaveAddress{ background: #fb5958; border: none;}
+	.formBtn #btnSaveAddress{ cursor: pointer;height: 36px; line-height: 36px; padding: 0 40px; display: block; color: #fff; border-radius: 4px; float: left; margin-top: 20px;}
+	.upLOGO{ border: 1px solid #e8e8e8;}
+	.hb_ui_dialog .ui_dialog_footer{ text-align: left;}
+	.button_a_red:hover,.formBtn #btnSaveAddress:hover{ background: #ef4544;border: none;color: #fff;}
+	/*.formMod .r a.amendPhone{ display: block; float: left; margin-left: 10px; color: #0af; font-size: 14px; line-height: 30px;}*/
+	.dialog{ background: #fff!important; padding: 0px!important;}
+</style>
+	</head>
+	<body style="background: #ececec;">
+    {/include file='./company/company_head.html'/}
+		<form id="baseInforForm">
+		<div class="postJob-bd" style="padding-top: 0px;margin-top: 40px;">
+			<div class="job-describe">
+				完善企业资料
+			</div>
+			<div class="formMod">
+                <div class="l">公司名称<i>*</i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" style="width:235px;" value="{/$company_info['company_name']/}" name="txtCompanyName" id="txtCompanyName" class="text">
+                    </span>
+                    <span class="tipPos">
+                    	<span class="tipLay" data-for="txtCompanyName"></span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">公司简称<i>*</i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" style="width:235px;" value="{/$company_info['company_shortname']/}" name="txtShortName" id="txtShortName" class="text">
+                    </span>
+                    <span class="tipPos">
+                    	<span class="tipLay" data-for="txtShortName"></span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod" style="display: none">
+	            <div class="l">企业logo</div>
+	            <div class="r">
+	                <dl class="clearfix head-img" id="logo_div" {/if $company_info['company_logo_path']/}{/else/}style="display:none;"{//if/}>
+	                    <!--<dt><img class="head_photo" src="{/$company_info['company_logo_path_show']/}" /></dt>-->
+	                	<dd><a id="delAvaterBtn" href="javascript:">删除头像</a></dd>
+	                </dl>
+	                <dl class="head-upload-img" id="update_div" {/if $company_info['company_logo_path']/}style="display:none;"{/else/}{//if/}>
+	                	<dt><label id="fileBtn" style="width:92px;height:30px;background:url('{/$siteurl.style/}/img/account/upload-btn.jpg') no-repeat" for="imageFile"></label></dt>
+	                	<dd>支持图片格式：jpg png<br />图片大小不超过 1 M</dd>
+	                </dl>
+	            </div>
+	            <div class="clear"></div>
+	        </div>
+
+
+            <div class="formMod">
+                <a id="logo"></a>
+                <input id="hidLogo" name="head_photo" type="hidden" value="{/$company_info['company_logo_path']/}"/>
+                <div class="l">企业logo<i>&nbsp;</i></div>
+                <div class="r">
+                    <style>
+                        .upLOGO{display: inline-block;width:103px;height: 103px;overflow: hidden;position: relative; float: left;}
+                        .upLOGO span{display: none}
+                        .upLOGO:hover span{display: block;position: absolute;bottom:0px;left:0px;width:103px;text-align: center;height: 25px;background-color: #000;color:#fff;z-index: 2;font-size:12px;line-height: 25px}
+                        .upLOGO_label{width:415px; float: left; height:40px; line-height: 20px;padding: 30px 0px; color:#ccc;}
+                    </style>
+                    <a href="javascript:;" id="upLOGO" class="upLOGO">
+                        <img class="head_photo" src="{/$company_info['company_logo_path_show']/}" width="103px" height="103px" />
+                        <span>上传LOGO</span>
+                    </a>
+                    <p class="upLOGO_label">（注：上传图片后便于求职者能快速认识您的企业，如果您的Logo不利于求职者快速识别您的企业，请在图片上加上公司简称）</p>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+
+            <div class="formMod">
+                <div class="l">是否为人力机构<i>*</i></div>
+                <div class="r">
+                	<span class="formText {/if $company_info['is_audit'] == 3/} {/else/} human_radio {//if/}">
+                    {/if $company_info['is_audit'] == 3/}
+                         <label class="radioHuman">
+                            <input type="radio" name="human" value="2" {/if $company_info['recruit_type'] == 2/}checked="checked"{//if/} />是
+                        </label>
+                        <label class="radioHuman">
+                            <input type="radio" name="human" value="1" {/if $company_info['recruit_type'] == 1/}checked="checked"{//if/} />否
+                        </label>
+                    {/else/}
+                         <label class="radioHuman">
+                            <input type="radio" name="human" style="display: none;" value="2" {/if $company_info['recruit_type'] == 2/}checked="checked"{//if/} disabled/><em class="{/if $company_info['recruit_type'] == 2/}cut{//if/}"></em>是
+                        </label>
+                        <label class="radioHuman">
+                            <input type="radio" name="human" style="display: none;" value="1" {/if $company_info['recruit_type'] == 1/}checked="checked"{//if/} disabled/><em class="{/if $company_info['recruit_type'] == 1/}cut{//if/}"></em>否
+                        </label>
+                    {//if/}
+
+                   </span>
+                    <input type="hidden" name="txtShortPwc" id="txtShortPwc" value="{/$company_info['recruit_type']/}" />
+                    <span class="tipPos">
+                    	<span class="tipLay" data-for="txtShortPwc"></span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod addressMod">
+                <div class="l">行业类别<i>*</i></div>
+                <div class="r">
+					<select id="txtCategoryx" name="txtCategoryx">
+						<option value="">请选择</option>
+						{/foreach $calling as $key=>$val/}
+						<option value="{/$key/}" {/if $key==$company_info['calling_id']/}selected='selected'{//if/}>{/$val/}</option>
+						{//foreach/}
+					</select>
+					<input type="hidden" name="txtCategory" id="txtCategory" value="{/$company_info['calling_id']/}" />
+					<span class="tipPos">
+                    	<span class="tipLay" data-for="txtCategory"></span>
+                    </span>
+					
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod addressMod">
+                <div class="l">性质<i>*</i></div>
+                <div class="r">
+					<select id="txtNaturex" name="txtNaturex">
+						<option value="">请选择</option>
+						{/foreach $property as $key=>$val/}
+						<option value="{/$key/}" {/if $key==$company_info['property_id']/}selected='selected'{//if/}>{/$val/}</option>
+						{//foreach/}
+					</select>
+					<input type="hidden" name="txtNature" id="txtNature" value="{/$company_info['property_id']/}" />
+					<span class="tipPos">
+                    	<span class="tipLay" data-for="txtNature"></span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod addressMod">
+                <div class="l">规模<i>*</i></div>
+                <div class="r">
+					<select id="txtScalex" name="txtScalex">
+						<option value="">请选择</option>
+						{/foreach $comsize as $key=>$val/}
+						<option value="{/$key/}" {/if $key==$company_info['size_id']/}selected='selected'{//if/}>{/$val/}</option>
+						{//foreach/}
+					</select>
+					<input type="hidden" name="txtScale" id="txtScale" value="{/$company_info['size_id']/}" />
+					<span class="tipPos">
+                    	<span  class="tipLay" data-for="txtScale"></span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">公司简介<i>*</i></div>
+                <div class="r">
+                	<span class="formTextarea">
+                        <textarea class="textarea" name="txtCompanyIntro" id="txtCompanyIntro"  placeholder="限500字">{/$company_info['info']/}</textarea>
+                   </span>
+                   <span class="tipPos">
+                    	<span class="tipLay" data-for="txtCompanyIntro"></span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="form">
+                   <!-- <form id="addressForm" action="{/get_url rule='/company/saveMap/'/}"> -->
+                        <div class="formMod addressMod">
+                            <a id="area" name="area"></a>
+                            <div class="l">所在地区<i>*</i></div>
+                            <div class="r">
+                            	 <span class="formText zIndex" id="curarea">
+    						     </span>
+                                <span class="tipPos">
+                                    <span class="tipLay" data-for="hidArea"></span>
+                                </span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="formMod">
+                            <a id="addr" name="address"></a>
+                            <div class="l">详细地址<i>*</i></div>
+                            <div class="r">
+                                <span class="formText zIndex" >
+                                    <input type="text" style="width:425px;" class="text" id="txtAddress" name="txtAddress" value="{/$company_info['address']/}" />
+                                    
+                                </span>
+                                <span class="tipPos">
+                                    <span class="tipLay" data-for="txtAddress"></span>
+                                </span>
+                                <a id="addr"  onclick="return findMap()" style="font-size: 12px;margin-top: 5px;display: inline-block;color:#3D84B8; cursor:pointer;display:none"><i class="hbFntWes" style="font-size: 14px">&#xf041;</i> 在地图中标记</a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <!-- 地图标记 -->
+                        <div class="formMod">
+                            <a id="map"></a>
+                            <div class="l"></div>
+                            <div class="r">
+                                <span id="mapCon" class="formMap" style="width:700px;height:420px;">
+
+                                </span>
+                                <input type="hidden" id="hidMapX" name="hidMapX" value="{/$address_info['map_x']/}" />
+                                <input type="hidden" id="hidMapY" name="hidMapY" value="{/$address_info['map_y']/}" />
+                                <input type="hidden" id="hidMapZoom" name="hidMapZoom" value="{/$address_info['map_level']/}" />
+								<input type="hidden" id="address_id" name="address_id" value="{/$address_info['id']/}" />
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                </div>
+            
+            
+            <div class="formMod">
+                <div class="l">联系人<i></i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" style="width:235px;" value="{/$company_info['link_man']/}" name="txtContacts" id="txtContacts" class="text">
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+            <div class="formMod">
+                <div class="l">座机<i></i></div>
+                <div class="r">
+
+                    <span class="formText">
+                          <input type="text" style="width:50px;" value="{/if $company_info['zone']/}{/$company_info['zone']/}{//if/}" name="txtZoneNo" id="txtZoneNo" class="text">
+                        - <input type="text" style="width:80px;" value="{/$company_info['link_tel']/}" name="txtTel" id="txtTel" class="text">
+                        - <input type="text" style="width:50px;" value="{/$company_info['link_tel_ext']/}" name="txtExt" id="txtExt" class="text">
+                    </span>
+                    <span class="tipPos" style="float: left">
+                    	<span class="tipLay" data-for="txtZoneNo"></span>
+                    </span>
+                    <span class="tipPos" style="float: left">
+                    	<span class="tipLay" data-for="txtTel"></span>
+                    </span>
+                    <span class="tipPos" style="float: left">
+                    	<span class="tipLay" data-for="txtExt"></span>
+                    </span>
+
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">手机<i></i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" style="width:235px;" value="{/$company_info['link_mobile']/}" name="txtPhone" id="txtPhone" class="text">
+                    </span>
+                    <span class="tipPos">
+                    	<span class="tipLay" data-for="txtPhone"></span>
+                    </span>
+                    <!--<a href="javaScript:;" class="amendPhone">修改</a>-->
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--验证码发送-->
+            <div id="CodeAlert" class="formMod" style="display: none">
+                <div class="l"><i></i></div>
+                <div class="r">
+                    <span class="formText">
+                       <input type="text" id="msgCode" name="authCode" value="" style="width: 130px;" class="text" placeholder="请输入验证码" />
+                    </span>
+                    <a id="get_code1" href="javaScript:;" class="getMsgCode authCodex" style="float: left">获取短信验证码</a>
+                    <a class="authCodeGray" style="line-height: 30px; float: left; text-indent: 10px;"></a>
+                    <span class="tipPos">
+                    	<span class="tipLay" data-for="authCode"></span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">qq<i></i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" style="width:235px;" value="{/$company_info['link_qq']/}" name="txtQq" class="text">
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">微信<i></i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" style="width:235px;" value="{/$company_info['link_weixin']/}" name="txtWeixin" class="text">
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">邮箱<i></i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" style="width:235px;" value="{/$company_info['email']/}" name="txtEmail" class="text">
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+
+
+            <div class="formMod">
+                <div class="l">企业环境</div>
+                <div class="r" style="width: 487px;text-align: left;">
+                    {/$up_img_html.html/}
+					<span style="color:red;" id="company_pic_span">{/$mb_get_explain/}</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+
+			<input type="hidden" name="company_id" id="company_id" value="{/$company_id/}">
+            <div class="formBtn clearfix" style="padding:10px 0; text-align: left;">
+            	<div id="btnSaveAddress" style="padding: 0 50px;">提交</div>
+			</div>
+		</div>
+		</form>
+    {/include file='./company/footer.html'/}
+    <script type="text/javascript" src="{/version file='layer.js'/}"></script>
+<script type="text/javascript">
+    hbjs.use('@actions,@fileUploader, @hbCommon, @jobDialog, @jobDropList, @areaSimple, @validator, @imageEditor, @confirmBox', function(m){
+
+        var $ = m['product.hbCommon'].extend(
+            m['cqjob.actions'], m['cqjob.areaSimple'], m['cqjob.jobDialog'], m['cqjob.jobDropList']
+        );
+
+        var fileUploader = m['widge.fileUploader'],
+            imageEditor = m['widge.imageEditor'],
+            ConfirmBox = m['widge.overlay.confirmBox'],
+            Dialog = m['widge.overlay.hbDialog'],
+            fontSize = 18,
+            pWidth = 70,
+            imgEditor;
+        var _dialog = {
+            params: {},//自定义传递参数 titel:弹框标题 width:弹框宽度 getHtml:弹框主体内容 request:点击确定的请求 其他自定义
+            alert: null,
+            init: function () {
+                _dialog.alert = new Dialog({
+                    close: 'X',
+                    idName: 'ui_company_dialog',
+                    title: _dialog.params.titel,
+                    width: _dialog.params.width || 400,
+                    isOverflow: false,
+                    content: '{/$siteurl.kmcompany/}/company/uploadCompanyLogo/',
+                    isAjax: true
+                });
+                _dialog.alert.on('closeX', function () {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.query('#ok').off('click');
+                _dialog.alert.query('#cancel').off('click');
+                _dialog.alert.query('#cancel').on('click', function (e) {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.query('#ok').on('click', function (e) {
+                    _dialog.params.request();
+                });
+                _dialog.alert.show();
+            }
+        };
+
+
+        $('.human_radio').click(function () {
+            ConfirmBox.alert('若修改人力机构类型，请联系客服或者招聘顾问',function () {},{title:'提示',width:380})
+        })
+
+
+        var phone = "{/$company_info['link_mobile']/}"
+        $('#txtPhone').keyup(function () {
+            if(phone == $(this).val() || $(this).val() == '')
+            {
+                $("#CodeAlert").hide()
+            }else{
+                $("#CodeAlert").show()
+            }
+        })
+//      var falg_request = 1
+//      $('#get_code1').on('click',(function () {
+//      	console.log(222);
+//          if(falg_request != 1)
+//              return false;
+//          falg_request = 0;
+//          $('div[id^=_dialog]').remove();
+//          $('#get_code1').on('click',(function () {
+//          	console.log(1111);
+//              $.showModal("{/get_url rule='/register/validate/'/}/action-alterpass/"+"txtMobile-"+$('#txtPhone').val()+"-vali_code_count-"+1, {title:'请输入验证码'});
+//          }))
+//      }))
+        
+        $('#get_code1').on('click',(function () {
+                $.showModal("{/get_url rule='/register/validate/'/}/action-alterpass/"+"txtMobile-"+$('#txtPhone').val()+"-vali_code_count-"+1, {title:'请输入验证码'});
+            }))
+
+
+
+        //企业logo上传
+        $('#upLOGO').on('click', function(e){
+            _dialog.params = {
+                titel: '请上传有识别性的logo图片',
+                width:700,
+                request: function () {}
+            };
+            _dialog.init();
+            _dialog.alert.after('hide', function(){
+                this.query('#newPopQuit').off('click');
+                imgEditor.destory();
+            });
+            _dialog.alert.on('loadComplete', function(){
+                var uploadPanel = this.query('#uplogo1'),
+                    editPanel = this.query('#dropImageContainer'),
+                    dropImage = this.query('#dropImage'),
+                    uploadingDialog;
+
+                imgEditor = new imageEditor({
+                    imageCroperConfig: {
+                        element: dropImage,//目标
+                        handle: '#dragDiv',
+                        color: '#f1f1f1',
+                        width: dropImage.width(),
+                        height: dropImage.height()
+                    },
+                    fileUploaderConfig: {
+                        imageURL: '{/$logo_virt_path/}'
+                    },
+                    trigger: this.query('#newPopSave')
+                });
+                imgEditor.on('startUpload', function(e){
+                    var msg = "正在上传...";
+                    uploadingDialog = ConfirmBox.timeBomb(msg, {
+                        name : "warning",
+                        timeout : 100000,
+                        width: fontSize * msg.length + pWidth
+                    });
+                }).on('progresed', function(e){
+                    this._imgFileName = e.data.name;
+                    this._imgType = e.data.thumb_type;
+                    this._imgRatio = e.data.thumb_ratio;
+                    this.loadImage(e.url);
+
+                    uploadingDialog.hide();
+                    uploadPanel.hide();
+                    editPanel.show();
+
+                    var preview1 = editPanel.find('#preview120'),
+                        preview2 = editPanel.find('#preview160');
+
+                    this.addPreview(preview1, 120, 120);
+                    this.addPreview(preview2, 160, 160);
+                }).on('progressError', function(e){
+                    var msg1 = '';
+                    if(e.errorMsg)
+                        msg1 = e.errorMsg;
+                    else if(e.data)
+                        msg1 = e.data.errorMsg
+                    ConfirmBox.timeBomb(msg1, {
+                        name : "fail",
+                        timeout : 1000,
+                        width: fontSize * msg1.length + pWidth
+                    });
+                }).on('save', function(e){
+                    var self = this;
+                    $.ajax({
+                        url: '{/$siteurl.kmcompany/}/company/saveLogo/ori-2',
+                        data: {
+                            cropX: e.cropX,
+                            cropY: e.cropY,
+                            cropH: e.cropH,
+                            cropW: e.cropW,
+                            cropPH: e.cropPH,
+                            cropPW: e.cropPW,
+                            url: e.url,
+                            name: this._imgFileName,
+                            thumb_type: this._imgType,
+                            thumb_ratio: this._imgRatio
+                        },
+                        dataType:'json',
+                        success: function(e){
+                            if(e.state){
+                                $('#hidLogo').val(e.image_path);
+                                $('#upLOGO > img').attr('src', e.image_url);
+                                _dialog.alert.hide();
+                                delete self._imgFileName;
+                                delete self._imgType;
+                                delete self._imgRatio;
+                            }else{
+                                ConfirmBox.timeBomb(e.msg, {
+                                    name : "fail",
+                                    timeout : 1000,
+                                    width: fontSize * e.msg.length + pWidth
+                                });
+                            }
+                        }
+                    });
+                });
+
+                imgEditor.imageCroper.on('loadSuccess', function(){
+                    uploadPanel.hide();
+                    editPanel.show();
+                }).on('loadError', function(){
+                    delete this._imgFileName;
+                    delete this._imgType;
+                    delete this._imgRatio;
+                    uploadPanel.show();
+                    editPanel.hide();
+                    var msg = '加载图片失败';
+                    ConfirmBox.timeBomb(msg, {
+                        name : "fail",
+                        timeout : 1000,
+                        width: fontSize * msg.length + pWidth
+                    });
+                });
+
+                this.query('#newPopQuit').on('click', function(){
+                    _dialog.alert.hide();
+                });
+
+            });
+
+        });
+
+
+        $(".radioHuman").click(function(){
+            $('#txtShortPwc').val($('input[name=human]:checked').val());
+        });
+
+        $("#txtCategoryx").click(function(){
+            var txtCategory=$(this).find("option:selected").text();
+            $('#txtCategory').val(txtCategory);
+        });
+        $("#txtNaturex").click(function(){
+            var txtCategory=$(this).find("option:selected").text();
+            $('#txtNature').val(txtCategory);
+        });
+        $("#txtScalex").click(function(){
+            var txtCategory=$(this).find("option:selected").text();
+            $('#txtScale').val(txtCategory);
+        });
+        $('#txtCompanyIntro').blur(function(){
+            var thisComIntro=$(this).val().length;
+            var txtCompany=$(this).parent().next();
+            if($(this).val() == ''){
+                txtCompany.html('<span class="tipLay" data-for="txtCompanyIntro"><span class="tipLayErr tipw150">请输入公司简介<span class="tipArr"></span></span></span>');
+            }else if(thisComIntro > 500){
+                txtCompany.html('<span class="tipLay" data-for="txtCompanyIntro"><span class="tipLayErr tipw150">简介不能大于500个字符<span class="tipArr"></span></span></span>');
+            }else{
+                txtCompany.html('<span class="tipLay" data-for="txtCompanyIntro"></span>');
+            }
+        });
+
+        $('#txtCategoryx').change(function () {
+            if($(this).val()){
+                $('span[data-for=txtCategory]').html('');
+            }else{
+                $('span[data-for=txtCategory]').html('<span class="tipLayErr tipw150">请输选择行业类别<span class="tipArr"></span></span>');
+            }
+        })
+        $('#txtNaturex').change(function () {
+            if($(this).val()){
+                $('span[data-for=txtNature]').html('');
+            }else{
+                $('span[data-for=txtNature]').html('<span class="tipLayErr tipw150">请输公司性质<span class="tipArr"></span></span>');
+            }
+        })
+
+
+
+        $('#txtScalex').change(function () {
+            if($(this).val()){
+                $('span[data-for=txtScale]').html('');
+            }else{
+                $('span[data-for=txtScale]').html('<span class="tipLayErr tipw150">请选择公司规模<span class="tipArr"></span></span>');
+            }
+        })
+        
+        var validatorForm = m['widge.validator.form'];
+        //验证
+        var baseInforRuls = {
+                txtCompanyName:{required:true},
+                txtShortName:{required:true},
+                txtCategory:{required:true},
+                txtShortPwc:{required:true},
+                txtNature:{required:true},
+                txtScale:{required:true},
+                txtAddress:{required:true},
+                txtPhone:{required:false,match: /^$|^((?:13|15|18|14|17|19|16)[0-9]\d{8})$/},
+                txtZoneNo:{required:false,match: /^$|^[0-9]{3}$/},
+                txtExt:{required:false,match: /^$|^[0-9]{1,5}$/},
+                txtTel:{required:false,match:/^$|^[1-9][0-9]{7}$/},
+                txtCompanyIntro:{required:true,rangelength:[1, 500]}
+            },
+            baseInforMessage = {
+                txtCompanyName:{required:'<span class="tipLayErr tipw120">请输入公司名称<span class="tipArr"></span></span>'},
+                txtShortName:{required:'<span class="tipLayErr tipw120">请输入公司简称<span class="tipArr"></span></span>'},
+                txtCategory:{required:'<span class="tipLayErr tipw120">请输选择行业类别<span class="tipArr"></span></span>'},
+                txtAddress:{required:'<span class="tipLayErr tipw150">请输入或地图选择详细地址<span class="tipArr"></span></span>'},
+                txtShortPwc:{required:'<span class="tipLayErr tipw150">请选择是否为人力资源公司<span class="tipArr"></span></span>'},
+                txtNature:{required:'<span class="tipLayErr tipw120">请输公司性质<span class="tipArr"></span></span>'},
+                txtScale:{required:'<span class="tipLayErr tipw150">请选择公司规模<span class="tipArr"></span></span>'},
+                txtPhone:{required:'<span class="tipLayErr tipw150">请输入11位手机号<span class="tipArr"></span></span>', match:'<span class="tipLayErr tipw150">请输入正确的11位电话号码<span class="tipArr"></span></span>'},
+                txtZoneNo:{required:'<span class="tipLayErr tipw150">请输入3位区号<span class="tipArr"></span></span>', match:'<span class="tipLayErr tipw150">请输入3位区号<span class="tipArr"></span></span>'},
+                txtExt:{required:'<span class="tipLayErr tipw150">请输入1-5位分机号<span class="tipArr"></span></span>', match:'<span class="tipLayErr tipw150">请输入1-5位分机号<span class="tipArr"></span></span>'},
+                txtTel:{required:'<span class="tipLayErr tipw150">请输入8位座机号<span class="tipArr"></span></span>', match:'<span class="tipLayErr tipw150">请输入8位座机号<span class="tipArr"></span></span>'},
+                txtCompanyIntro:{required:'<span class="tipLayErr tipw150">请输入公司简介<span class="tipArr"></span></span>', rangelength:'<span class="tipLayErr tipw150">简介不能大于500个字符<span class="tipArr"></span></span>'},
+
+            };
+        var baseInforForm = new validatorForm({
+            element: $('#baseInforForm'),
+            rules: baseInforRuls,
+            errorMessages: baseInforMessage,
+            /*
+            groups: {
+                zoneNo: 'zone_infor phone_infor ext_infor'
+            },*/
+            //keepBlur: 'zone_infor phone_infor ext_infor',
+            keepKey: true,
+            errorElement: 'span'
+        });
+
+
+        $('input.text').placeHolder();
+        function checkAddress(origin){
+
+            function getAlertMessage(message){
+                return '<span class="tipLayErr tipw120">' + message +'<span class="tipArr"></span></span>';
+            }
+            var curarea = $('#curarea'),
+                promptElement = curarea.next().find('.tipLay'),
+                cityElement = curarea.find('.city'),
+                countyElement = curarea.find('.county[value="市"]'),
+                lastElement = curarea.find('.county[value="区/县"]');
+
+            if(cityElement.hasClass('textGray')){
+                promptElement.html(getAlertMessage('请选择城市'));
+                return false;
+            }
+            if(countyElement.hasClass('textGray')){
+                promptElement.html(getAlertMessage('请选择区县'));
+                return false;
+            }
+
+            //看区县上一级是否隐藏
+            //console.log($('.county[value="区/县"]').parent().css('display'));
+            if(origin == 1) {
+                if (lastElement.parent().css('display') == 'none') {
+                    return true;
+                } else {
+                    if(cityElement.val() == '重庆' || countyElement.val() == '成都'){
+                        if (lastElement.hasClass('textGray')) {
+                            promptElement.html(getAlertMessage('请选择街道'));
+                            return false;
+                        }else{
+                            promptElement.hide();
+                        }
+                    }
+                }
+            } else {
+                //地区选择只验证到第二级
+                return true;
+            }
+
+            return true;
+        }
+
+        var isAreaInit = true;
+        $('#curarea').singleArea({
+            hddName:'hidArea',
+            showLevel: 3,
+            initLevel: 2,
+            selectArea:'{/$company_info["area_id"]/}',
+            onSelect:function(a){
+                isAreaInit = false;
+                baseInforForm.checkElement($('#hidArea'));
+                var geo = new BMap.Geocoder();
+                geo.getPoint(getAreaDesc(), relocateCallback, '');
+                //更新详细地址
+                $('#txtAddress').val(getAreaDesc());
+                baseInforForm.checkElement($('#txtAddress'));
+                var promptElement = $('#curarea').next().find('.tipLay');
+                promptElement.html("");
+            },
+            onData: function(e){
+                if(e.length && !isAreaInit){
+                    checkAddress(1);
+                }
+            }
+        });
+        initMap();
+
+        baseInforForm.on('invalid', function(e){
+            if(e.name === 'link_mobile'){
+                orMobile(true);
+            }
+        });
+        baseInforForm.on('pass', function(e){
+            e.label.html('');
+            if(e.name === 'link_mobile' && $.trim(e.target.val())){
+                orMobile();
+            }
+        });
+
+        $('#txtAddress').focusin(function(){
+            var addr = $(this).val();
+            if(addr==''){
+                var areaDesc='';
+                var areas = $('#curarea').getAreaNames();
+                for(var i=0;i<areas.length;i++){
+                    areaDesc += areas[i] ;
+                }
+                $(this).val(areaDesc);
+                addr = areaDesc;
+            }
+            if(addr!=''){
+                var geo = new BMap.Geocoder();
+                geo.getPoint(addr, relocateCallback, '');
+            }
+        });
+
+        $('#txtAddress').focusout(function(){
+            var addr = $(this).val();
+            if(addr != ''){
+                var geo = new BMap.Geocoder();
+                geo.getPoint(addr, relocateCallback, '');   //缺一个城市名
+            }
+        });
+
+        function relocateCallback(point){
+            if(point == null) return;
+            map.setCenter(point);
+            marker.setPosition(point);
+            $('#hidMapX').val(marker.getPosition().lng);
+            $('#hidMapY').val(marker.getPosition().lat);
+            $('#hidMapZoom').val(map.getZoom());
+        }
+
+        function getAreaDesc(){
+            var areaDesc = '';
+            var areas = $('#curarea').getAreaNames();
+            for(var i = 0;i<areas.length;i++){
+                areaDesc += areas[i] ;
+            }
+            return areaDesc;
+        }
+
+        function initMap(){
+            var mapX = $('#hidMapX').val();
+            var mapY = $('#hidMapY').val();
+            var mapZoom = $('#hidMapZoom').val();
+            if(typeof mapZoom =='undefined' || mapZoom == ''){
+                mapZoom = 15;
+            }
+
+            var initPt = null;
+            if(typeof mapX != 'undefined' && mapX!='' && typeof(mapY) != 'undefined' && mapY!=''){
+                initPt = new BMap.Point(mapX,mapY);
+            }
+
+            var address = $('#txtAddress').val();
+
+            //这个逻辑由于单选地区控件是异步加载的，所以这里可能始终取的是空值，暂时保留吧
+            var areaDesc='';
+            var areas = $('#curarea').getAreaNames();
+            for(var i=0;i<areas.length;i++){
+                areaDesc += areas[i] ;
+            }
+
+            var defaultPt = new BMap.Point(106.553057,29.565468);
+
+            var map = new BMap.Map("mapCon");
+
+
+            //在加载完成，确定中心点后，设置标注点
+            map.addEventListener('load',function(){
+                var pt = null;
+                if(initPt!=null){
+                    pt = initPt;
+                }
+                else{
+                    pt = new BMap.Point(map.getCenter().lng,map.getCenter().lat);
+                }
+
+                var myIcon = new BMap.Icon("{/$siteurl.style/}/img/common/maplabel.png", new BMap.Size(33,50));
+                marker = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
+                map.addOverlay(marker);              // 将标注添加到地图中
+                marker.enableDragging();
+                marker.setTitle('请拖动至您公司所在位置');
+
+                var label = new BMap.Label("请拖动至您公司所在位置",{offset:new BMap.Size(35,5)});
+                marker.setLabel(label);
+
+                //添加事件，在拖动时去掉文字提示
+                marker.addEventListener('dragstart',function(){
+                    label.setStyle({display:'none'});
+                });
+                marker.addEventListener('dragend',function(){
+                    $('#hidMapX').val(marker.getPosition().lng);
+                    $('#hidMapY').val(marker.getPosition().lat);
+                    $('#hidMapZoom').val(map.getZoom());
+                });
+            });
+
+            if(initPt != null){
+                map.centerAndZoom(new BMap.Point(mapX,mapY), mapZoom);
+            }
+            else if(address != ''){
+                map.centerAndZoom(defaultPt,mapZoom);
+                var geo = new BMap.Geocoder();
+                geo.getPoint(address, relocateCallback, '');
+            }
+            else if(areaDesc!=''){
+                map.centerAndZoom(defaultPt,mapZoom);
+                var geo = new BMap.Geocoder();
+                geo.getPoint(areaDesc, relocateCallback, '');
+            }
+            else{
+                map.centerAndZoom(defaultPt, mapZoom);
+            }
+
+
+            map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+            map.addControl(new BMap.MapTypeControl());          //添加地图类型控件
+            map.addControl(new BMap.OverviewMapControl());              //添加默认缩略地图控件
+            map.enableScrollWheelZoom();                            //启用滚轮放大缩小
+
+            map.addEventListener('zoomend',function(){
+                $('#hidMapZoom').val(map.getZoom());
+            });
+        }
+
+
+		$('body').on('click','#btnSaveAddress',function(){
+        // $('#btnSaveAddress').click(function(){
+            if(queueLenth>20)
+            {
+                ConfirmBox.alert('企业环境图片不能超过20张',function () {},{title:'提示',width:380})
+                return false;
+            }
+
+            baseInforForm.submit(function(){
+                if(!checkAddress(1)){
+                    return;
+                }
+                var company_id = $("#company_id").val();
+                $.ajax({
+                    type: 'post',
+                    url: "{/get_url rule='/company/modifyDo'/}",
+                    data: $('#baseInforForm').serialize(),
+                    dataType : 'json',
+                    success:function(dataObj){
+                        if(dataObj.status){
+//                            alert(dataObj.msg);
+                          ConfirmBox.timeBomb(dataObj.msg, {
+                            name : 'success',
+                            timeout :3000,
+                            width: fontSize * dataObj.msg.length + pWidth
+                          });
+                          window.location.href=("{/get_url rule='/company'/}");
+                        }
+                        else{
+                          ConfirmBox.timeBomb(dataObj.msg, {
+                            name : 'fail',
+                            timeout :3000,
+                            width: fontSize * dataObj.msg.length + pWidth
+                          });
+//                            alert(dataObj.msg);
+                            return false;
+                        }
+                    }
+                })
+            }, function(){
+                checkAddress(1);
+            });
+        });
+
+
+
+
+    });
+
+    function coundownV2(){
+        var seconds=$('.authCodeGray').find('b').text();
+        seconds = parseInt(seconds);
+        if(seconds > 0){
+            seconds--;
+            $('.authCodeGray').find('b').text(seconds);
+        }else{
+            window.clearInterval(interval);
+            $('#get_code1').show();
+            $('.authCodeGray').hide()
+        }
+    }
+</script>
+
+<script>
+    //---------------------------------------------企业环境处理--------------------------------------------
+    maxFileCount = 20,
+    queueLenth = parseInt('{/if empty($total_imgs)/}0{/else/}{/$total_imgs/}{//if/}');
+
+    if(queueLenth >= 20){
+        $('#add_company_photo').hide();
+    }
+
+    function addImg(bhtml1) {
+            $('#imgLst').append(bhtml1);
+            queueLenth++;
+            if(queueLenth >=maxFileCount){
+                $('#add_company_photo').hide();
+            }
+    }
+
+    function opennew_shade(newurl,windowName,width,height) {
+        var parentlayershade = layer.open({
+            type: 2,
+            shade:0,
+            area:[""+width+"px",""+height+"px"],
+            title:""+windowName+"",
+            content: ""+newurl+""
+        });
+    }
+
+    //多张上传处理
+    $("#add_company_photo").click(function () {
+//        console.log(queueLenth);
+        if (queueLenth >= maxFileCount) {
+            alert('最多上传'+maxFileCount+'张');
+            return false;
+        }
+        opennew_shade("{/get_url rule='/company/uploadcompanyimage'/}", '上传图片', 800, 500);
+    });
+
+
+    $('#imgLst').on('click', 'li a', function(e){
+        var id = $(this).parent().attr('id');
+        delimg(id, 'img');
+
+    });
+
+    function delimg($obj,$type){
+        $('#'+$obj).remove();
+        queueLenth--;
+        if(queueLenth >=maxFileCount){
+            $('#add_company_photo').hide();
+        }else{
+            $('#add_company_photo').show();
+        }
+        check();
+    }
+
+    function check(){
+        var FhddNewPhotoName = $('input[data-name=array_img]');
+        var tempPhotoName = '';
+        if(FhddNewPhotoName.size()>0){
+            for(var i=0; i < FhddNewPhotoName.size(); i++){
+                var temp = FhddNewPhotoName.eq(i).val();
+                if(temp != '' || temp != null){
+                    tempPhotoName += temp+',';
+                }
+            }
+        }
+
+        $('input[data-name=array_img]').val(tempPhotoName);
+    }
+
+
+</script>
+    {/$up_img_html.hand_html/}
+    <script>
+        var mb_get_explain = "{/$mb_get_explain/}";
+        var confirmBox, Dialog;
+        hbjs.use('@dialog,@confirmBox', function (m) {
+            var $ = m['jquery'];
+            confirmBox = m['widge.overlay.confirmBox'];
+            Dialog = m['widge.overlay.hbDialog'];
+        });
+        //---------------------------------------------end：企业环境处理--------------------------------------------
+
+        var uploader_img;
+        $(function () {
+            var up_options_{/$up_img_html.id/} = {
+                up_id: '.{/$up_img_html.id/}',
+                auto: {/$up_img_html.config.auto/},
+            BASE_URL: "{/$up_img_html.config.BASE_URL/}",
+                    fileNumLimit: {/$up_img_html.config.fileNumLimit/},//文件数量 默认5个 每张1M fileSingleSizeLimit: 1024 * 1024,
+            fileSingleSizeLimit: {/$up_img_html.config.fileSingleSizeLimit/},//每个文件大小
+            file_name: '{/$up_img_html.config.file_name/}',//返回接收上传的文件名称隐藏域
+                    fileVal: '{/$up_img_html.config.fileVal/}',//上传接收name
+                    defaults_files: {/$up_img_html.config.defaults_files/},//默认文件
+            accept: {/$up_img_html.config.accept/},//允许文件类型
+            formData: {/$up_img_html.config.form_data/},//上传删除携带参数
+            headers: {'X-Requested-With': 'XMLHttpRequest'},//模拟ajax
+            server: '{/get_url rule="/company/Picture/"/}',
+            deleteServer: '{/get_url rule="/company/DelTempFile/"/}',
+            error_hint_fun: function (msg) {
+                msg_error_box(msg);
+            },
+            confirm_hint_fun: function (confirm_msg, deleteServerAjax) {
+                //询问框
+                confirm_box(confirm_msg, {
+                    success: function (data) {
+                        deleteServerAjax();
+                        //计算图片数量
+                        var img_num = $("[name='picurl_end[]']").length;
+                        if(img_num == '' || img_num == undefined){
+                            img_num = 0;
+                        }
+                        var old_img_num = parseInt($("#company_pic_em").text());
+                        if(mb_get_explain && img_num < 4){
+                            img_num = old_img_num + 1;
+                            $("#company_pic_em").text(img_num);
+                        }
+                    }
+                });
+            },
+            add_file_succeed_fun:function (file, ret) {
+                if(ret.data.status){
+                    var img_num = $("[name='picurl_end[]']").length;
+                    if(img_num == '' || img_num == undefined){
+                        img_num = 0;
+                    }
+                    var old_img_num = parseInt($("#company_pic_em").text());
+                    if(mb_get_explain && old_img_num > 0){
+                        img_num = old_img_num - 1;
+                        $("#company_pic_em").text(img_num);
+                    }
+                }
+
+
+
+            }
+        };
+            uploader_img = $('.{/$up_img_html.id/}').powerWebUpload(up_options_{/$up_img_html.id/});
+        });
+
+        //确定框
+        function confirm_box(msg, success_c, but_title) {
+            success_c = success_c ? success_c : {
+                success: function (data) {
+
+                },
+                error: function (data) {
+
+                }
+            };
+            var width = msg.length * 18 + 70;
+            width = width > 600 ? 600 : width;
+            return confirmBox.confirm(msg, but_title ? but_title : "提示",
+                    function (data) {
+                        this.hide();
+                        if ('success' in success_c) {
+                            success_c.success(data);
+                        }
+                    }, function (data) {
+                        this.hide();
+                        if ('error' in success_c) {
+                            success_c.error(data);
+                        }
+                    }, {width: width});
+        }
+        //错误提示 success-成功 fail-错误 warning-警告 question-疑问  info-信息 normal-正常
+        function msg_error_box(msg) {
+            confirmBox.timeBomb(msg ? msg : "参数错误!", {
+                name: 'fail',
+                timeout: 2000,
+                width: 70 + msg.length * 18
+            });
+            return false;
+        }
+
+        //成功提示 success-成功 fail-错误 warning-警告 question-疑问  info-信息 normal-正常
+        function msg_success_box(msg) {
+            confirmBox.timeBomb(msg ? msg : "成功!", {
+                name: 'success',
+                timeout: 1000,
+                width: 70 + msg.length * 18
+            });
+            return true;
+        }
+
+        function ajax_function(url, data, success_c, async, type) {
+            success_c = success_c ? success_c : {
+                success: function (data) {
+
+                },
+                error: function (data) {
+
+                }
+            };
+            type = type ? type : 'POST';
+            async = async ? async : false;//是否同步请求  //false-同步请求
+            if (!url || !success_c) {
+                msg_error_box('参数错误');
+            }
+            var re = false;
+            $.ajax({
+                type: type,
+                url: url,
+                data: data,//只要将表单序列化就可以了
+                async: async,//false-同步请求
+                dataType: 'json',
+                success: function (data) {
+                    re = success_c.success(data);
+                },
+                error: function (request) {
+                    msg_error_box("数据请求失败.请稍后重试");
+                    re = success_c.error(request);
+                    re = false;
+                }
+            });
+            return re;
+        }
+
+
+        //提交公用方法  表单  统一处理拦截错误信息
+        function ajax_form_function(form, success_c, async, type) {
+            success_c = success_c ? success_c : {
+                success: function (data) {
+
+                },
+                error: function (data) {
+
+                }
+            };
+            type = type ? type : 'POST';
+            async = async ? async : false;//是否同步请求  //false-同步请求
+            if (!form || !success_c) {
+                msg_error_box('参数错误');
+            }
+            var re = false;
+            $.ajax({
+                type: type,
+                url: $(form).attr('action'),
+                data: $(form).serialize(),//只要将表单序列化就可以了
+                async: async,//false-同步请求
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == '200') {
+                        if ('success' in success_c) {
+                            re = success_c.success(data);
+                        }
+                    } else {
+                        //提示错误
+                        msg_error_box(data.msg);
+                        if ("error" in success_c) {
+                            re = success_c.error(data);
+                        }
+                    }
+                },
+                error: function (request) {
+                    msg_error_box("数据请求失败.请稍后重试");
+                    re = false;
+                }
+            });
+            return re;
+        }
+    </script>
+
+
+
+
+	</body>
+</html>

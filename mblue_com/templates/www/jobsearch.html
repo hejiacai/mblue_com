@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>快米职位搜索</title>
+		<meta name="Keywords" content=""/>
+		<meta name="Description" content=""/>
+		<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+		<link rel="stylesheet" type="text/css" href="{/version file='kuaimi_pc.css'/}"/>
+		<script type="text/javascript" language="javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+	</head>
+	<body class="search-body">
+		{/include 'common/header.html'/}
+		<div class="main-container">
+			<div class="search-container">
+				<div class="search-form">
+					<div class="search-input-box">
+						<input type="text" name="" id="search_input" value="{/$key/}" autocomplete="off" class="search-input" placeholder="服务员"/>
+					</div>
+					<div class="search-btn-box">
+						<input type="button" name="" id="search_btn" value="搜索" class="search-btn"/>
+					</div>
+				</div>
+			</div>
+			<div class="filter-container">
+				<div class="area-container">
+					<div class="chooseCity">
+						<strong class="l-words area-words">地点: </strong>
+						<a href="{/$allAreaUrl/}" class=" {/if $allAreaUrlSelect/}nolimt acapsule{//if/}">不限</a>
+						<span class="checkCity mainCity {/if $area_select_type == 1/} mainCitycur curcolor{//if/}">主城</span>
+						<span class="checkCity nearbyCity {/if $area_select_type == 2/}nearbyCitycur curcolor{//if/}">周边区县</span>
+						<span class="checkbox-btn show_checkboxCity"><i class="add-icon"></i>多选</span>
+					</div>
+					<div class="cityList maincityList clearfix" {/if $area_select_type == 1/}style="display: block"{/else/}style="display: none"{//if/}>
+						{/foreach $mainArea as $key => $val/}
+						<a href="{/$val['url']/}" class="{/if $val['isSelect']/}curcolor{//if/}"  data-value="{/$val['area_id']/}">{/$val['area_name']/}</a>
+						{//foreach/}
+					</div>
+					<div class="cityList nearcityList clearfix" {/if $area_select_type == 2/}style="display: block"{/else/}style="display: none"{//if/}>
+						{/foreach $minArea as $key => $val/}
+						<a href="{/$val['url']/}" class="{/if $val['isSelect']/}curcolor{//if/}"  data-value="{/$val['area_id']/}">{/$val['area_name']/}</a>
+						{//foreach/}
+					</div>
+					<div class="checkboxList checkboxList_city clearfix" style="display: none;">
+						<em class="posArea-con">地点 | </em>
+						<ul class="checkboxList-ul checkboxList-mainCity clearfix">
+							{/foreach $mainArea as $key => $val/}
+							{/if $val['area_id'] != '01'/}
+								<li data-url="{/$val['url']/}" data-value="{/$val['area_id']/}" class="{/if $val['isSelect']/}checked{//if/}"><i class="checkbox {/if $val['isSelect']/}checkbox-checked{//if/}" data-isSelect="{/$val['isSelect']/}"></i><em>{/$val['area_name']/}</em></li>
+							{//if/}
+							{//foreach/}
+						</ul>
+						<ul class="checkboxList-ul checkboxList-near clearfix">
+							{/foreach $minArea as $key => $val/}
+								{/if $val['area_id'] != '02'/}
+								<li data-url="{/$val['url']/}" data-value="{/$val['area_id']/}" class="{/if $val['isSelect']/}checked{//if/}"><i class="checkbox {/if $val['isSelect']/}checkbox-checked{//if/}" data-isSelect="{/$val['isSelect']/}"></i><em>{/$val['area_name']/}</em></li>
+								{//if/}
+							{//foreach/}
+						</ul>
+						<form action="" method="post" class="checkboxList-form city_checkbox">
+							<input type="hidden" name="v" id="" value="" type-value="b"/>
+							<span class="select-btn select-cancelBtn">取消</span>
+							<span class="select-btn select-closeBtn">清除</span>
+							<span class="select-btn select-sureBtn">确定</span>
+						</form>
+					</div>
+				</div>
+				<div class="welfare-container">
+					<strong class="l-words welfare-words">福利: </strong>
+					{/foreach $reward as $key => $val/}
+					<a href="{/$val['url']/}" class="{/if $val['isSelect']/}{/if $val['reward_id']/}curcolor{/else/}nolimt acapsule{//if/}{//if/} " data-value="{/$val['reward_id']/}">{/$val['reward_name']/}</a>
+					{//foreach/}
+					<span class="checkbox-btn show_checkbox_welfare"><i class="add-icon"></i>多选</span>
+				</div>
+				<div class="checkboxList welfare-checkboxList" style="display: none;">
+					<!-- <em class="posArea-con">地点 | </em> -->
+					<ul class="checkboxList-ul checkboxList-welfare clearfix">
+						{/foreach $reward as $key => $val/}
+						<li data-value="{/$val['reward_id']/}" class="{/if $val['isSelect']/}checked{//if/}"><i class="checkbox {/if $val['isSelect']/}checkbox-checked{//if/}" data-isSelect="{/$val['isSelect']/}" data-url="{/$val['url']/}"></i><em>{/$val['reward_name']/}</em></li>
+						{//foreach/}
+					</ul>
+					<form action="" method="post" class="checkboxList-form welfare_checkbox">
+						<input type="hidden" name="v" id="" value="" type-value="b"/>
+						<span class="select-btn select-cancelBtn">取消</span>
+						<span class="select-btn select-closeBtn">清除</span>
+						<span class="select-btn select-sureBtn">确定</span>
+					</form>
+				</div>
+				<div class="other-container">
+					<strong class="l-words">其他: </strong>
+					<div class="other-li jobsort">
+						<span class="chooseBtn4words {/if !empty($searchConditionTemp['c'])/}curcolor{//if/}">行业筛选</span>
+						<div class="posDroplist jobsort-box">
+							<ul>
+								{/foreach $calling as $key => $val/}
+								<li class=""><a href="{/$val['url']/}" data-value = "{/$val['$calling_id']/}"><i class="checkbox {/if $val['isSelect']/}checkbox-checked{//if/}"></i><em>{/$val['calling_name']/}</em></a></li>
+								{//foreach/}
+							</ul>
+							<!-- <div class="sureBtn jobsortsSureBtn">确定</div> -->
+						</div>
+					</div>
+					<div class="other-li">
+						<span class="chooseBtn4words {/if !empty($searchConditionTemp['l'])/}curcolor{//if/}">作息时间</span>
+						<div class="posDroplist workTimeDroplist">
+							<ul>
+								{/foreach $allSchedule as $key => $val/}
+								<li class=""><a href="{/$val['url']/}"><i class="checkbox {/if $val['isSelect']/}checkbox-checked{//if/}"></i><em>{/$val['schedule_name']/}</em></a></li>
+								{//foreach/}
+							</ul>
+							<!-- <div class="sureBtn jobsortsSureBtn">确定</div> -->
+						</div>
+					</div>
+					<div class="other-li">
+						<span class="chooseBtn2words {/if !empty($searchConditionTemp['m'])/}curcolor{//if/}">性别</span>
+						<div class="posDroplist workTimeDroplist">
+							<ul>
+								{/foreach $allSex as $key => $val/}
+								<li class=""><a href="{/$val['url']/}"><em class="{/if $val['isSelect']/}curcolor{//if/}">{/$val['sex_name']/}</em></a></li>
+								{//foreach/}
+							</ul>
+						</div>
+					</div>
+					<div class="other-li">
+						<span class="chooseBtn2words {/if !empty($searchConditionTemp['e'])/}curcolor{//if/}">薪资</span>
+						<div class="posDroplist workTimeDroplist">
+							<ul>
+								{/foreach $allSalary as $key => $val/}
+								<li  ><a href="{/$val['url']/}" class="{/if $val['isSelect']/}curcolor{//if/}">{/$val['salary_name']/}</a></li>
+								{//foreach/}
+							</ul>
+							<!-- <div class="salaryupdown">
+								
+								<input class="salary-input salary_start" type="number" name="" id="" value="" placeholder="起薪"/>
+								<input class="salary-input salary_end" type="number" name="" id="" value="" placeholder="止薪"/>
+								<img src="{/$siteurl.style/}/img/blue/person/to.jpg" class="salaryupdown-img">
+							</div> -->
+							<!-- <div class="sureBtn jobsortsSureBtn">确定</div> -->
+						</div>
+					</div>
+					<div class="other-li is_famous">
+						<a href="{/$select_famous/}"><i class="checkbox {/if $is_famous/}checkbox-checked{//if/}"></i><em>名企</em></a>
+					</div>
+				</div>
+			</div>
+			<div class="jobList-container clearfix">
+				{/if $job_list/}
+				<ul class="jobList-ul">
+					{/foreach $job_list as $key => $val/}
+					<li>
+						<a href="{/$val['job_url']/}" target="_blank">
+							<div class="jobList-item">
+								<div class="jobCard">
+									<div class="jobCard-l">
+										<h3>{/$val['station']/}</h3>
+										<div class="jobInfo">
+											<span class="jobInfo-li salary">{/$val['salary_text']/}</span>
+											<span class="jobInfo-li jobInfo-detail">
+												<em>{/$val['area_name']/}</em><em>{/$val['degree_name']/}</em><em>{/$val['sex_text']/}</em><em>{/$val['age_text']/}</em>
+											</span>
+											<span class="jobInfo-li workTime">
+												<em>{/$val['schedule']/}</em>
+											</span>
+										</div>
+										{/if $val['rewards']/}
+										<div class="welfare-list">
+											{/foreach $val['rewards'] as $k => $v/}
+												{/if $k < 5/}
+												<span>{/$v/}</span>
+												{//if/}
+											{//foreach/}
+										</div>
+										{//if/}
+									</div>
+									<div class="jobCard-r">
+										<h5 class="issue-time">{/$val['refresh_time']/}</h5>
+
+										{/if $val['company_photos']/}
+										<div class="company-img">
+											{/foreach $val['company_photos'] as $k => $v/}
+											<img src="{/$v['photo_url']/}" class="company-img-l" alt="公司环境图片">
+											{//foreach/}
+										</div>
+										{//if/}
+									</div>
+								</div>
+								<div class="company-simpleInfo">
+									<a class="simpleInfo-li" href="{/$val['company_url']/}">{/$val['company_shortname']/}</a>
+									{/if $val['is_famous']/}<span class="simpleInfo-li simpleInfo-sign"><i></i>名企</span>{//if/}
+									<span class="simpleInfo-li simpleInfo-li-detail"><em>{/$val['property_name']/}</em><i>l</i><em>{/$val['company_size']/}</em><i>l</i><em>{/$val['company_callings']/}</em></span>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</a>
+					</li>
+					{//foreach/}
+				</ul>
+				{/else/}
+				<ul class="jobList-ul search_nodata">
+					<li>
+						<img src="{/$siteurl.style/}/img/blue/person/nodata.png" >
+						<p>没有数据</p>
+					</li>
+				</ul>
+				{//if/}
+				
+				<div class="RQ-code">
+					<div class="RQ-code-li RQ-code-li-phone">
+						<h4>手机APP求职</h4>
+						<img src="{/$siteurl.style/}/img/blue/company/android1.png" alt="手机APP求职二维码">
+					</div>
+					<div class="RQ-code-li RQ-code-li-wx">
+						<h4>手机微信求职</h4>
+						<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQFv8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya2JlRlo1Nno5bFQxMDAwME0wM3MAAgRCFEJeAwQAAAAA" alt="手机微信求职二维码">
+					</div>
+				</div>
+			</div>
+		</div>
+		{/$pager/}
+		<div class="page-router"><a href="/">首页</a>> <a href="javascript:void(0);">搜索结果</a></div>
+		{/include 'common/footer.html'/}
+        <div id='load_page' style='display:none;'></div>
+       <script type="text/javascript">
+            var action_url = '{/$siteurl.style/}';
+			var searchCondition = {/$searchCondition/};
+            action_dom = [
+                ['#load_page', 430]
+            ];
+			function searchkey(){
+				var searchValue = $("#search_input").val();
+				window.location.href = '{/get_url rule="/wjob/search/" data="key='+searchValue+'"/}';
+			}
+        </script>
+		<script type="text/javascript" language="javascript" src="{/version file='blueperson_search.js'/}"></script>
+        <script type="text/javascript" language="javascript" src="{/version file='action.js'/}"></script>
+	</body>
+</html>

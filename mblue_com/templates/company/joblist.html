@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{/$companyName/}-职位管理</title>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+
+    <script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+    <script type="text/javascript" src="{/version file='common.js'/}"></script>
+    <script type="text/javascript" src="{/version file='dialog.js'/}"></script>
+    <script type="text/javascript">
+      window.CONFIG = {
+        HOST: '{/$siteurl["style"]/}',
+        COMBOPATH: '/js/v2/'
+      }
+    </script>
+    <script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+    <script type="text/javascript" src="{/version file='global.js'/}"></script>
+    <style>
+        .tit{padding: 20px;text-align: left;font-size: 14px;}
+        .tit p{margin-top: 15px;margin-bottom: 15px;}
+        .tit p input{width: 50px;margin: 0 3px;}
+        .wrap{ background: #fff;}
+        .hb_ui_prt i{margin-left: 5px !important;}
+        .set-top-foot {
+            padding-left: 0;
+        }
+    </style>
+</head>
+<body bgcolor="#ececec">
+{/include file='./company/company_head.html'/}
+<div class="jobList-content clearfix" style="padding-bottom: 40px;">
+    <div class="wrap">
+        <div class="jobList-center">
+            <ul class="jobList-head clearfix">
+                <li class="{/if $job_status == 'index'/}hover{//if/}"><a href="{/$siteurl['kmcompany']/}/job">招聘中({/$job_list_number/})</a></li>
+                <li class="{/if $job_status == 'stop'/}hover{//if/}"><a href="{/$siteurl['kmcompany']/}/job/index/status-stop">已结束招聘（{/$stop_job_number/}）</a></li>
+            </ul>
+            <div class="jobList-job">
+                <table style="margin-top: 20px;">
+                    <thead>
+                    <tr>
+                        <th width="433" style="padding-left: 20px;">职位名称</th>
+                        <th>剩余天数</th>
+                        <th width="264">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="table" style="padding: 0 20px;">
+                    {/if !empty($job_list)/}
+                    <table style="width: 960px;">
+                    <tbody>
+                    {/foreach $job_list as $k=>$job/}
+                    <tr>
+                        <td width="411">
+                            
+                            <span style="color: #666;">{/$job['station']/}</span>
+                            {/if $job['is_top']/}<em class="tag">置顶</em>{//if/}
+                            {/if $job['check_state']==2/}<em class="tag noTag">审核不通过</em>{//if/}
+                            {/if $job_status=='index' && $job['check_state']==0/}<em class="tag noTag">待审核</em>{//if/}
+                        </td>
+                        <td>
+                        {/$job['remain_day_text']/}
+                        </td>
+                        {/if $job_status == 'index'/}
+                        <td width="222">
+                            <a class="go_modify"  data-job_falg="{/$job['job_flag']/}" href="javascript:;">编辑</a>
+                            <a class="topJob" data-job_falg="{/$job['job_flag']/}"  data-station="{/$job['station']/}" href="javascript:void 0">置顶</a>
+                            <a class="closeJob" data-job_falg="{/$job['job_flag']/}" data-station="{/$job['station']/}" href="javascript:void 0">关闭</a>
+                            <a class="delayJob" data-endTime="{/date('Y-m-d',strtotime($job['end_time']))/}" data-job_falg="{/$job['job_flag']/}" data-station="{/$job['station']/}" href="javascript:void 0">延期</a>
+                        </td>
+                        {/else if $job_status == 'stop'/}
+                        <td width="222">
+                            <a target="" href="{/$siteurl['kmcompany']/}/job/AddJob/job_flag-{/$job['job_flag']/}-type-5">重新发布</a>
+                            <a class="delJob"  data-job_falg="{/$job['job_flag']/}" href="javascript:void 0">删除</a>
+                        </td>
+                        {//if/}
+                    </tr>
+                    {//foreach/}
+                    </tbody>
+                    </table>
+                    {/else/}
+                    <div class="noData" style="margin-top: 40px;">
+                        暂无数据
+                    </div>
+                    {//if/}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{/include file="common/showloading.html"/}
+{/include file='./company/footer.html'/}
+<style type="text/css">
+	.ui_dialog_container{ padding: 0!important;}
+	.hb_ui_dialog .ui_dialog_title{ font-size: 14px; text-align: left;}
+</style>
+</body>
+<script>
+
+    var can_modiy_delay = parseInt('{/$can_modiy_delay/}');
+    hbjs.use('@imageEditor, @confirmBox, @jobsort, @orderActions', function (m) {
+
+        var $ = m['cqjob.jobsort'];
+        var Dialog = m['widge.overlay.hbDialog'],
+        	ConfirmBox = m['widge.overlay.confirmBox'],
+            fontSize = 18,
+            pWidth = 70;
+        var _dialog = {
+            params: {},//自定义传递参数 titel:弹框标题 width:弹框宽度 getHtml:弹框主体内容 request:点击确定的请求 其他自定义
+            alert: null,
+            init: function () {
+
+                _dialog.alert = new Dialog({
+                    close: 'X',
+                    idName: 'stop_job_dialog',
+                    title: _dialog.params.titel,
+                    width: _dialog.params.width || 400,
+                    isOverflow: false,
+                    isAjax: true
+                });
+
+                _dialog.alert.on('closeX', function () {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.setContent(_dialog.params.getHtml);
+                _dialog.alert.query('#ok').off('click');
+                _dialog.alert.query('#cancel').off('click');
+                _dialog.alert.query('#cancel').on('click', function (e) {
+                    _dialog.alert.hide();
+                });
+                _dialog.alert.query('#ok').on('click', function (e) {
+                    _dialog.params.request();
+                });
+				_dialog.alert.query('.postpone_del').on('click', function (e) {
+				    window.location.reload()
+				});
+                _dialog.alert.show();
+            }
+        };
+
+        
+        $('.go_modify').click(function () {
+            if(can_modiy_delay == 0){
+                var msg = "抱歉，暂时不能编辑职位，开通付费会员可获得更多权限";
+                ConfirmBox.timeBomb(msg, {
+                    name : "fail",
+                    timeout : 3000,
+                    width: fontSize * msg.length + pWidth
+                });
+                return 0;
+            }
+            var url = "{/$siteurl['kmcompany']/}/job/AddJob/job_flag-"+$(this).attr('data-job_falg')+"-type-4";
+            window.location.href = url;
+        });
+
+        //职位停招
+        $(".closeJob").click(function () {
+            var _this = this;
+            _dialog.params = {
+                titel: '关闭职位',
+                getHtml: [
+                    '<div><div style="padding:20px 20px;text-align: left;color:#666;">',
+                    '关闭（停止招聘）后， <em style="color:#fb5958">' + $(this).attr('data-station') + '</em> 不再被求职者看到，确定关闭吗？ </div>',
+                        '<div class="dialogFooter set-top-foot"><a id="ok" href="javascript:;" class="present">关  闭</a>',
+                        '<a id="cancel" href="javascript:;" class="gray">取  消</a></div>',
+                        '</div>'
+                    ].join(''),
+                request: function () {
+                    showLoading()
+                    $.ajax({
+                        url: "{/get_url rule="/job/StopJob/"/}",
+                        type: "post",
+                        data: {job_flag: $(_this).attr('data-job_falg')},
+                        dataType: 'json',
+                        success: function (res) {
+                            closeLoading()
+                            if (res.status) {
+                                ConfirmBox.timeBomb(res.msg, {
+			                        name: 'success',
+			                        timeout : 1000,
+                                    width: fontSize * res.msg.length + pWidth
+			                    });
+                                  setTimeout(function () {
+                                    window.location.reload();
+                                  },1000);
+                            } else {
+                                ConfirmBox.timeBomb(res.msg, {
+			                        name: 'fail',
+			                        timeout : 1000,
+                                    width: fontSize * res.msg.length + pWidth
+			                    });
+                            }
+                            _dialog.alert.hide();
+                        }
+                    })
+                }
+            },
+            _dialog.init();
+        });
+
+        //删除职位 delJob
+        $(".delJob").click(function () {
+            var _this = this;
+            _dialog.params = {
+                titel: '删除职位',
+                getHtml: [
+                    '<div><div style="padding:40px 20px;text-align:left;color:#666;">',
+                    '删除后将不可恢复，确定要删除吗？</div>',
+                    '<div class="dialogFooter set-top-foot"><a id="ok" href="javascript:;" class="present">确  定</a>',
+                    '<a id="cancel" href="javascript:;" class="gray">取  消</a></div>',
+                    '</div>'
+                ].join(''),
+                request: function () {
+                    showLoading()
+                    $.ajax({
+                        url: "{/get_url rule="/job/Delete/"/}",
+                        type: "post",
+                        data: {job_flag: $(_this).attr('data-job_falg')},
+                        dataType: 'json',
+                        success: function (res) {
+                            closeLoading()
+                            if (res.error) {
+                                //alert(res.error)
+                                ConfirmBox.timeBomb(res.error, {
+			                        name: 'fail',
+			                        timeout : 1000,
+                                    width: fontSize * res.error.length + pWidth
+			                    });
+
+                            } else {
+                                ConfirmBox.timeBomb('删除成功', {
+			                        name: 'success',
+			                        timeout : 1000,
+                                    width: fontSize * '删除成功'.length + pWidth
+			                    });
+                              setTimeout(function () {
+                                window.location.reload();
+                              },1000);
+                            }
+                        }
+                    })
+                }
+            },
+            _dialog.init();
+        });
+
+        //延期 delayJob
+        var cur_date = '';
+        $(".delayJob").click(function () {
+            var _this = this;
+            cur_date = UnixToDate(DateToUnix($(_this).attr('data-endTime')),false,24);
+            _dialog.params = {
+                titel: '职位延期',
+                getHtml: [
+                    '<div class="tit" style="padding:0px"><div style="padding:20px 20px;color:#666">',
+                    '需要将<em style="color:#fb5958">'+ $(_this).attr('data-station') +'</em>的招聘天数延长多少？',
+                    '<p>延长'+'<input type="text" name="txtValidDays">天',
+                    '<div class="dialogFooter set-top-foot"><a id="ok" href="javascript:;" class="present">确  定</a>',
+                    '<a id="cancel" href="javascript:;" class="gray postpone_del">取  消</a></div>',
+                    '</div>'
+                ].join(''),
+                request: function () {
+                    if(can_modiy_delay == 0){
+                        var msg = "抱歉，暂时不能延期职位，开通付费会员可获得更多权限";
+                        ConfirmBox.timeBomb(msg, {
+                            name : "fail",
+                            timeout : 3000,
+                            width: fontSize * msg.length + pWidth
+                        });
+                        return 0;
+                    }
+                    showLoading()
+                    $.ajax({
+                        url: "{/get_url rule="/job/DelayDo/"/}",
+                        type: "post",
+                        data: {job_flag: $(_this).attr('data-job_falg'),txtValidDays:$('input[name=txtValidDays]').val()},
+                        dataType: 'json',
+                        success: function (res) {
+                            closeLoading()
+                            if (res.status) {
+                                ConfirmBox.timeBomb(res.msg, {
+			                        name: 'success',
+			                        timeout : 1000,
+                                    width: fontSize * res.msg.length + 50
+			                    });
+                                  setTimeout(function () {
+                                    window.location.reload();
+                                  },1000);
+
+                            } else {
+                                ConfirmBox.timeBomb(res.msg, {
+			                        name: 'fail',
+			                        timeout : 1000,
+                                    width: fontSize * res.msg.length + 50
+			                    });
+                            }
+
+                        }
+                    })
+                }
+            },
+            _dialog.init();
+        });
+        $('input[name=txtValidDays]').die().live('keyup', function () {
+            var need_add_day = parseInt($(this).val());
+            if(need_add_day > 0){
+                var show_date = DateToUnix(cur_date) + 60*60*24*need_add_day
+                var show_date = UnixToDate(show_date,false,24);
+                $('.end_time_set').text(show_date);
+            }else{
+                $('.end_time_set').text(cur_date);
+            }
+
+        })
+        function DateToUnix(string) {
+            var f = string.split(' ', 2);
+            var d = (f[0] ? f[0] : '').split('-', 3);
+            var t = (f[1] ? f[1] : '').split(':', 3);
+            return (new Date(
+                parseInt(d[0], 10) || null,
+                (parseInt(d[1], 10) || 1) - 1,
+                parseInt(d[2], 10) || null,
+                parseInt(t[0], 10) || null,
+                parseInt(t[1], 10) || null,
+                parseInt(t[2], 10) || null
+            )).getTime() / 1000;
+        }
+        function UnixToDate(unixTime, isFull, timeZone) {
+            if (typeof (timeZone) == 'number') {
+                unixTime = parseInt(unixTime) + parseInt(timeZone) * 60 * 60;
+            }
+            var time = new Date(unixTime * 1000);
+            var ymdhis = "";
+            ymdhis += time.getUTCFullYear() + "-";
+            ymdhis += (time.getUTCMonth() + 1) + "-";
+            ymdhis += time.getUTCDate();
+            if (isFull === true) {
+                ymdhis += " " + time.getUTCHours() + ":";
+                ymdhis += time.getUTCMinutes() + ":";
+                ymdhis += time.getUTCSeconds();
+            }
+            return ymdhis;
+        }
+        //置顶
+        $('.topJob').click(function(){
+            var _this = this;
+            var station = $(_this).attr('data-station');
+            showLoading();
+            $.ajax({
+                url: "{/get_url rule="/job/GetTopAlert/"/}",
+                type: "post",
+                data: {job_flag: $(_this).attr('data-job_falg'),txtValidDays:$('input[name=txtValidDays]').val()},
+                success: function (res) {
+                    closeLoading()
+                    _dialog.params = {
+                      titel: '职位置顶',
+                      width:500,
+                        getHtml: res,
+                        request: function () {
+                            // 提交参数验证
+                            orders = [];
+                            var tops_verify = true;
+                            _dialog.alert.query("#formjob").find(".list").each(function (i, e) {
+                                if ($(this).find("select[name=dllday]").hasClass('disabled'))
+                                    return true;
+
+                                var txtword = station;
+                                var dllday  = $(this).find("select[name=dllday]").val();
+                                if (!txtword) {
+                                    tops_verify = false;
+                                    return false;
+                                }
+                                orders.push({type : 'top', keyword : txtword, dllday : dllday});
+                            });
+                            showLoading();
+                            $.ajax({
+                                url: "{/get_url rule="/budgeteservice/TopDo_CG/"/}",
+                                type: "post",
+                                data: {
+                                    tops: orders,
+                                    job_flag: $(_this).attr('data-job_falg')
+                                },
+                                dataType: 'json',
+                                success: function (res) {
+                                    closeLoading()
+                                    if (res.status) {
+                                        ConfirmBox.timeBomb(res.msg, {
+					                        name: 'success',
+					                        timeout : 3000,
+                                            width: fontSize * res.msg.length+20
+					                    });
+                                        setTimeout(function () {
+                                            _dialog.alert.hide();
+                                            window.location.reload();
+                                        },3000)
+
+                                    } else {
+                                        //alert(res.msg)
+                                        ConfirmBox.timeBomb(res.msg, {
+					                        name: 'fail',
+					                        timeout : 1000,
+                                            width: fontSize * res.msg.length+20
+					                    });
+                                    }
+
+                                }
+                            })
+                        }
+                    };
+                    _dialog.init();
+                    //新增关键词
+                    _dialog.alert.query("#set-top").on("click", ".add", function (e) {
+                        var i = $("#set-top").find(".list").length + 1;
+                        var $li = $(".modal").find('li').clone();
+                        if (i >= 3) {
+                            $(this).hide();
+                        }
+                        $("#set-top").find("ul#tops").append($li);
+                        $('.text').change(function(){
+                            var text_val = $(this).val();
+                            if (/^([\u4e00-\u9fa5]+|[0-9a-zA-Z\/.\-\\#\+]+)$/.test(text_val)) {} else {
+                                var new_val = '';
+                                for(var i=0;i<text_val.length;i++)
+                                {
+                                    if (/^([\u4e00-\u9fa5]+|[0-9a-zA-Z\/.\-\\#\+]+)$/.test(text_val.charAt(i))) {
+                                        new_val += text_val.charAt(i);
+                                    }
+                                }
+                                $(this).val(new_val);
+                            }
+                        });
+                    });
+                    // 删除关键词
+                    _dialog.alert.query("#set-top").on("click", ".del", function (e) {
+                        $(this).closest('li').remove();
+                        if ($("#set-top").find(".list").length < 3)
+                            $(".add").show();
+                    });
+                    // 延长时间
+                    _dialog.alert.query("#set-top").on("click", ".delay", function (e) {
+                        $(this).removeClass("delay").addClass("delay-cancel").siblings('.extend-box').find("select[name=dllday]").removeClass('disabled');
+                        $(this).removeClass("delay").addClass("delay-cancel").siblings('.extend-box').show();
+                        $(this).text("取消延长");
+                    });
+                    // 取消延长时间
+                    _dialog.alert.query("#set-top").on("click", ".delay-cancel", function (e) {
+                        $(this).siblings('.extend-box').find("select[name=dllday]").addClass('disabled');
+                        $(this).removeClass("delay-cancel").addClass("delay").siblings('.extend-box').hide();
+                        $(this).text("延长时间");
+                    });
+                    _dialog.alert.on('closeX', function () {
+                        _dialog.alert.destory();
+                    });
+                    _dialog.alert.query('#cancel').off('click');
+                    _dialog.alert.query('#cancel').on('click', function (e) {
+                        _dialog.alert.destory();
+                    });
+                }
+            })
+        })
+    })
+</script>
+</html>

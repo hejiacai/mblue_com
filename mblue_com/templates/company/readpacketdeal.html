@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		
+
+		<div class="envelopeView">
+			<span class="enveViewTit">（以下用户已申请领取面试补贴红包，请尽快确认面试者是否到场面试（反馈一个面试可以获得2米币哦~），以便快米官方发放红包）</span>
+			<div class="enveViewx">
+				<a href="javascript:void(0);" class="enveViewBtn" id="redPacketApplys">批量设为已参加面试</a>
+			</div>
+			<table class="enveViewTab">
+				<tr>
+					<th>面试时间</th>
+					<th>姓名</th>
+					<th width="160">面试岗位</th>
+					<th>申请时间</th>
+					<th id="xxx">操作</th>
+				</tr>
+
+				{/foreach $list as $k=>$v/}
+				<tr id="detail_{/$v['id']/}">
+					<td>
+						<input type="checkbox"  name="redPacketApply[]" value="{/$v['id']/}" />{/$v['audition_time']/}
+					</td>
+					<td>
+						<a href="#">{/$v['user_name']/}</a>
+					</td>
+					<td width="160">
+						{/$v['station']/}
+					</td>
+					<td class="gray">{/date('Y-m-d H:i:s',strtotime($v['create_time']))/}</td>
+					<td class="addMb">
+						<span class="addMpay">+2米币</span>
+						<a href="javascript:void(0);" class="haveInter doOK" data-id="{/$v['id']/}">已参加面试</a>
+						<a href="javascript:void(0);" class="doNo" data-id="{/$v['id']/}">未参加面试</a>
+					</td>
+				</tr>
+				{//foreach/}
+
+			</table>
+		</div>
+
+	</body>
+</html>

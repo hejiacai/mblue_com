@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>面试管理</title>
+
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-widge.css'/}"/>
+
+    <script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+    <script type="text/javascript" src="{/version file='common.js'/}"></script>
+    <script type="text/javascript" src="{/version file='WdatePicker.js'/}"></script>
+
+    <style>
+        div.noData{height: 500px;}
+        select.drop {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            border: 1px solid #e8e8e8;
+            background: url({/$siteurl.style/}/img/company/triangle.png) 400px center no-repeat #fff;
+            height: 30px;
+            line-height: 30px;
+            padding: 0px 5px;
+            outline: none;
+            text-align: left;
+            text-indent: 0px;
+            width: 420px;
+        }
+    </style>
+</head>
+<body style="background-color: #ececec">
+{/include file='./company/company_head.html'/}
+<form method="get" action="{/get_url rule='/invite/index/'/}">
+    <div id="interview-manage-app">
+        <div class="body">
+            <div class="search-con clearfix">
+                <div class="w-460">
+                    <h3 style="width: 40px">职位</h3>
+                    <select name="job_flag" class="drop">
+                        <option value="" {/if $job_flag==$v['job_flag']/}selected{//if/}>全部</option>
+                        {/foreach $job_list as $k=>$v/}
+                        <option value="{/$v['job_flag']/}" {/if $job_flag==$v['job_flag']/}selected{//if/}>{/$v['station']/}</option>
+                        {//foreach/}
+                    </select>
+                </div>
+                <div class="w-40">
+
+                </div>
+                <div class="w-460">
+                    <h3>面试时间</h3>
+                       <input name="min_audition_time" style="margin-right: 0;width: 180px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" value="{/if !empty($min_audition_time)/}{/$min_audition_time/}{//if/}">
+
+                       </input>
+                       <span>~</span>
+                       <input  name="max_audition_time" style="margin-right:-4px\9;width: 180px" value="{/if !empty($max_audition_time)/}{/$max_audition_time/}{//if/}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})">
+
+                       </input>
+                </div>
+                <div class="clearfix" style="height: 20px;width: 100%;clear: both"></div>
+                <div class="w-460">
+                    <h3>邀请时间</h3>
+                    <input style="margin-right: 0;width: 180px" value="{/if !empty($min_invite_time)/}{/$min_invite_time/}{//if/}" name="min_invite_time" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+
+                    </input>
+                    <span>~</span>
+                    <input  style="margin-right:-4px\9;width: 180px" value="{/if !empty($max_invite_time)/}{/$max_invite_time/}{//if/}"  name="max_invite_time" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+
+                    </input>
+                </div>
+				<div class="w-40">
+				</div>
+                <div class="w-460">
+					<div class="interviewType-box"> 
+						<h3 style="width: 70px">面试方式</h3>
+						<select name="audition_type" class="drop interviewType">
+							<option value="" >全部</option>
+							<option value="1" {/if $audition_type == 1/}selected{//if/}>现场面试</option>
+							<option value="2" {/if $audition_type == 2/}selected{//if/}>视频面试</option>
+						</select>
+					</div>
+                    <button style="float: left">
+                        搜索
+                    </button>
+                </div>
+
+            </div>
+            <div class="list">
+                <ul class="list-head">
+                    <li class="interview-time">面试时间</li>
+					<li class="interview-type">面试方式</li>
+                    <li class="interview-name">姓名</li>
+                    <li class="interview-job">面试岗位</li>
+                    <li class="invite-time">邀请时间</li>
+                </ul>
+                {/if !empty($invite_list)/}
+                {/foreach $invite_list as $k=>$v/}
+                <ul class="list-item">
+                    <li class="interview-time">{/$v['audition_time']/}</li>
+                    <li class="interview-time">{/if $v['audition_type'] == 1/}现场面试{/else/}视频面试{//if/}</li>
+                    <li class="interview-name"><a href="{/get_url rule='/resume/index/'/}person_id-{/$v['person_id']/}-from_notfit-1" target="_blank">{/if empty($v['user_name'])/}---{/else/}{/$v['user_name']/}{//if/}</a>{/if $v['invite_origin']==2/}<span style="border: 1px solid blue;margin-left: 10px;font-size: 10px;padding: 1px;border-radius:4px;">平台推荐</span>{//if/}</li>
+                    <li class="interview-job">{/if empty($v['station'])/}---{/else/}{/base_lib_BaseUtils::cutstr($v['station']|default:$list['info'],14,'utf-8','',"...")/}{//if/}</li>
+                    <li class="invite-time">{/$v['create_time']/}</li>
+                </ul>
+                {//foreach/}
+                {//if/}
+
+                {/if empty($invite_list)/}
+                <div class="noData" style="margin-top: 40px;">
+                    暂无数据
+                </div>
+                {//if/}
+            </div>
+            <div style="position: absolute;bottom: 0;left: 0px;width: 1000px;text-align: center;">
+                {/$pager/}
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{/include file='./company/footer.html'/}
+</body>
+</html>

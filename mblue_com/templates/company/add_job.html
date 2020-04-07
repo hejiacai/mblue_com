@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{/$companyName/}-企业发布职位</title>
+		<script type="text/javascript" language="javascript" src="{/version file="jquery-1.8.3.min.js"/}"></script>
+		<script type="text/javascript" language="javascript" src="{/version file="layer.js"/}"></script>
+		<script type="text/javascript" language="javascript" src="{/version file="dialog.js"/}"></script>
+		<script type="text/javascript" language="javascript" src="{/version file="common.js"/}"></script>
+		<script type="text/javascript" language="javascript" src="{/version file="jquery.form.js"/}"></script><!--表单提交-->
+		<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=33f9256a1a1ba5a80eb40f8ed45bce3c"></script>
+		<script type="text/javascript" src="{/version file='version.js'/}"></script>
+		<script type="text/javascript">
+			window.CONFIG = {
+				HOST: '{/$siteurl.style/}',
+				COMBOPATH: '/js/v2/'
+			}
+		</script>
+		<script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+
+		<script type="text/javascript" src="{/version file='global.js'/}"></script>
+		<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+		<link rel="stylesheet" type="text/css" href="{/version file='bluestyle.css'/}"/>
+		<link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+		<style type="text/css">
+			body{ background: #fff!important; text-align: left!important;}
+			.formMod .r select{ font-size: 16px;}
+
+			.job-describe {
+				height: 64px;
+				line-height: 64px;
+				padding-left: 30px;
+				border-bottom: 1px solid #e8e8e8;
+				font-weight: bold;
+				font-size: 20px;
+				margin-bottom: 20px;
+				color: #666;
+			}
+
+			#btnSaveAddress:hover {
+				background: #ef4544 !important;
+			}
+			.contactWay label{ padding-bottom: 8px; display: block;}
+			.contactWay label input{ display: inline-block; vertical-align: -2px; margin-right: 8px;}
+			.contactWayLst {
+			    background-color: #eee;
+			    border-radius: 3px;
+			    padding: 10px;
+			    font-size: 12px;
+			    color: #999;
+			    zoom: 1;
+			    margin-left: 20px;
+			    background: #f1f1f1;
+			}
+			.newContact{display: none;}
+			
+			.rfTemplateEmpty{
+				position: absolute;
+				top:-99999px;
+				left:-99999px;
+			}
+		</style> 
+	</head>
+	<body>
+	{/include file='./company/company_head.html'/}
+		<form action="{/get_url rule='/job/AddJobDo/'/}" method="post" style="background-color: #ececec;padding:40px 0;" id="baseInforForm">
+			<input type="hidden" name="company_id" value="{/$company_id/}" id="company_id">
+			<input type="hidden" name="job_id" value="{/$job_id/}" id="job_id">
+		<div class="postJob-bd" style="background-color: #fff;padding-top: 0px;">
+
+			<div class="job-describe">
+				详细描述你的职位
+			</div>
+            {/if !$job_id && !$can_pub_job/}<p class="deduction_notice">当前已使用完套餐内配送的职位数，以后发的每个职位展示、刷新各需要10米币/天</p>{//if/}
+			<h2>基本信息</h2>
+			<div class="formMod">
+                <div class="l">职位名称<i>*</i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" style="width:300px;" data-maxl="20" value="{/$job_info['station']/}" name="txtStation" id="txtStation" class="text">
+                    </span>
+					<!--jobname tip-->
+                    <span class="tipPos" id="for-job-name" style="display: none;">
+                    	<span class="tipLay" data-for="txtStation">
+							<span class="tipLayErr tipw200">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">&nbsp;&nbsp;&nbsp;招聘天数<i>*</i></div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" name="txtPeriod" id="txtPeriod" value="{/$days/}" class="text" style="width:45px; text-align: center;">
+                    </span>
+                    <span class="tipTxt font14">天</span>
+					<span id="yxtime" class="tipTxt font14 orange" style="color: #fb5958"></span><span class="tipTxt font14 orange" style="color: #fb5958">（{/$job_spent_mb/}米币/24小时，招满人后请及时关闭职位）</span>
+					<!--yxtime tip-->
+					<span class="tipPos" id="for-yxtime" style="display: none;">
+                    	<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw200">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+                    </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+			<div class="formMod">
+				<div class="l">&nbsp;&nbsp;&nbsp;招聘人数<i>*</i></div>
+				<div class="r">
+                    <span class="formText">
+                        <input type="text" name="quantity" id="quantity" value="{/$job_info['quantity']/}" class="text" style="width:45px; text-align: center;">
+                    </span>
+					<span class="tipTxt font14">人</span>
+					<!--quantity tip-->
+					<span class="tipPos" id="for-quantity" style="display: none;">
+                    	<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw200">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+
+				</div>
+				<div class="clear"></div>
+			</div>
+			<!--{/if $company_info['recruit_type'] == 2/}
+            <div class="formMod addressMod">
+                <div class="l">代招公司<i>*</i></div>
+                <div class="r">
+					<select name="txtGeneraSales" class="txtGeneraSales" id="txtGeneraSales" onchange="getTopJobsort()">
+						<option value="">请选择</option>
+						{/foreach $agent_info as $val/}
+						<option value="{/$val['agent_company_id']/}" {/if $val['agent_company_id'] == $job_info['agent_company_id']/}selected='selected'{//if/}>{/$val['company_name']/}</option>
+						{//foreach/}
+					</select>
+                </div>
+                <div class="clear"></div>
+            </div>
+			{//if/}-->
+			<input type="hidden" id="txtGeneraSales" name="txtGeneraSales" value="{/$job_info['agent_company_id']/}" >
+            <div class="formMod addressMod">
+                <div class="l">职位类别<i>*</i></div>
+                <div class="r">
+					<select name="topjobsort" class="shePost01" id="topjobsort" onchange="getSubjobsort()" style="border-color: #e8e8e8;font-size: 14px;">
+						<option value=''>请选择</option>
+						{/foreach $topjobsort as $key=>$val/}
+						<option value="{/$val['jobsort']/}" {/if $select_top_jobsort == $val['jobsort']/}selected='selected'{//if/}>{/$val['jobsort_name']/}</option>
+						{//foreach/}
+					</select> 
+					<select id="subjobsort" name="subjobsort" class="shePost02" id="subjobsort" style="border-color: #e8e8e8;font-size: 14px;">
+						<option value=''>请选择</option>
+						{/foreach $select_subjobsort as $key=>$val/}
+						<option value="{/$val['jobsort']/}" {/if $job_info['jobsort_id'] == $val['jobsort']/}selected='selected'{//if/}>{/$val['jobsort_name']/}</option>
+						{//foreach/}
+					</select>
+					<!--job-type tip-->
+					<span class="tipPos" id="for-job-type" style="display: none;">
+                    	<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw200">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+			
+			
+            <h2>薪资福利</h2>
+            <div class="formMod addressMod">
+                <div class="l">薪资详情<i>*</i></div>
+                <div class="r">
+					<input type="text" name="payMin" class="payMin moneyInput" style="float: left;" value="{/$job_info['min_salary']/}" />
+					<span style="float: left; padding: 0 8px;">~</span>
+					<input type="text" name="payMax" class="payMax moneyInput" style="float: left;" value="{/$job_info['max_salary']/}" />
+
+					<select name="salary_settle_method" class="salaryMethod" {/if in_array($job_info['jobsort_id'],['1000','1001'])/}style="display: block"{/else/}style="display: none"{//if/}>
+						{/foreach $salary_settle_method as $k => $v/}
+						<option value ="{/$k/}" {/if $k == $default_salary_method/}selected="selected"{//if/}>{/$v/}</option>
+						{//foreach/}
+					</select>
+
+					<span class="tipPos" id="for-salary" style="float:none;top:-7px;left:40px;display: none;">
+                    	<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw200">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+					<div class="clear"></div>
+					<span class="payBad" style="color: #fb5958">薪资范围差不超过两倍，真实的薪资更利于提高招聘效果</span>
+					<div class="moneyText">此处为薪资具体说明，没有可不填（说得越清楚，求职者越有意向）</div>
+					<div class="moneyDetail smallForm">
+						<div><div class="l">底薪</div><div class="r"><input class="text moneyInput" type="text" value="{/$job_info['base_salary']/}" name="base_salary">元</div><div class="clear"></div></div>
+						<div>
+							<div class="l">提成方式</div>
+							<div class="r">
+								<span class="formTextarea">
+									<textarea style="height:70px;" data-maxl="30" class="textarea" name="royalty_method" id="royalty_method" placeholder="如：超过规定数量每件3元，加班每小时40元等（限30字）">{/$job_info['royalty_method']/}</textarea>
+								</span>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div>
+							<div class="l">其他补贴</div>
+							<div class="r">
+							<span class="formTextarea">
+								 <textarea class="textarea" data-maxl="200" name="other_subsidy" id="other_subsidy" placeholder="限200字">{/$job_info['other_subsidy']/}</textarea>
+							</span>
+							<span class="tipPos" id="for-salary-detail" style="display: none;">
+								<span class="tipLay" data-for="txtPeriod">
+									<span class="tipLayErr tipw120">
+										<span class="tipArr"></span>
+									</span>
+								</span>
+							</span>
+							</div>
+							<div class="clear"></div>
+						</div>
+							
+<!--						 <span class="formTextarea">
+					        <textarea style="width: 654px;" class="textarea" name="salary_info" id="salary_info" placeholder="限200字">{/$job_info['salary_info']/}</textarea>
+					   </span>
+						<span class="tipPos" id="for-salary-detail" style="display: none;">
+					    	<span class="tipLay" data-for="txtPeriod">
+								<span class="tipLayErr tipw120">
+									<span class="tipArr"></span>
+								</span>
+							</span>
+						</span>-->
+					</div>
+                </div>
+                
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">福利待遇<i>*</i></div>
+				<div class="r" style="position: relative;">
+					<div style="width: 90%;" class="rewardFlitem rewardFliteFl">
+						{/foreach $rewards as $key=>$val/}
+						{/if $select_reward_ids/}
+						<span class="flitem {/if in_array($val['reward_id'],$select_reward_ids)/}cut{//if/}" data-id="{/$val['reward_id']/}"   >{/$val['reward_name']/}</span>
+						{/else/}
+						<span class="flitem" data-id="{/$val['reward_id']/}" >{/$val['reward_name']/}</span>
+						{//if/}
+						{//foreach/}
+					</div>
+					<input type="hidden" id="rewardFliteFl01" name="rewardFliteFl01" value="{/$job_info['reward_ids']/}" />
+					<!-- <span class="formTextarea" style="display: none;">
+								<textarea style="width: 654px;"  class="textarea"  name="other_reward" id="other_reward" placeholder="其他福利（限300字）">{/$job_info['other_reward']/}</textarea>
+					</span> -->
+					<span class="tipPos" style="position: absolute;right: 40px;left: auto;display: none;" id="for-fl">
+						<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+					  <!-- <span class="tipPos" style="display: none;top:0px;" id="for-other-reward">
+						<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span> -->
+				</div>
+                <div class="clear"></div>
+            </div>
+
+            <div class="formMod" {/if empty($job_info['traffic_routes'])/} style="display: none"{//if/} id="traffic_routes_div">
+                <div class="l">交通车路线<i> </i></div>
+                <div class="r">
+                	<span class="formTextarea">
+                        <textarea class="textarea" name="traffic_routes" id="traffic_routes" placeholder="限2000字">{/if $job_info['traffic_routes']/}{/$job_info['traffic_routes']/}{/else/}{/$company_remark['traffic_routes']/}{//if/}</textarea>
+                   </span>
+					<span class="tipPos" style="display: none;">
+                    	<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+			
+			
+			<h2>食宿说明</h2>
+			<div class="formMod">
+                <div class="l"></div>
+                <div class="r">
+					<a class="useMod" href="javascript:void(0)">使用模板</a>
+					<a class="saveMod" href="javascript:void(0)">保存为模板</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="rfTemplate">
+				<div class="formMod">
+					<div class="l">住宿<i>*</i></div>
+					<div class="r">
+						<div class="residentRadio radioBox">
+							<label><input type="radio" name="residentType" value="1" {/if $job_info['is_accommodation'] == 1/}checked="checked"{//if/}>提供住宿</label>
+							<label><input type="radio" name="residentType" value="2" {/if $job_info['is_accommodation'] == 2/}checked="checked"{//if/}>不提供住宿</label>
+							<span class="tipPos" id="for-resident" style="float:none;top:-7px;display: none;">
+								<span class="tipLay" data-for="txtPeriod">
+									<span class="tipLayErr tipw120">
+										<span class="tipArr"></span>
+									</span>
+								</span>
+							</span>
+						</div>
+						<div class="residentForm smallForm" style="{/if $job_info['is_accommodation'] == 1/}display:block;{/else/}display:none;{//if/}">
+							<div>
+								<div class="l">住宿说明</div>
+								<div class="r">
+									<span class="formTextarea">
+										<textarea style="height:70px;" data-maxl="30" class="textarea" name="residentText" id="residentText" placeholder="员工是否需要提供部分费用(限30字)">{/$job_info['accommodation_price']/}</textarea>
+									</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div>
+								<div class="l">宿舍条件</div>
+								<div class="r">
+									<span class="formTextarea">
+										<textarea class="textarea" data-maxl="200" name="residentCondition" id="residentCondition" placeholder="如有热水器、空调、独立卫浴等(限200字)">{/$job_info['accommodation_facility']/}</textarea>
+									</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div>
+								<div class="l">其他费用</div>
+								<div class="r">
+								<span class="formTextarea">
+									 <textarea class="textarea" data-maxl="200" name="residentOther" id="residentOther" placeholder="如水电费平摊(限200字)">{/$job_info['accommodation_other']/}</textarea>
+								</span>
+								<span class="tipPos" id="for-salary-detail" style="display: none;">
+									<span class="tipLay" data-for="txtPeriod">
+										<span class="tipLayErr tipw120">
+											<span class="tipArr"></span>
+										</span>
+									</span>
+								</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="formMod">
+					<div class="l">餐饮<i>*</i></div>
+					<div class="r">
+						<div class="foodRadio radioBox">
+							<label><input type="radio" name="foodType" value="1" {/if $job_info['working_meal_type'] == 1/}checked="checked"{//if/}>提供工作餐</label>
+							<label><input type="radio" name="foodType" value="2" {/if $job_info['working_meal_type'] == 2/}checked="checked"{//if/}>包吃</label> 
+							<label><input type="radio" name="foodType" value="3" {/if $job_info['working_meal_type'] == 3/}checked="checked"{//if/}>不提供工作餐</label>
+							<span class="tipPos" id="for-food" style="float:none;top:-7px;display: none;">
+								<span class="tipLay" data-for="txtPeriod">
+									<span class="tipLayErr tipw120">
+										<span class="tipArr"></span>
+									</span>
+								</span>
+							</span>
+						</div>
+						<div class="foodForm smallForm" {/if $job_info['working_meal_type'] == 3 || empty($job_info['working_meal_type'])/}style='display:none;'{/else/}style='display:block;'{//if/}>
+							<div>
+								<div class="l">餐饮说明</div>
+								<div class="r">
+									<span class="formTextarea">
+									<textarea style="height:70px;" data-maxl="200" class="textarea" name="foodOther" id="foodOther" placeholder="如每月饭卡充400元，超过需自费充值(限200字)">{/$job_info['working_meal_reasons']/}</textarea>
+									</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+							
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			
+			<div class="rfTemplateEmpty">
+				<div class="formMod">
+					<div class="l">住宿<i>*</i></div>
+					<div class="r">
+						<div class="residentRadio radioBox">
+							<label><input disabled="disabled" type="radio" name="residentType" value="1">提供住宿</label>
+							<label><input disabled="disabled" type="radio" name="residentType" value="2">不提供住宿</label>
+							
+						</div>
+						<div class="residentForm smallForm">
+							<div>
+								<div class="l">住宿说明</div>
+								<div class="r">
+									<span class="formTextarea">
+										<textarea disabled="disabled" style="height:70px;" class="textarea residentText" name="residentText" placeholder="员工是否需要提供部分费用(限30字)"></textarea>
+									</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div>
+								<div class="l">宿舍条件</div>
+								<div class="r">
+									<span class="formTextarea">
+										<textarea disabled="disabled" class="textarea residentCondition" name="residentCondition" placeholder="如有热水器、空调、独立卫浴等(限200字)"></textarea>
+									</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div>
+								<div class="l">其他费用</div>
+								<div class="r">
+								<span class="formTextarea">
+									 <textarea disabled="disabled" class="textarea residentOther" name="residentOther" placeholder="如水电费平摊(限200字)"></textarea>
+								</span>
+								<span class="tipPos" id="for-salary-detail" style="display: none;">
+									<span class="tipLay" data-for="txtPeriod">
+										<span class="tipLayErr tipw120">
+											<span class="tipArr"></span>
+										</span>
+									</span>
+								</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="formMod">
+					<div class="l">餐饮<i>*</i></div>
+					<div class="r">
+						<div class="foodRadio radioBox">
+							<label><input disabled="disabled" type="radio" name="foodType" value="1">提供工作餐</label>
+							<label><input disabled="disabled" type="radio" name="foodType" value="2">包吃</label> 
+							<label><input disabled="disabled" type="radio" name="foodType" value="3">不提供工作餐</label>
+						</div>
+						<div class="foodForm smallForm">
+							<div>
+								<div class="l">餐饮说明</div>
+								<div class="r">
+									<span class="formTextarea">
+									<textarea disabled="disabled" style="height:70px;" class="textarea foodOther" name="foodOther" placeholder="如每月饭卡充400元，超过需自费充值(限200字)"></textarea>
+									</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+							
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			
+			<h2>岗位说明</h2>
+            <div class="formMod">
+                <div class="l">工作内容<i>*</i></div>
+                  <div class="r" style="position: relative;">
+					  <span class="formTextarea">
+					          <textarea style="width: 654px;margin-bottom:16px;" data-maxl="300" class="textarea" name="content" id="content" placeholder="例:&#13;&#10;1.协助机台完成加料或排线等工作；&#13;&#10;2.设备的维护与保养，环境卫生的打扫、整理；&#13;&#10;3.完成各机台主机手交办的其他事项等。(限300字)">{/$job_info['content']/}</textarea>
+					     </span>
+					    <span class="tipPos" id="for-content" style="display: none;">
+							<span class="tipLay" data-for="txtPeriod">
+								<span class="tipLayErr tipw120">
+									<span class="tipArr"></span>
+								</span>
+							</span>
+						</span>
+					  
+                  	<div class="rewardFlitem rewardFlitemGw">
+						{/foreach $schedule as $key=>$val/}
+	                  	<span class="flitem {/if $key==$job_info['schedule_id']/}cut{//if/}" data-id="{/$key/}">{/$val/}</span>
+						{//foreach/}
+                  	</div>
+					<span class="formTextarea">
+					        <textarea style="width: 654px;margin-bottom:16px;height: 60px; {/if empty($job_info['schedule_id'])/}display:none{/else/}display:block{//if/}" data-maxl="30" class="textarea" name="schedule_id_remark" id="jobTimeLth" placeholder="请输入具体工作时间，限30字（选填）">{/$job_info['schedule_id_remark']/}</textarea>
+					</span>
+					
+                  	<input type="hidden" id="rewardFliteFl02" name="rewardFliteFl02" value="{/$job_info['schedule_id']/}" />
+                  	<!-- <span class="formTextarea">
+                        <textarea style="width: 654px;" class="textarea" name="schedule_info" id="schedule_info" placeholder="详细作息时间">{/$job_info['schedule_info']/}</textarea>
+                   </span> -->
+					  <span class="tipPos" id="for-gw" style="position: absolute; top:158px;right: 40px;left: auto;display: none;">
+                    	<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+                   <div class="formCleannes">
+                   		<div class="formCleanLt">
+                   			<span>
+                   				<b style="font-weight: normal">是否穿无尘服：</b>
+                   				<label><input type="radio" value="1" name="is_dusters" {/if $job_info['is_dusters'] == 1/}checked="checked"{//if/}/>是</label>
+                   				<label><input type="radio" value="2" name="is_dusters" {/if $job_info['is_dusters'] == 2/}checked="checked"{//if/}/>否</label>
+                   			</span>
+                   			<span>
+                   				<b style="font-weight: normal">是否坐着上班：</b>
+                   				<label><input type="radio" value="1" name="work_posture" {/if $job_info['work_posture'] == 1/}checked="checked"{//if/}/>是</label>
+                   				<label><input type="radio" value="2" name="work_posture" {/if $job_info['work_posture'] == 2/}checked="checked"{//if/}/>否</label>
+                   			</span>
+                   		</div>
+                   		<div class="formCleanLt">
+                   			<span>
+                   				<b style="font-weight: normal">体检费用：</b>
+                   				<label><input type="radio" value="1" name="examination" {/if $job_info['examination'] == 1/}checked="checked"{//if/}/>自费</label>
+                   				<label><input type="radio" value="2" name="examination" {/if $job_info['examination'] == 2/}checked="checked"{//if/}/>公司报销</label>
+                   			</span>
+                   		</div>
+                   		
+                   	</div>
+                   		<div class="clear"></div>
+                   		
+                  	</div>
+                <div class="clear"></div>
+            </div>
+            
+			<h2>岗位要求</h2>
+			<div class="formMod formDemand01">
+				<div class="l">性别<i>*</i></div>
+				<div class="r">
+					<select name="txtGenerationXb" class="txtGenerationXb" style="width: 100px;border-color: #e8e8e8;font-size: 14px;">
+							<option value="">男女不限</option>
+							{/foreach $sex_list as $key=>$val/}
+							<option value="{/$key/}" {/if $job_info['sex'] == $key/}selected='selected'{//if/}>{/$val/}</option>
+							{//foreach/}
+					
+					</select>
+					<span class="tipPos" id="for-txtGenerationXb" style="display: none;">
+						<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="formMod">
+				<div class="l">年龄<i></i></div>
+				<div class="r">
+					<div class="formDemand02 formDemandz02" {/if $job_info['sex'] == 1/}style="display: none"{//if/}>
+						<span>女</span>
+						<select name="txtGenerationx" style="width: 100px;border-color: #e8e8e8;font-size: 14px;">
+							{/foreach $age as $key=>$val/}
+							<option value="{/$val['id']/}" {/if $job_info['female_age_lower'] == $val['id']/}selected='selected'{//if/}>{/$val['name']/}</option>
+							{//foreach/}
+						
+						</select>
+						<span>~</span>
+						<select name="txtGenerationz" class="txtGeneration" style="width: 100px;border-color: #e8e8e8;font-size: 14px;">
+							{/foreach $age as $key=>$val/}
+							<option value="{/$val['id']/}" {/if $job_info['female_age_upper'] == $val['id']/}selected='selected'{//if/}>{/$val['name']/}</option>
+							{//foreach/}
+						</select>
+					</div>
+					<div class="formDemand02 formDemandx02" style="padding-top: 0px;{/if $job_info['sex'] == 2/}display: none{//if/}" >
+						<span>男</span>
+						<select name="txtGenerationy" style="width: 100px;border-color: #e8e8e8;font-size: 14px;">
+							{/foreach $age as $key=>$val/}
+							<option value="{/$val['id']/}" {/if $job_info['male_age_lower'] == $val['id']/}selected='selected'{//if/}>{/$val['name']/}</option>
+							{//foreach/}
+						</select>
+						<span>~</span>
+						<select name="txtGenerationw" style="width: 100px;border-color: #e8e8e8;font-size: 14px;">
+							{/foreach $age as $key=>$val/}
+							<option value="{/$val['id']/}" {/if $job_info['male_age_upper'] == $val['id']/}selected='selected'{//if/}>{/$val['name']/}</option>
+							{//foreach/}
+						</select>
+					</div>
+					
+				</div>
+				<div class="clear"></div>
+			</div>
+            <div class="formMod formDemand03">
+            	<div class="l">学历<i></i></div>
+            	<div class="r">
+            		<select id="txtGenerationXl" name="txtGenerationXl" style="width: 100px;border-color: #e8e8e8;font-size: 14px;">
+            				<option value="">--请选择--</option>
+            				<option value="0" {/if !$job_info['degree_id']/}selected='selected'{//if/}>不限</option>
+            				{/foreach $degree_list as $key=>$val/}
+            				<option value="{/$key/}" {/if $job_info['degree_id'] == $key/}selected='selected'{//if/}>{/$val/}</option>
+            				{//foreach/}
+					
+					</select>
+					<span class="tipPos" id="for-txtGenerationXl" style="display: none;">
+            			<span class="tipLay" data-for="txtPeriod">
+            				<span class="tipLayErr tipw120">
+            					<span class="tipArr"></span>
+            				</span>
+            			</span>
+            		</span>
+            	</div>
+            	<div class="clear"></div>
+            </div>
+			
+			<div class="formMod addressMod">
+                <div class="l">其他要求<i></i></div>
+                <div class="r">                
+                	<span class="formTextarea">
+						<textarea class="textarea" data-maxl="300" style="width: 654px;" name="other_need" id="other_need" placeholder="例:&#13;&#10;1.无纹身烟疤；&#13;&#10;2.无色盲色弱；&#13;&#10;3.其他（限300字）">{/$job_info['other_need']/}</textarea>
+				   </span>
+					<span class="tipPos" id="for-other_need" style="display: none;">
+                    	<span class="tipLay" data-for="txtPeriod">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+					</span>
+					
+                </div>
+                <div class="clear"></div>
+            </div>
+			
+			
+			<h2>联系信息</h2>
+			<div class="formMod addressMod">
+				<div class="l">上班地址<i>*</i></div>
+				<div class="r" style="padding-top: 5px">
+
+					<div class="formText">
+						<span style='font-size: 16px;font-family: "Microsoft yahei", "Microsoft YaHei", "微软雅黑";margin-right: 10px' id="show_address_span"/>{/$address_info/}</span>
+						<a id="editMapBtn" href="javascript:;" style='font-size: 14px;font-family: "Microsoft yahei", "Microsoft YaHei", "微软雅黑"' >修改地址</a>
+						<input name="txtAddressId" type="hidden" value="{/$address_id/}">
+						<input name="txtAddInfo" type="hidden" value="{/$address_info/}">
+						<input name="txtAreaId" type="hidden" value="{/$area_id/}">
+					</div>
+                    <span class="tipPos" id="for-place" style="display: none;">
+                        <span class="tipLay">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+                    </span>
+
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="formMod">
+				<div class="l">&nbsp;&nbsp;&nbsp;联系电话<i>*</i></div>
+				<div class="r">
+                   <!-- <span class="formText">
+                        <input type="text" name="txtlickTel" id="phone_number" value="{/$link_tel/}" class="text" style="width:150px; text-align: left;">
+                    </span>
+					<span class="tipPos" id="for-phone" style="display: none;">
+                    	<span class="tipLay" data-for="txtlickTel">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+                    </span>-->
+
+					<div class="contactWay">
+						<label><input class="radio" name="is_show_link_way"  value="0" {/if $job_info['is_show_link_way'] == 0/}checked{//if/} type="radio">不向求职者展示联系方式（不想受到骚扰）</label>
+						<label><input class="radio" name="is_show_link_way"  value="1" {/if $job_info['is_show_link_way'] == 1/}checked{//if/} type="radio">展示联系方式（愿意接受求职者咨询）</label>
+						<div class="contactWayLst" style="display: block;">
+							{/if $company_info['link_mobile']/}<label class="clearfix" style="height:auto; "><input class="radio" name="show_link_way"  value="1" {/if $job_info['show_link_way'] == 1/}checked{//if/} type="radio"><span for="way1">职位招聘人手机号 <em id="u_moblie" style="margin-left: 15px">{/$company_info['link_mobile']/}</em></span></label>{//if/}
+							{/if $company_info['link_tel_show']/}<label class="clearfix" style="height:auto; "><input class="radio" name="show_link_way"  value="2" {/if $job_info['show_link_way'] == 2/}checked{//if/}  type="radio"><span for="way1">职位招聘人办公电话<em id="u_tel" style="margin-left: 15px">{/$company_info['link_tel_show']/}</em></span></label>{//if/}
+							<p class="clearfix" style="height:auto">
+								<label><input class="radio" name="show_link_way"  value="3"   {/if $job_info['show_link_way'] == 3/}checked{//if/}  type="radio"><span for="way2" style="width:auto;">其他电话</span> <span style="display:inline-block; color:#ccc;line-height: 30px; margin-left: 29px;">(如:02388888888 或 13888888888)</span></label>
+							</p>
+							<div style="{/if $job_info['show_link_way'] == 3/}display:block;{//if/}" class="newContact">
+								<ul class="clearfix">
+									<li>
+										<span class="formText"><label class="txtLabel" for="txtLinkMan1" style="display: block;"></label>
+											<input id="txtLinkMan1" name="txtLinkTel" placeholder="联系电话" style="width:120px;" value="{/$job_info['link_tel']/}" class="text conPeople watermark" type="text">
+										</span>
+											<span class="formText"  style="margin-left:10px;"><label class="txtLabel" for="txtLinkTel1" style="display: block;"></label>
+											<input id="txtLinkTel1" placeholder="分机号" name="txtLinkTelExt" style="width:80px;" value="{/$job_info['link_tel_ext']/}" class="text conPhone watermark" type="text">
+										</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<script>
+						$('input[name=is_show_link_way]').change(function () {
+							if($('input[name=is_show_link_way]:checked').val() == 0){
+							    $('.contactWayLst').hide()
+							}else{
+                                $('.contactWayLst').show()
+							}
+                        })
+                        $('input[name=is_show_link_way]').change();
+					</script>
+
+					<span class="tipPos" id="for-phone" style="display: none;">
+                    	<span class="tipLay" data-for="txtlickTel">
+							<span class="tipLayErr tipw120">
+								<span class="tipArr"></span>
+							</span>
+						</span>
+                    </span>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+
+
+
+
+			<input type="hidden" name="submit_type" id="submit_type" value="1">
+
+			<style>
+				div.formBtn a.btn1 {
+					padding: 0 50px;
+					margin: 20px 0;
+					height: 36px;
+					line-height: 36px;
+					display: block;
+					color: #fff;
+					border-radius: 4px;
+					display: inline-block;
+					text-align: center;
+					background: #fb5958;
+					box-shadow: none;
+					border: none;
+				}
+				div.formBtn a.btn1:hover {
+					background: #ef4544;
+				}
+			</style>
+            <div class="formBtn" style="padding:10px 0">
+				{/if empty($job_id)/}
+            	<a href="javascript:void(0);" id="btnSaveAddress" onclick="check_job(1)" class="btnsF16 btn1" style="padding: 0 50px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 0;
+    background: #fb5958;box-shadow: none;">提交</a>
+				{/else/}
+				{/if $type == 1/}
+				<a href="javascript:void(0);" id="SaveAddress" onclick="check_job(4)" class="btnsF16 btn1" style="padding: 0 50px; margin: 20px 0;">保存</a>
+				{/elseif $type == 5/}
+				<a href="javascript:void(0);" id="issetJob" onclick="check_job(5)" class="btnsF16 btn1" style="padding: 0 50px; margin: 20px 0;">重新发布</a>
+				{/else/}
+				<a href="javascript:void(0);" id="SaveAddress" onclick="check_job(4)" class="btnsF16 btn1" style="padding: 0 50px; margin: 20px 0;">保存</a>
+				{//if/}
+				{//if/}
+
+			</div>
+            
+		</div>
+		</form>
+		</div>
+
+	{/include file='./common/showloading.html'/}
+	{/include file='./company/footer.html'/}
+<script>
+
+	//获取顶级职位类别
+	function getTopJobsort(){
+		var agent_company_id = $("#txtGeneraSales").val();
+		var company_id = $("#company_id").val();
+
+		if(agent_company_id == ''){
+			layer.msg('请输选择代招企业', {time:2000,icon:2,shade: 0.4});
+		}
+
+		$.ajax({
+			type: 'post',
+			url: "{/get_url rule='/job/AjaxGetTopJobsort'/}",
+			data: {'company_id':company_id,'agent_company_id':agent_company_id},
+			dataType : 'json',
+			success:function(dataObj){
+				if(dataObj.status) {
+					if (dataObj.data !== "") {
+						var html = "<option value=''>请选择</option>";
+						var subhtml = "<option value=''>请选择</option>";
+						$.each(dataObj.data, function (i, data) {
+							html += "<option value="+data.jobsort+">"+data.jobsort_name+"</option>";
+						});
+						$("#topjobsort").html(html);
+						$("#subjobsort").html(subhtml);
+					}
+				} else{
+					alert(dataObj.msg);
+					return false;
+				}
+			}
+		});
+	}
+
+
+	function opennew_shade(newurl,windowName,width,height) {
+		var parentlayershade = layer.open({
+			type: 2,
+			shade:0,
+			area:[""+width+"px",""+height+"px"],
+			title:""+windowName+"",
+			content: ""+newurl+""
+		});
+	}
+
+
+
+	function getSubjobsort(){
+		var agent_company_id = $("#txtGeneraSales").val();
+		var company_id = $("#company_id").val();
+		var topjobsort_id = $("#topjobsort").val();
+		
+		$.ajax({
+			type: 'post',
+			url: "{/get_url rule='/job/AjaxGetTopJobsort'/}",
+			data: {'company_id':company_id,'agent_company_id':agent_company_id,'topjobsort_id':topjobsort_id,is_add_job: parseInt('{/$type/}') == 1 ? true : false},
+			dataType : 'json',
+			success:function(dataObj){
+				if(dataObj.status) {
+					if (dataObj.data !== "") {
+						var html = "<option value=''>请选择</option>";
+						$.each(dataObj.data, function (i, data) {
+							html += "<option value="+data.jobsort+">"+data.jobsort_name+"</option>";
+						});
+						$("#subjobsort").html(html);
+					}
+					if(topjobsort_id == '1000'){
+						$(".salaryMethod").show();
+					}else{
+						$(".salaryMethod").hide();
+					}
+
+				} else{
+					alert(dataObj.msg);
+					return false;
+				}
+			}
+		});
+	}
+
+
+</script> 
+<script type="text/javascript">
+	
+	//福利待遇
+	$('.rewardFliteFl span').on('click', function(){
+		$(this).toggleClass('cut');
+		var fliteTxt01 = $(this).attr('data-id');
+		var thisCut=$(this).hasClass('cut');
+		var rewardFliteFl01= $('#rewardFliteFl01').val();
+		var rewards_str = '';
+		if(thisCut){
+			if(rewardFliteFl01 == ''){
+				rewards_str =  fliteTxt01;
+			}else{
+				rewards_str = rewardFliteFl01 + ',' + fliteTxt01;
+			}
+			if(fliteTxt01 == '05'){
+				$("#traffic_routes_div").show();
+			}
+
+
+		}else{
+			var rewards = rewardFliteFl01.split(',');
+			for(var i=0;i<rewards.length;i++){
+				if(rewards[i] !== fliteTxt01){
+					if(rewards_str == ''){
+						rewards_str = rewards[i];
+					}else{
+						rewards_str += ','+rewards[i];
+					}
+				}
+			}
+			if(fliteTxt01 == '05'){
+				$("#traffic_routes_div").hide();
+			}
+
+		}
+		$('#rewardFliteFl01').attr('value',''+rewards_str+'');
+
+	});
+	//岗位说明
+	$('.rewardFlitemGw span').click(function(){
+		$(this).addClass('cut').siblings().removeClass('cut');
+		var fliteTxt02 = $(this).attr('data-id');
+		$('#rewardFliteFl02').attr('value',''+fliteTxt02+'');
+		if($('.rewardFlitemGw span').hasClass('cut')){
+			$('#jobTimeLth').css('display','block');
+		}else{
+			$('#jobTimeLth').css('display','none');
+		}
+	});
+	//岗位要求
+	$('.txtGenerationXb').change(function(){
+		var thisSelect=$(this).find("option:selected").text();
+		if(thisSelect == '男女不限'){
+			$('.formDemandz02,.formDemandx02').show();
+		}else if(thisSelect == '女'){
+			$('.formDemandx02').hide();
+			$('.formDemandz02').show();
+		}
+		else if(thisSelect == '男'){
+			$('.formDemandz02').hide();
+			$('.formDemandx02').show();
+		}
+	});
+
+	//薪资待遇
+	// $('.payMin').blur(function(){
+	// 	var thisPaymin = $(this).val(),
+	// 			thisPayminTest=/^\+?[1-9][0-9]*$/,
+	// 			payMaxx=$('.payMax').val();
+	// 	if(thisPaymin==''){
+	// 		layer.tips('请输入薪资', '.payMax');
+	// 	}else if(!thisPayminTest.test(thisPaymin)){
+	// 		layer.tips('薪资只能输入整数', '.payMax');
+	// 	}else if(thisPaymin > payMaxx){
+	// 		layer.tips('最小薪资不能大于最大薪资', '.payMax');
+	// 	}else if(thisPaymin*2 < payMaxx){
+	// 		layer.tips('薪资范围差不超过两倍', '.payMax');
+	// 	}
+	// });
+	// $('.payMax').blur(function(){
+	// 	var thisPaymax = $(this).val(),
+	// 			thisPaymaxTest=/^\+?[1-9][0-9]*$/,
+	// 			thisPayminx=$('.payMin').val();
+	// 	if(thisPaymax==''){
+	// 		layer.tips('请输入薪资', '.payMax');
+	// 	}else if(!thisPaymaxTest.test(thisPaymax)){
+	// 		layer.tips('薪资只能输入整数', '.payMax');
+	// 	}else if(thisPayminx > thisPaymax){
+	// 		layer.tips('最大薪资不能小于最小薪资', '.payMax');
+	// 	}else if(thisPayminx*2 < thisPaymax){
+	// 		layer.tips('薪资范围差不超过两倍', '.payMax');
+	// 	}
+	// });
+	// //薪酬详情
+	// $('#salary_info').blur(function(){
+	// 	var thisComIntro=$(this).val().length;
+	// 	if(thisComIntro > 200){
+	// 		layer.tips('薪酬详情字数不能大于200个字符', '#salary_info');
+	// 	}
+	// });
+	// $('#other_reward').blur(function(){
+	// 	var thisComIntro=$(this).val().length;
+	// 	if(thisComIntro > 300){
+	// 		layer.tips('其他福利字数不能大于300个字符', '#other_reward');
+	// 	}
+	// });
+	// $('#traffic_routes').blur(function(){
+	// 	var thisComIntro=$(this).val().length;
+	// 	if(thisComIntro > 2000){
+	// 		layer.tips('交通车路线字数不能大于2000个字符', '#traffic_routes');
+	// 	}
+	// });
+	// $('#content').blur(function(){
+	// 	var thisComIntro=$(this).val().length;
+	// 	if(thisComIntro > 300){
+	// 		layer.tips('工作内容字数不能大于300个字符', '#content');
+	// 	}
+	// });
+    var can_save = 1;
+	function check_job(type){
+
+		var txtStation = $('#txtStation').val(),
+				txtPeriod = parseInt($('#txtPeriod').val()),
+				txtPeriodGer= /^\+?[1-9][0-9]*$/,
+				txtGeneraSales = $('#txtGeneraSales').val(),
+				shePost01 = $('.shePost01').val(),
+				shePost02 = $('.shePost02').val(),
+				payMin = $('.payMin').val(),
+				payMax = $('.payMax').val(),
+				txtGenerationXb=$('.txtGenerationXb').val(),
+				quantity = $('#quantity').val(),
+				show_address_span=$('#show_address_span').text(),
+            	txtlickTel = $('input[name=txtlickTel]').val(),
+            txtGenerationXl=$('#txtGenerationXl').val();
+
+
+		var   txtSalaryInfoLen=1,//$('#salary_info').val().length,
+			  //txtOtherRewardLen=$('#other_reward').val().length,
+			txtContentLen=$('#content').val().length,
+			txtOtherNeedLen=$('#other_need').val().length;
+
+
+
+
+		if(txtStation==''){
+			$('#for-job-name').fadeIn(function () {
+				setTimeout(function () {
+                    $('#for-job-name').fadeOut();
+                },2500)
+            });
+
+		    $('#for-job-name .tipLayErr').html('请输入职位名称'+
+				'<span class="tipArr"></span>');
+
+			$("html,body").animate({scrollTop:$("#txtStation").offset().top-100},500);
+
+			// layer.tips('请输入职位名称','#txtStation');
+
+
+			// layer.msg('请输入职位名称', {time:2000,icon:2,shade: 0.4});
+			return false;
+		}
+		if(txtPeriod == 0){
+            $('#for-yxtime').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-yxtime').fadeOut();
+                },2500)
+            });
+
+            $('#for-yxtime .tipLayErr').html('请输入招聘天数'+
+                '<span class="tipArr"></span>');
+            $("html,body").animate({scrollTop:$("#quantity").offset().top-100},500);
+            return false;
+        }
+		if(quantity == ''){
+            $('#for-quantity').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-quantity').fadeOut();
+                },2500)
+            });
+
+            $('#for-quantity .tipLayErr').html('请输入招聘人数'+
+                '<span class="tipArr"></span>');
+
+		    // layer.tips('请输入招聘人数','#quantity');
+            $("html,body").animate({scrollTop:$("#quantity").offset().top-100},500);
+
+			// layer.msg('请输入招聘人数', {time:2000,icon:2,shade: 0.4});
+			return false;
+		}
+		if(!txtPeriodGer.test(quantity)){
+            $('#for-quantity').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-quantity').fadeOut();
+                },2500)
+            });
+
+            $('#for-quantity .tipLayErr').html('招聘人数必须是大于0的正整数'+
+                '<span class="tipArr"></span>');
+
+            // layer.tips('招聘人数必须是大于0的正整数','#quantity');
+            $("html,body").animate({scrollTop:$("#quantity").offset().top-100},500);
+
+            // layer.msg('有效期必须是大于0的正整数', {time:2000,icon:2,shade: 0.4});
+            return false;
+        }
+		if(txtPeriod == ''){
+            $('#for-yxtime').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-yxtime').fadeOut();
+                },2500)
+            });
+            $('#for-yxtime .tipLayErr').html('请输入有效期'+
+                '<span class="tipArr"></span>');
+
+            // layer.tips('请输入有效期','#txtPeriod')
+            $("html,body").animate({scrollTop:$("#txtPeriod").offset().top-100},500);
+
+			// layer.msg('请输入有效期', {time:2000,icon:2,shade: 0.4});
+			return false;
+		}
+		if(!txtPeriodGer.test(txtPeriod)){
+            $('#for-yxtime').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-yxtime').fadeOut();
+                },2500)
+            });
+
+            $('#for-yxtime .tipLayErr').html('有效期必须是大于0的正整数'+
+                '<span class="tipArr"></span>');
+
+            // layer.tips('有效期必须是大于0的正整数','#txtPeriod')
+            $("html,body").animate({scrollTop:$("#txtPeriod").offset().top-100},500);
+
+			// layer.msg('有效期必须是大于0的正整数', {time:2000,icon:2,shade: 0.4});
+			return false;
+		}
+		if(shePost01 == '' || shePost02 == ''){
+            $('#for-job-type').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-job-type').fadeOut();
+                },2500)
+            });
+
+            $('#for-job-type .tipLayErr').html('请选择职位类别'+
+                '<span class="tipArr"></span>');
+
+		    // layer.tips('请选择职位类别','.shePost02');
+            $("html,body").animate({scrollTop:$(".shePost02").offset().top-100},500);
+
+			// layer.msg('请选择职位类别', {time:2000,icon:2,shade: 0.4});
+			return false;
+		}
+		console.log('职位类别是'+shePost02)
+		if(parseInt(shePost02) == 1001){
+			console.log('是临时工'+shePost02)
+			if(payMin == '' || payMax == '' || parseInt(payMin) < 1 || parseInt(payMax) > 1000000){
+				$('#for-salary').fadeIn(function () {
+				    setTimeout(function () {
+				        $('#for-salary').fadeOut();
+				    },2500)
+				});
+				
+				$('#for-salary .tipLayErr').html('最小薪资不能低于1元,最大薪资不能高于1000000'+
+				    '<span class="tipArr"></span>');
+				
+				// layer.tips('请输入薪资','.payMax');
+				$("html,body").animate({scrollTop:$(".payMax").offset().top-100},500);
+				
+				// layer.msg('请输入薪资', {time:2000,icon:2,shade: 0.4});
+				return false;
+			}
+		}
+		if(parseInt(shePost02) != 1001){
+			console.log('不是临时工'+shePost02)
+			if(payMin == '' || payMax == ''){
+			    $('#for-salary').fadeIn(function () {
+			        setTimeout(function () {
+			            $('#for-salary').fadeOut();
+			        },2500)
+			    });
+			
+			    $('#for-salary .tipLayErr').html('请输入薪资'+
+			        '<span class="tipArr"></span>');
+			
+			    // layer.tips('请输入薪资','.payMax');
+			    $("html,body").animate({scrollTop:$(".payMax").offset().top-100},500);
+			
+				// layer.msg('请输入薪资', {time:2000,icon:2,shade: 0.4});
+				return false;
+			}
+			if(!txtPeriodGer.test(payMin) || !txtPeriodGer.test(payMax) ){
+			    $('#for-salary').fadeIn(function () {
+			        setTimeout(function () {
+			            $('#for-salary').fadeOut();
+			        },2500)
+			    });
+			
+			    $('#for-salary .tipLayErr').html('薪资只能输入整数'+
+			        '<span class="tipArr"></span>');
+			
+			    // layer.tips('薪资只能输入整数', '.payMax');
+			    $("html,body").animate({scrollTop:$(".payMax").offset().top-100},500);
+			
+			    return false;
+			}
+			if(parseInt(payMin) <1000){
+			    $('#for-salary').fadeIn(function () {
+			        setTimeout(function () {
+			            $('#for-salary').fadeOut();
+			        },2500)
+			    });
+			
+			    $('#for-salary .tipLayErr').html('最小薪资不能低于1000'+
+			        '<span class="tipArr"></span>');
+			
+			    // layer.tips('最小薪资不能大于最大薪资', '.payMax');
+			    $("html,body").animate({scrollTop:$(".payMax").offset().top-100},500);
+			    return false;
+			}
+			if(parseInt(payMax)>1000000){
+			    $('#for-salary').fadeIn(function () {
+			        setTimeout(function () {
+			            $('#for-salary').fadeOut();
+			        },2500)
+			    });
+			
+			    $('#for-salary .tipLayErr').html('最大薪资不能超过100000'+
+			        '<span class="tipArr"></span>');
+			
+			    // layer.tips('最小薪资不能大于最大薪资', '.payMax');
+			    $("html,body").animate({scrollTop:$(".payMax").offset().top-100},500);
+			    return false;
+			}
+			if(parseInt(payMin) > parseInt(payMax)){
+			    $('#for-salary').fadeIn(function () {
+			        setTimeout(function () {
+			            $('#for-salary').fadeOut();
+			        },2500)
+			    });
+			
+			    $('#for-salary .tipLayErr').html('最小薪资不能大于最大薪资'+
+			        '<span class="tipArr"></span>');
+			
+			    // layer.tips('最小薪资不能大于最大薪资', '.payMax');
+			    $("html,body").animate({scrollTop:$(".payMax").offset().top-100},500);
+			    return false;
+			}
+			if(parseInt(payMin)*2 < parseInt(payMax)){
+			
+			    $('#for-salary').fadeIn(function () {
+			        setTimeout(function () {
+			            $('#for-salary').fadeOut();
+			        },2500)
+			    });
+			
+			    $('#for-salary .tipLayErr').html('薪资范围差不超过两倍'+
+			        '<span class="tipArr"></span>');
+			
+			    // layer.tips('薪资范围差不超过两倍', '.payMax');
+			    $("html,body").animate({scrollTop:$(".payMax").offset().top-100},500);
+			
+			    return false;
+			}
+			if(txtSalaryInfoLen>200){
+			
+			    $('#for-salary-detail').fadeIn(function () {
+			        setTimeout(function () {
+			            $('#for-salary-detail').fadeOut();
+			        },2500)
+			    });
+			
+			    $('#for-salary-detail .tipLayErr').html('薪酬详情字数不大于200个字符'+
+			        '<span class="tipArr"></span>');
+			    // layer.tips('薪酬详情字数不能大于200个字符', '#salary_info');
+			    $("html,body").animate({scrollTop:$("#salary_info").offset().top-100},500);
+			    return false;
+			}	
+		}
+		if(!$('.rewardFliteFl span').hasClass('cut')){
+            $('#for-fl').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-fl').fadeOut();
+                },2500)
+            });
+
+            $('#for-fl .tipLayErr').html('请选择公司福利'+
+                '<span class="tipArr"></span>');
+
+            // layer.tips('请选择公司福利', '.rewardFliteFl');
+            $("html,body").animate({scrollTop:$(".rewardFliteFl").offset().top-100},500);
+
+			// layer.msg('请选择公司福利', {time:2000,icon:2,shade: 0.4});
+			return false;
+// 		}else if(txtOtherRewardLen>300){
+//             $('#for-other-reward').fadeIn(function () {
+//                 setTimeout(function () {
+//                     $('#for-other-reward').fadeOut();
+//                 },2500)
+//             });
+// 
+//             $('#for-other-reward .tipLayErr').html('其他福利字数不能大于300个字符'+
+//                 '<span class="tipArr"></span>');
+// 
+//             // layer.tips('其他福利字数不能大于300个字符', '#other_reward');
+//             $("html,body").animate({scrollTop:$("#other_reward").offset().top-100},500);
+//             return false;
+
+		}else if($('.residentRadio input:checked').length==0){
+            $('#for-resident').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-resident').fadeOut();
+                },2500)
+            });
+
+            $('#for-resident .tipLayErr').html('请选择住宿情况'+
+                '<span class="tipArr"></span>');
+            $("html,body").animate({scrollTop:$('#for-resident').offset().top-100},500);
+            return false;
+		}else if($('.foodRadio input:checked').length==0){
+            $('#for-food').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-food').fadeOut();
+                },2500)
+            });
+
+            $('#for-food .tipLayErr').html('请选择餐饮情况'+
+                '<span class="tipArr"></span>');
+            $("html,body").animate({scrollTop:$('#for-food').offset().top-100},500);
+            return false;
+		}else if(txtContentLen===0){
+            $('#for-content').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-content').fadeOut();
+                },2500)
+            });
+
+            $('#for-content .tipLayErr').html('请输入工作内容'+
+                '<span class="tipArr"></span>');
+
+
+            // layer.tips('工作内容字数不能大于300个字符', '#content');
+            $("html,body").animate({scrollTop:$('#content').offset().top-100},500);
+            return false;
+		}else if(txtContentLen>300){
+            $('#for-content').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-content').fadeOut();
+                },2500)
+            });
+
+            $('#for-content .tipLayErr').html('工作内容字数不能大于300个字符'+
+                '<span class="tipArr"></span>');
+
+
+            // layer.tips('工作内容字数不能大于300个字符', '#content');
+            $("html,body").animate({scrollTop:$('#content').offset().top-100},500);
+            return false;
+		}else if(!$('.rewardFlitemGw span').hasClass('cut')){
+
+            $('#for-gw').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-gw').fadeOut();
+                },2500)
+            });
+
+            $('#for-gw .tipLayErr').html('请选择岗位说明'+
+                '<span class="tipArr"></span>');
+
+            // layer.tips('请选择岗位说明', '.rewardFlitemGw');
+            $("html,body").animate({scrollTop:$('.rewardFlitemGw').offset().top-100},500);
+
+			// layer.msg('请选择岗位说明', {time:2000,icon:2,shade: 0.4});
+			return false;
+		}else if(txtGenerationXl.length==0){
+            $('#for-txtGenerationXl').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-txtGenerationXl').fadeOut();
+                },2500)
+            });
+
+            $('#for-txtGenerationXl .tipLayErr').html('请选择学历'+
+                '<span class="tipArr"></span>');
+
+            return false;
+        }else if(txtOtherNeedLen>300){
+            $('#for-other_need').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-other_need').fadeOut();
+                },2500)
+            });
+
+            $('#for-other_need .tipLayErr').html('其他要求不能大于300个字符'+
+                '<span class="tipArr"></span>');
+
+            // layer.tips('工作内容字数不能大于300个字符', '#other_need');
+			return false;
+		}else if(show_address_span == ''){
+
+            $('#for-place').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-place').fadeOut();
+                },2500)
+            });
+
+            $('#for-place .tipLayErr').html('请选择上班地点'+
+                '<span class="tipArr"></span>');
+
+		    // layer.tips('请选择上版地点','#show_address_span');
+
+			// layer.msg('请选择上班地址', {time:2000,icon:2,shade: 0.4});
+			return false;
+		}
+		/*else if(!(/^(?:13|15|18|14|17|19|16)[0-9]\d{8}$/.test(txtlickTel)))
+		{
+            $('#for-phone').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-phone').fadeOut();
+                },2500)
+            });
+
+            $('#for-phone .tipLayErr').html('请输入11位手机号码'+
+                '<span class="tipArr"></span>');
+
+            // layer.tips('请输入11位手机号码','#phone_number');
+            // layer.msg('请输入11位手机号码', {time:2000,icon:2,shade: 0.4});
+            return false;
+		}*/
+		else if(txtGenerationXb == '01'){
+            $('#for-txtGenerationXb').fadeIn(function () {
+                setTimeout(function () {
+                    $('#for-txtGenerationXb').fadeOut();
+                },2500)
+            });
+
+            $('#for-txtGenerationXb .tipLayErr').html('请选择岗位要求'+
+                '<span class="tipArr"></span>');
+
+            // layer.tips('请选择岗位要求','.txtGenerationXb')
+
+            // layer.msg('请选择岗位要求', {time:2000,icon:2,shade: 0.4});
+            return false;
+        }
+
+        //联系方法判断
+		var is_show_link_way = $('input[name=is_show_link_way]:checked').val();
+		var show_link_way = $('input[name=show_link_way]:checked').val();
+		var link_tel = $('#txtLinkMan1').val();
+		var link_tel_ext = $('#txtLinkTel1').val();
+		/*console.log(is_show_link_way)
+		console.log(show_link_way)
+		console.log(link_tel)
+		console.log(link_tel_ext)*/
+
+		if(is_show_link_way==1 && !show_link_way){
+            layer.tips('请选择需要展示的联系方式','#phone_number');
+            layer.msg('请选择需要展示的联系方式', {time:2000,icon:2,shade: 0.4});
+            return false;
+		}
+
+		if(is_show_link_way == 1 && show_link_way == 3){
+		    //验证自定义号码
+			if(!(/^[0-9]{11}$/.test(link_tel))){
+                $('#for-phone .tipLayErr').html('请输入11位联系电话'+
+                    '<span class="tipArr"></span>');
+
+                layer.tips('请输入11位联系电话','#phone_number');
+				layer.msg('请输入11位联系电话', {time:2000,icon:2,shade: 0.4});
+                return false;
+			}
+			if(link_tel_ext){
+                if(!(/^[0-9]{1,5}$/.test(link_tel_ext))){
+                    $('#for-phone .tipLayErr').html('请输入1-5位的分机号'+
+                        '<span class="tipArr"></span>');
+                    layer.tips('请输入1-5位的分机号','#phone_number');
+                    layer.msg('请输入1-5位的分机号', {time:2000,icon:2,shade: 0.4});
+                    return false;
+                }
+			}
+		}
+
+
+        if(type == 1){
+			//添加
+			$("#submit_type").val(1);
+		}else if(type == 2){
+			//编辑
+			$("#submit_type").val(4);
+		}else  if(type == 3){
+			//编辑
+			$("#submit_type").val(4);
+		}else if(type == 4){
+			//编辑
+			$("#submit_type").val(4);
+		}else{
+			//重新发布
+			$("#submit_type").val(5);
+		}
+
+		if(can_save ===1)
+		{
+			can_save = 0;
+		}
+		else{
+			return false;
+		}
+
+		// console.log('我琴女秒了个兵')
+
+        hbjs.use('@jobDialog, @hbCommon, @form, @validator, @areaDrop, @confirmBox', function (m) {
+            var $ = m['product.hbCommon'].extend(m['cqjob.jobDialog'], m['cqjob.jobForm']);
+            var confirmBox = m['widge.overlay.confirmBox'],
+                fontSize = 18,
+                pWidth = 70;
+            showLoading();
+            $.ajax({
+                type: 'post',
+                url: "{/get_url rule='/job/AddJobDo/'/}",
+                data: $('#baseInforForm').serialize(),
+                dataType : 'json',
+                success:function(dataObj){
+                    closeLoading();
+                    setTimeout(function () {
+                        can_save = 1;
+                    },2000)
+
+                    if(dataObj.status){
+                        if(dataObj.data && (dataObj.data.is_audit == 1 || dataObj.data.is_audit == 2) ){
+                            confirmBox.timeBomb(dataObj.msg, {
+                                name : "success",
+                                timeout : 2500,
+                                width: fontSize * dataObj.msg.length + pWidth
+                            });
+                            setTimeout(function () {
+                                window.opener=null;
+                                var type = parseInt('{/$type/}');
+                                if(type == 1){
+                                    window.location.href="{/$siteurl.kmcompany/}/job"
+                                }else if(type == 5){
+                                    window.location.href="{/$siteurl.kmcompany/}/job"
+                                }else{
+                                    window.location.href="{/$siteurl.kmcompany/}/job"
+                                }
+                            },1500)
+                        }else{
+                            //去认证营业执照
+                            confirmBox.alert('您的营业执照未验证，发布职位不能展示。 <a href="{/$siteurl.kmcompany/}/licencevalidate">去验证</a>',function () {
+                                window.location.href="{/$siteurl.kmcompany/}/licencevalidate"
+                            },{title:dataObj.msg,width:380})
+
+                        }
+
+
+                    }
+                    else{
+                        confirmBox.timeBomb(dataObj.msg, {
+                            name : "fail",
+                            timeout : 3000,
+                            width: fontSize * dataObj.msg.length + pWidth
+                        });
+                        return false;
+                    }
+
+
+                }
+            })
+		})
+
+
+	}
+
+
+
+</script>
+<script type="text/javascript">
+	var jobAddValid,
+			mapDialog,
+			o_mapDialog;
+	hbjs.use('@jobSorter, @dialog', function (m) {
+
+		var $ = m['jquery'],
+				jobSorter = m['product.jobSort.jobSorter'],
+				Dialog = m['widge.overlay.hbDialog'];
+
+		o_mapDialog = new Dialog({
+			close: '╳',
+			idName: 'map_dialog1',
+			width: 850,
+			isAjax: true
+		});
+		$('#editMapBtn').on('click', function(){
+			o_mapDialog.setContent({
+				data:{id:$("input[name=txtAddressId]").val()},
+				content: '{/get_url rule="/job/jobaddress/"/}'
+			}).show();
+		});
+		
+		$('input[name=show_link_way]').click(function(){
+
+			var thisVal = $("input[name=show_link_way]:checked").val();
+
+			if(thisVal == 3){
+				$('.newContact').css('display','block');
+				$(this).parent().addClass('cut');
+			}else{
+				$('.newContact').css('display','none');
+			}
+		});
+
+	});
+</script>
+<!-- 2019.8.16pc快米发布职位改版 -->
+
+<div class="useModTemplate">
+	<!-- 使用模板渲染在这里面 -->
+	<ul>
+        {/foreach $moudle_list as $v/}
+		<li data-modId="{/$v['id']/}" data-modName="{/$v['module_name']/}">{/$v['module_name']/}
+			<div class="useModBtns">
+				<a data-btn="use" href="javascript:void(0)">使用</a>
+				<a data-btn="edit" href="javascript:void(0)">编辑</a>
+				<a data-btn="delet" href="javascript:void(0)">删除</a>
+			</div>
+		</li>
+        {//foreach/}
+	</ul>
+	
+</div>
+
+<script type="text/javascript">
+	var useModDialog,saveModDialog,confirmModDialog,editModDialog;
+	hbjs.use('@dialog', function (m) {
+	
+		var $ = m['jquery'],
+				Dialog = m['widge.overlay.hbDialog'];
+		
+		
+		saveModDialog = new Dialog({
+			close: '╳',
+			title:'保存模板',
+			idName: 'saveModDialog',
+			width: 500,
+			height:300,
+			isAjax: true
+		});
+		useModDialog = new Dialog({
+			close: '╳',
+			title:'选择模板',
+			idName: 'useModDialog',
+			width: 500,
+			height:'auto',
+			isAjax: true
+		});
+		editModDialog = new Dialog({
+			close: '╳',
+			title:'编辑模板',
+			idName: 'editModDialog',
+			width: 940,
+			height:550,
+			overflow:'auto'
+			// height:400,
+			// isAjax: true
+		});
+		confirmModDialog = new Dialog({
+			close: '╳',
+			title:'信息确认',
+			idName: 'confirmModDialog',
+			type:'confirm',
+			showButton: true,
+			showCancel: true,
+			width: 300,
+			// height:400,
+			// isAjax: true
+		})
+		
+		//保存模板弹窗
+		$('.saveMod').on('click',function(){
+			saveModDialog.setContent({
+				content:'<div class="modTip">保存为模板后，下次发布职位，宿食模块内容即可从模板中快速选择添加</div><div class="modInput">名称<input type="text" placeholder="请为该模板命名（限10个字）" name="module_name"></div>' + creatBtns(['确认','取消'])
+			}).show()
+			$('.saveModDialog .modOkBtn').on('click',function(){
+                var index = layer.load();
+                var post_data = {is_accommodation:$('input[name=residentType]:checked').val(), accommodation_price: $('#residentText').val(), accommodation_facility: $('#residentCondition').val(),
+                            accommodation_other: $('#residentOther').val(), working_meal_type: $('input[name=foodType]:checked').val(), working_meal_reasons: $('#foodOther').val(),
+                            company_id:'{/$company_id/}', module_name: $('input[name=module_name]').val()};
+				$.ajax({
+                    type: 'post',
+                    url:'{/get_url rule="/job/saveMoudle/"/}',
+                    data: post_data,
+                    dataType : 'json',
+                    success:function(res){
+                        
+                        layer.close(index);
+                        if(res.status){
+                            layer.msg(res.msg);
+                            var append_html = "<li data-modId='"+res.status+"' data-modName='"+post_data.module_name+"'>"+post_data.module_name
+                                                    +'<div class="useModBtns">'
+                                                        +'<a data-btn="use" href="javascript:void(0)">使用</a>'
+                                                        +'<a data-btn="edit" href="javascript:void(0)">编辑</a>'
+                                                        +'<a data-btn="delet" href="javascript:void(0)">删除</a>'
+                                                    +'</div>'
+                                                +'</li>';
+                            $('.useModTemplate ul').append(append_html);
+							saveModDialog.hide();
+                        }else{
+                            layer.msg(res.msg, {icon: 2});
+                        }
+                    }
+                });
+			})
+			$('.saveModDialog').on('click','.modCancelBtn',function(){
+				saveModDialog.hide()
+			})
+		})
+		
+		
+		//使用模板弹窗
+		$('.useMod').on('click', function(){
+			$.post("{/get_url rule='/job/MoudleNum'/}",{},function(data){
+				data=$.parseJSON(data)
+				if(data.num==0){
+					$.message('暂无模板，请先保存模板再使用');
+				}else{
+					useModDialog.setContent({
+						content: $('.useModTemplate').html()
+					}).show();
+				}
+				
+			})
+			
+		});
+		//使用模板里面的按钮
+		$('.useModDialog').on('click','.useModBtns a',function(){
+            var _this = this;
+			var btn=$(this).attr('data-btn');
+			var modName=$(this).parents('li').attr('data-modName');//模板名字
+			var modId=$(this).parents('li').attr('data-modId');//模板id
+			switch(btn){
+				case 'use':
+					//点击使用
+					confirmModDialog.setContent({
+						content:'<div class="modConfirmText">确认使用“' + modName + '”模板?</div>' + creatBtns(['确认','取消'])
+					}).show()
+						$('.confirmModDialog .modOkBtn').on('click',function(){
+							// 确认回调
+							$.getJSON('{/get_url rule="/job/getModule"/}',{id:modId},function (data) {
+								$('.rfTemplate input[name=residentType][value="'+data.is_accommodation+'"]').prop("checked",true);
+								$('.rfTemplate #residentText').val(data.accommodation_price);
+								$('.rfTemplate #residentCondition').val(data.accommodation_facility);
+								$('.rfTemplate #residentOther').val(data.accommodation_other);
+								$('.rfTemplate input[name=foodType][value="'+data.working_meal_type+'"]').prop("checked",true);
+								$('.rfTemplate #foodOther').val(data.working_meal_reasons);
+								if(data.is_accommodation==2){
+									$('.rfTemplate .residentForm').hide()
+								}else{
+									$('.rfTemplate .residentForm').show()
+								}
+								if(data.working_meal_type==3){
+									$('.rfTemplate .foodForm').hide()
+								}else{
+									$('.rfTemplate .foodForm').show()
+								}
+								confirmModDialog.hide();
+								useModDialog.hide();
+							});
+						})
+						$('.confirmModDialog .modCancelBtn').on('click',function(){
+							confirmModDialog._close.click()
+						})
+					break;
+				case 'edit':
+					//点击编辑
+                    $.getJSON('{/get_url rule="/job/getModule"/}',{id:modId},function (data) {    
+						if(data.is_accommodation==2){
+							$('.rfTemplateEmpty .residentForm').hide()
+						}else{
+							$('.rfTemplateEmpty .residentForm').show()
+						}
+						if(data.working_meal_type==3){
+							$('.rfTemplateEmpty .foodForm').hide()
+						}else{
+							$('.rfTemplateEmpty .foodForm').show()
+						}
+                        editModDialog.setContent({
+                            content:$('.rfTemplateEmpty').html() + creatBtns(['确定修改','取消'])
+                        }).show()
+						$('.editModDialog input,.editModDialog textarea').prop('disabled',false)
+                        $('.editModDialog input[name=residentType][value="'+data.is_accommodation+'"]').prop("checked",true);
+                        $('.editModDialog .residentText').val(data.accommodation_price);
+                        $('.editModDialog .residentCondition').val(data.accommodation_facility);
+                        $('.editModDialog .residentOther').val(data.accommodation_other);
+                        $('.editModDialog input[name=foodType][value="'+data.working_meal_type+'"]').prop("checked",true);
+                        $('.editModDialog .foodOther').val(data.working_meal_reasons);
+						
+						// editModDialog.initPosition()
+                    
+					
+						$('.editModDialog .modOkBtn').on('click',function(){
+							// 确认回调
+							var index = layer.load();
+							var post_data = {is_accommodation:$('.editModDialog input[name=residentType]:checked').val(), accommodation_price: $('.editModDialog .residentText').val(), accommodation_facility: $('.editModDialog .residentCondition').val(),
+								accommodation_other: $('.editModDialog .residentOther').val(), working_meal_type: $('.editModDialog input[name=foodType]:checked').val(), working_meal_reasons: $('.editModDialog .foodOther').val(),
+								company_id:'{/$company_id/}', module_name: modName, id: modId};
+							$.post('{/get_url rule="/job/saveMoudle"/}',post_data,function(res){
+								layer.close(index);
+								if(res.status){
+									editModDialog._close.click()
+									layer.msg(res.msg);
+								}else{
+									layer.msg(res.msg, {icon: 2});
+								}
+							},'json');
+						})
+						$('.editModDialog .modCancelBtn').on('click',function(){
+							editModDialog._close.click()
+						})
+					});
+					break;
+				case 'delet':
+					//点击删除
+					confirmModDialog.setContent({
+						content:'<div class="modConfirmText">确认删除“' + modName + '”模板?</div>' + creatBtns(['确认','取消'])
+					}).show()
+					$('.confirmModDialog .modOkBtn').on('click',function(){
+						// 确认回调
+                        var index = layer.load();
+                        $.post('{/get_url rule="/job/DeleteMoudle"/}',{id: modId},function(res){
+                            layer.close(index);
+                            confirmModDialog._close.click()
+                            if(res.status){
+                                layer.msg(res.msg);
+                                var idx=$(_this).parents('li').remove().index();
+								$('.useModTemplate li').eq(idx).remove()
+								if($('.useModDialog li').length==0){
+									useModDialog.hide();
+									//$.message('暂无模板，请先保存模板再使用');
+								}
+                            }else{
+                                layer.msg(res.msg, {icon: 2});
+                            }
+                        },'json');
+					})
+					$('.confirmModDialog .modCancelBtn').on('click',function(){
+						confirmModDialog._close.click()
+					})
+			}
+		})
+		
+		
+	
+	});
+	$(document).on('click','.radioBox label',function(){
+		if($(this).find('input').val()==$(this).siblings('label').size()+1){
+			$(this).parent('.radioBox').next().hide()
+		}else{
+			$(this).parent('.radioBox').next().show()
+		}
+	})
+	function creatBtns(arr){
+		var html="<div class='modConfirmBtns'>";
+			html+="<div class='modOkBtn'>"+arr[0]+"</div>";
+			html+="<div class='modCancelBtn'>"+arr[1]+"</div>";
+			html+="</div>"
+			return html
+	}
+	
+	$('[data-maxl]').on('input propertychange',function(){
+		var value=$(this).val();
+		var maxl=$(this).attr('data-maxl');
+		if(value.length>maxl){
+			$(this).val(value.substring(0,maxl))
+		}
+	})
+</script>
+</body>
+</html>

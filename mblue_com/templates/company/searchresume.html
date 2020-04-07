@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>简历搜索</title>
+        <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}" />
+        <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+        <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+        <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+        <link rel="stylesheet" type="text/css" href="{/version file='v2-widge.css'/}"/>
+
+        <script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+        <script type="text/javascript" src="{/version file='common.js'/}"></script>
+        <script type="text/javascript" src="{/version file='dialog.js'/}"></script>
+        <link rel="stylesheet" type="text/css" href="{/version file='version.css'/}" />
+        <script type="text/javascript">
+        window.CONFIG = {
+            HOST: '{/$siteurl.style/}',
+            COMBOPATH: '/js/v2/'
+        }
+        </script>
+        <script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+        <script type="text/javascript" src="{/version file='global.js'/}"></script>
+<script type="text/javascript">
+	hbjs.config({
+		combos: {
+			'@jobSorter':[
+				'@confirmBox', '@autoComplete', 'product.jobSort.jobSorter', 
+				'product.jobSort.jobSortDialog', 'product.jobSort.jobSortSearch', 
+				'product.jobSort.jobSortMenu', 'product.sideMenu.sideSortMenuData'
+			]
+		}
+	});
+    hbjs.loadJS('{/$siteurl.style/}/js/v2/cqjob/common.js');
+</script>
+        <style>
+            div.noData{height: auto;}
+
+            .km_searchList01 li.subSch05 {
+                width: 90px;
+                padding-right: 50px;
+            }
+            .km_searchList01 li.subSch06 {
+                width: 280px !important;
+            }
+            .km_searchList02 li.subzSch05 {
+                width: 90px;
+                padding-right: 50px;
+            }
+            .km_searchList02 li.subzSch06 {
+                width: 280px !important;
+                font-weight: bold;
+            }
+            .km_searchList02 li {
+                border-bottom: none !important;
+            }
+
+            .km_searchList02 {
+                overflow: hidden;
+                border-bottom: 1px solid #f1f1f1;
+            }
+
+
+        </style>
+	</head>
+    {/include file='./company/company_head.html'/}
+	<body class="bodyBkg">
+
+    <form method="get" action="{/get_url rule="$__uri"/}">
+        <input type="hidden" name="search" value="1">
+        <input type="hidden" name="from" value="{/$__from/}">
+		<div class="kuaimi_searchBd clearfix">
+          {/if $__from == 'fair'/}<div style="line-height: 50px;font-size: 17px;font-weight: bold;text-align: left;border-bottom: 1px solid #f1f1f1;margin: 0 0 0px 50px;padding-top: 10px;">{/$from/}<span style="display: inline-block;height: 19px;width: 3px;background: #fb5958;margin-right: 10px;position: relative;top: 4px;"></span>近期招聘会人才推荐</div>{//if/}
+			<div class="kuaimi_searchPd">
+			<div class="formMod jobAddMod checkMod">
+                <div class="l"><b>全文关键词</b></div>
+                <div class="r inputTextBox">
+                    <input type="text" value="{/$keyword/}" name="keyword" class="prSchTxt2" {/if !$keyword/}placeholder="在简历全文中搜索，多个词用空格隔开"{//if/} style="width:370px;"/>
+                </div>
+                <label id="splitLabel" class="splitLabel" for="split" class="radio">
+                    <input type="checkbox" name="contains_any_keyword" {/if $contains_any_keyword/}checked{//if/} id="split" value="1" class="chb" />包含任一关键词
+                </label>
+                <span class="tipTxt expTxt zindex">
+                     <i class="hbFntWes tip-icon"><a id="btnTip" href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" style="margin-top: 5px;">&#xf059;</a></i>
+                    <div class="expBox" id="expBox" style="display:none">
+                        <em></em>
+                        <div class="expBoxC">
+                            <p>全文关键词可允许搜索多个关键词，每个词之间用空格间隔；</p>
+                            <p>采用多个关键词搜索时，不再单独进行分词，按照空格间隔进行分词；</p>
+                            <p>例如<b>“销售  营业员  促销”</b>，分词结果是<b>“销售”,“营业员”,“促销”</b>。</p>
+                        </div>
+                    </div>
+                </span>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">年龄</div>
+                <div class="r">
+                    <span class="formText">
+                        <input type="text" id="txtAgeLower" name="amin" value="{/$age_lower/}" style="width:57px;" class="text">
+                    </span>
+                    <span class="tipTxt font12" style="margin:0 8px;">~</span>
+                    <span class="formText">
+                        <input type="text" id="txtAgeUpper" name="amax" value="{/$age_upper/}" style="width:57px;" class="text">
+                    </span>
+                </div>
+                <div class="l" style="width:48px">性别</div>
+                <div class="r sex-radio">                             
+                    <label id="" class="splitLabel" for="radSex1">
+                        <input type="radio" id="radSex1" name="sex" {/if $sex==0/}checked{//if/} value="0" class="chb" checked/>不限
+                    </label>
+                    <label id="" class="splitLabel" for="radSex2">
+                        <input type="radio" id="radSex2" name="sex" {/if $sex==1/}checked{//if/} value="1" class="chb" />男
+                    </label>
+                    <label id="" class="splitLabel" for="radSex3">
+                        <input type="radio" id="radSex3" name="sex" {/if $sex==2/}checked{//if/} value="2" class="chb" />女
+                    </label>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod jobAddMod checkMod">
+                <div class="l">期望地区</div>
+                <div class="r">
+                    <span class="drop formText jobAddDrop zindex" id="txtExpArea" style="width:380px; z-index: 2;"></span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="formMod">
+                <div class="l">学历</div>
+                <div class="r">                             
+                    <span class="drop dropx02 zindex" id="degreeMinSel" style="width:80px;"></span>
+                    <span class="tipTxt font12" style="margin:0 8px;">~</span>
+                    <span class="drop dropx02 zindex" id="degreeMaxSel" style="width:80px;"></span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="prSchExpR">
+		        <input type="submit" value="搜 索" name="t" class="kmSearchBtn" id="btnSearch">
+		    </div>
+          </div>  
+		</div>
+
+    {/if $__from!='fair'/}
+		<div class="kuaimi_searchList">
+			<ul class="km_searchList01">
+				<li class="subSch01">姓名</li>
+				<li class="subSch02">性别</li>
+		        <li class="subSch03">年龄</li>
+				<li class="subSch04">学历</li>
+				<li class="subSch05">期望地区</li>
+				<li class="subSch06">求职意向</li>
+				<li class="subSch07">刷新简历</li>
+			</ul>
+			{/if empty($persons)/}
+			<div class="noData">
+				{/if $search==1/}没有满足条件的简历哟{/else/}请点击“搜索”查找简历{//if/}
+			</div>
+			{//if/}
+			<div class="km_searchListBd">
+                {/foreach $persons as $k=>$v/}
+				<ul class="km_searchList02">
+					<li class="subzSch01">
+						<a href="{/get_url rule='/resume/index/'/}person_id-{/$v['person_id']/}" target="_blank">
+							<img src="{/if !empty($v['photo'])/}{/base_lib_Constant::YUN_ASSETS_URL/}/{/$v['photo']/}{/else/}{/base_lib_Constant::STYLE_URL/}/img/appeal/default_head.jpg{//if/}"/>{/if !empty($v['user_name'])/}{/$v['user_name']/}{/else/}---{//if/}
+						</a>
+					</li>
+					<li class="subzSch02">{/if $v['sex']==1/}男{/elseif $v['sex']==2/}女{/else/}---{//if/}</li>
+					<li class="subzSch03">{/if !empty($v['age'])/}{/$v['age']/}岁{/else/}---{//if/}</li>
+					<li class="subzSch04">{/if !empty($v['degree'])/}{/$v['degree']/}{/else/}---{//if/}</li>
+					<li class="subzSch05">{/if !empty($v['exp_area'])/}{/$v['exp_area']/}{/else/}---{//if/}</li>
+					<li class="subzSch06">{/if !empty($v['jobsort'])/}{/$v['jobsort']/}{/elseif !empty($v['exp_station'])/}{/$v['exp_station']/}{/else/}---{//if/}</li>
+					<li class="subzSch07">{/if !empty($v['refresh_time'])/}{/$v['refresh_time']/}{/else/}---{//if/}</li>
+				</ul>
+				{//foreach/}
+			</div>
+            {/$pager/}
+		</div>
+    {/else/}
+    <!--招聘会简历搜索-->
+        <style>
+            .job-meeting-searchlist .km_searchList01 li.subSch01 {
+                width: 230px;
+            }
+            .job-meeting-searchlist .km_searchList01 li.subSch02 {
+                width: 100px;
+            }
+            .job-meeting-searchlist .km_searchList01 li.subSch03 {
+                width: 140px;
+            }
+
+            .job-meeting-searchlist .km_searchList02 li.subzSch01 {
+                width: 230px;
+            }
+            .job-meeting-searchlist .km_searchList02 li.subzSch02 {
+                width: 100px;
+            }
+            .job-meeting-searchlist .km_searchList02 li.subzSch03 {
+                width: 140px;
+            }
+        </style>
+        <div class="job-meeting-searchlist kuaimi_searchList">
+            <ul class="km_searchList01">
+                <li class="subSch01">姓名</li>
+                <li class="subSch02">性别</li>
+                <li class="subSch03">年龄</li>
+                <li class="subSch06">求职意向</li>
+            </ul>
+            {/if empty($persons)/}
+            <div class="noData">
+                {/if $search==1/}没有满足条件的简历哟{/else/}请点击“搜索”查找简历{//if/}
+            </div>
+            {//if/}
+            <div class="km_searchListBd">
+                {/foreach $persons as $k=>$v/}
+                <ul class="km_searchList02">
+                    <li class="subzSch01">
+                        <a href="{/get_url rule='/resume/index/'/}person_id-{/$v['person_id']/}" target="_blank">
+                            <img src="{/if !empty($v['photo'])/}{/base_lib_Constant::YUN_ASSETS_URL/}/{/$v['photo']/}{/else/}{/base_lib_Constant::STYLE_URL/}/img/appeal/default_head.jpg{//if/}"/>{/if !empty($v['user_name'])/}{/$v['user_name']/}{/else/}---{//if/}
+                        </a>
+                    </li>
+                    <li class="subzSch02">{/if $v['sex']==1/}男{/elseif $v['sex']==2/}女{/else/}---{//if/}</li>
+                    <li class="subzSch03">{/if !empty($v['age'])/}{/$v['age']/}岁{/else/}---{//if/}</li>
+                    <li class="subzSch06">{/if !empty($v['jobsort'])/}{/$v['jobsort']/}{/elseif !empty($v['exp_station'])/}{/$v['exp_station']/}{/else/}---{//if/}</li>
+                </ul>
+                {//foreach/}
+            </div>
+            {/$pager/}
+        </div>
+    {//if/}
+        {/include file='./company/footer.html'/}
+		
+<script type="text/javascript">
+	
+	var degreeItems = [{value:'0',label:'不限'}];
+    var value = '初中';
+    if(value.length > 4){
+        value = value.substr(0,4);
+    }
+    degreeItems.push({value:'01',label:value});
+    var value = '高中';
+    if(value.length > 4){
+        value = value.substr(0,4);
+    }
+    degreeItems.push({value:'02',label:value});
+    var value = '中技/中专';
+    if(value.length > 4){
+        value = value.substr(0,4);
+    }
+    degreeItems.push({value:'03',label:value});
+    var value = '大专';
+    if(value.length > 4){
+        value = value.substr(0,4);
+    }
+    degreeItems.push({value:'05',label:value});
+    var value = '本科';
+    if(value.length > 4){
+        value = value.substr(0,4);
+    }
+    degreeItems.push({value:'06',label:value});
+    var value = '硕士';
+    if(value.length > 4){
+        value = value.substr(0,4);
+    }
+    degreeItems.push({value:'07',label:value});
+    var value = '博士';
+    if(value.length > 4){
+        value = value.substr(0,4);
+    }
+    degreeItems.push({value:'08',label:value});
+	
+	hbjs.use('@select, @jobSorter, @areaMulitiple, @calling, @jobTooltip, @actions, @hbCommon, @jobDialog', function(m) {
+    var $ = m['jquery'].extend(
+			m['cqjob.areaMulitiple'], m['cqjob.calling'], m['cqjob.jobsort'], 
+			m['cqjob.jobTooltip'], m['cqjob.actions'], m['cqjob.hbCommon'], m['cqjob.jobDialog']),
+        select = m['widge.select'],
+        confirmBox = m['widge.overlay.confirmBox'],
+        cookie = m['tools.cookie'],
+        Dialog = m['widge.overlay.hbDialog'],
+		jobSorter = m['product.jobSort.jobSorter'];
+		
+		$('#btnTip').hover(function() {
+            $('#expBox').show();
+        }, function() {
+            $('#expBox').hide();
+        });
+
+        var expAreaSelect = $('#txtExpArea').multiplearea({
+	        max : 5,
+	        hddName : 'expArea',
+	        isLimit : true,
+//	        selectItems:['{/$exp_areas/}']
+//                    onSelect: function(){
+//                        form.checkElement($('input[name=expArea]')[0]);
+//                    }
+	    }),
+
+	    degreeMinSelect = new select({
+        trigger: $('#degreeMinSel'),
+        className: 'dropv2_select',
+        align: {baseXY: [0, '100%-1']},
+        selectName: 'dmin',
+        dataSource: degreeItems,
+        selectedValue: "{/$dmin/}",
+        isHidDefault: false,
+        zIndex: 999,
+        selectCallback: {
+            isDefault: true
+        }
+    }),
+    degreeMaxSelect = new select({
+        trigger: $('#degreeMaxSel'),
+        className: 'dropv2_select',
+        align: {baseXY: [0, '100%-1']},
+        selectName: 'dmax',
+        dataSource: degreeItems,
+        selectedValue: "{/$dmax/}",
+        isHidDefault: false,
+        zIndex: 999,
+        selectCallback: {
+            isDefault: true
+        }
+    });
+
+        $("#txtExpArea").setMultipleAreaValue('{/$exp_areas/}');
+	});
+</script>
+    </form>
+	</body>
+</html>

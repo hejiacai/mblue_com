@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<title>{/$title/}</title>
+<!–[if lt IE9]> 
+<script src="{/version file='html5.js'/}"></script> 
+<![endif]–>
+<link rel="stylesheet" type="text/css" href="{/version file="base.css"/}" />
+<link rel="stylesheet" type="text/css" href="{/version file="comback.css"/}" />
+<script type="text/javascript" language="javascript" src="{/version file="jquery.form.js"/}"></script>
+<script type="text/javascript" language="javascript" src="{/version file='ui_validate.js'/}"></script>
+<script type="text/javascript" language="javascript" src="{/version file="ui_menudisplay.js"/}"></script><!--响应式兼容-->
+<script type="text/javascript" language="javascript" src="{/version file="ui_inputFocus.js"/}"></script><!--输入框获取焦点-->
+<script type="text/javascript" language="javascript" src="{/version file="ui_hovchange.js"/}"></script><!--指向改变class-->
+<script type="text/javascript" language="javascript" src="{/version file="ui_drop.js"/}"></script><!--下拉模拟-->
+<style type="text/css">
+.part{}
+.content{ width:1000px; min-height: 700px; box-shadow: 0 0 3px #ddd; background: #fff; margin: 40px auto!important;}
+.part .hd{border-bottom:1px solid #e8e8e8;height:39px;margin-bottom:0px;padding-bottom: 20px;}
+.part .hd .l{float:left;display:inline;}
+.part .hd .l a{height:38px;line-height:38px;font-size:14px;margin:0 10px;padding:0 10px;display:inline-block;float:left;display:inline;border:1px solid #dadada;border-top:1px solid #dadada;border-bottom:0;background:#f1f1f1;color:#666;}
+.part .hd .l a.cu{font-weight:bold;border-top:1px solid #dadada;border-bottom:1px solid #fff;background:#fff;}
+.part .hd .l a.cu:hover{background:#fff;}
+.part .hd .l .tipLay{top:6px;left:-14px;}
+.part .hd .l .tipLayTxt{line-height:23px;background:#fffce3;border:1px solid #fad5a8;color:#d78727}
+.part .hd .l .tipLay .tipArr{top:9px;background:url({/$siteurl.style/}/img/common/contrl.gif) no-repeat 0 -5px;}
+
+
+.part .hd .r{float:right;display:inline;margin:5px 0 0;}
+.part .hd .r a i.hbFntWes{font-size:14px;margin:0 5px 0 0; vertical-align:middle;}
+.part .bd .lst ul li{border-bottom:1px dashed #dadada;padding:10px 0px 10px 74px;zoom:1; background:url({/$siteurl.style/}/img/blue/company/misg_img.png) 25px 12px no-repeat; position: relative;}
+.part .bd .lst ul li p{float:left;display:inline;width:890px;line-height:24px;font-size:14px;color: #666;}
+.part .bd .lst ul li b{ display:block; font-weight:normal; font-size:14px; color:#999;}
+.part .bd .lst ul li a.delData{float:right;font-size:21px;display:none;color:#666; position: absolute; top: 0px; right: 20px;}
+.part .bd .lst ul li a.delData:hover{color:#fb6967;}
+.part .bd .lst ul li.hov{background:url({/$siteurl.style/}/img/blue/company/misg_img.png) 25px 12px no-repeat #f2f9ff;}
+.part .bd .lst ul li.hov a.delData{display:inline;}
+
+.btnAllTit{ color:#666; font-size:20px; padding-left:8px; line-height:20px; margin-top:12px; font-weight:bold
+}
+section.section{ box-shadow: none;}
+.closeMore{ display: inline-block; color: #999; font-size: 14px; margin-top: 5px;}
+.closeMore i{ display: inline-block; vertical-align: middle; margin-right: 5px;}
+.noData{ height: 30px!important;}
+</style>
+</head>
+<body id="body" style="background: #ececec;">
+{/include file='./company/company_head.html'/}
+<div class="content" id="content">
+	
+	<section class="section">
+		<hgroup>
+        	<div class="part">
+            	<!-- <div class="hd">
+                	<div class="l yahei">
+                		<a href="{/get_url rule="/message"/}" class="cu">提醒</a>
+                		<a href="{/get_url rule="/guestbook"/}">留言/咨询</a>
+                	</div>
+                    <div class="r">{/if $hasdata/}<a href="javascript:void(0)" class="btn3 btnsF12" id="btnAllDelete"><i class="hbFntWes">&#xf014;</i>删除全部</a>{//if/}</div>
+                    <div class="clear"></div>
+                </div> -->
+                
+                <div class="hd">
+                	<div class="l"><h2 class="btnAllTit">消息提醒</h2></div>
+                    <div class="r">{/if $hasdata/}<a href="javascript:void(0)" class="closeMore" id="btnAllDelete"><i class="hbFntWes">&#xf014;</i>删除全部</a>{//if/}</div>
+                    <div class="clear"></div>
+                </div>
+                
+                <div class="bd">
+                    <div class="lst" id="lst">
+                        <ul>
+                        	{/foreach $item as $key=>$value/}
+	                        <li class="">
+		                        <b>{/$value['time']/}</b>
+		                        <p>{/$value['content']/}</p>
+		                        <a v="{/$value['message_id']/}" href="javascript:void(0)" class="delData">×</a>
+		                        <div class="clear"></div>
+	                        </li>
+	                        {//foreach/}
+                        </ul>
+                    </div>
+                   <div id="page">{/$pager/}</div> 
+                   <div class="noData" style="display:{/if $hasdata/}none{//if/}">暂无提醒</div>
+                </div>
+            </div>
+        </hgroup>
+    </section>
+</div>
+
+{/include file='./company/footer.html'/}
+<script>
+
+var $lst = $('#lst');
+$(document).ready(function() {
+	$.focusColor('input.text');
+	$.focusColor('textarea.textarea');	
+	$lst.find('li').hover(function(){
+		$(this).addClass('hov');
+	},function(){
+		$(this).removeClass('hov');
+	});
+	
+});
+
+/**
+ * 消息
+ */
+var message = {
+	init:function() {
+		$('#lst').click(function(e){
+			 var target  = $(e.target);
+			 if(target.is('.delData')) {
+				var id = target.attr('v');
+				$.getJSON('{/get_url rule="/message/Delete"/}',{messageid:id,operate:'single'},function(result){
+					if(typeof result.success !='undefined') {
+						$.anchorMsg(result.success);
+						target.closest('li').remove();
+						if($('#lst').find('li').length<=0) {
+							$('.noData').show();
+						}
+						
+					}else {
+						 $.anchorMsg(result.error, { icon: 'fail' }); 
+					}
+			 });
+		}
+	 });
+		$('#btnAllDelete').click(function(){
+		    if($('#lst ul').find('li').length<=0){
+		    	 $.anchorMsg('没有消息可删除', { icon: 'info' }); 
+		    	 return;
+			}
+			$.getJSON('{/get_url rule="/message/Delete"/}',{operate:'all'},function(result){
+				if(typeof result.success !='undefined') {
+					$.anchorMsg(result.success);
+					$('#lst').hide();
+					$('.noData').show();
+					$('#page').remove();
+				}else {
+					 $.anchorMsg(result.error, { icon: 'fail' }); 
+				}
+
+		});
+	});
+ }		
+};
+
+message.init();
+</script>
+</body>
+</html>

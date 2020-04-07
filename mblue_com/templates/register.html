@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{/$companyName/}-企业注册</title>
+    <link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+    <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+
+    <script type="text/javascript">
+        window.CONFIG = {
+            HOST: "{/$siteurl['style']/}",
+            COMBOPATH: '/js/v2/'
+        }
+    </script>
+    <script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+    <script type="text/javascript" src="{/version file='global.js'/}"></script>
+    <script type="text/javascript">
+        hbjs.loadJS('{/$siteurl["style"]/}/js/v2/cqjob/common.js');
+    </script>
+    <script type="text/javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+    <style>
+        * {
+            background: #f8f9fb;
+            margin: 0;
+            padding: 0;
+        }
+        .clear{background: #fff;}
+        body{line-height: normal;}
+        .error{width: 300px;color:red;text-align: left;margin-left: 82px;float: left;font-size: 12px; padding: 2px 0;}
+        .wrap{position: relative;z-index: 1;background: transparent;}
+        .reg-form-input{padding: 0;}
+        .login-form-input{padding: 0;}
+        .form-code .reg-input{width: 156px;}
+        .form-code .reg-input input{width: 156px;}
+        .login-form-input{border-bottom: none;width: 392px;}
+        .reg-btn{width: 392px;margin:30px 0 10px 0;}
+        .login-wrap{top: 12%;}
+        div.reg-input{width: 280px;}
+        div.hb_ui_prt_success,div.hb_ui_prt_success .ui_dialog_content,div.hb_ui_prt_success .ui_dialog_container,div.hb_ui_prt_success .hb_ui_prt i,div.hb_ui_prt_success .ui_dialog_message i{ background: #68af02!important;}
+        div.hb_ui_prt_fail,div.hb_ui_prt_fail .ui_dialog_content,div.hb_ui_prt_fail .ui_dialog_container,div.hb_ui_prt_fail .hb_ui_prt i,div.hb_ui_prt_fail .ui_dialog_message i{ background: #fb5958!important;}
+
+        div.hb_ui_prt_success .ui_dialog_message{ color: #fff;background: #68af02!important; }
+        div.hb_ui_prt_fail .ui_dialog_message{ color: #fff;background: #fb5958!important;}
+        .login-form-input{ border: none; margin-bottom: 0;}
+		.reg-form-input span{ line-height: 30px;}
+		html{ background: #fff;}
+		.copyright{ background: #fff;padding: 15px 0;}
+		.copyright p{ background: #fff;}
+		.reg-btn{ margin: 10px 0 10px 0;}
+		.login-wrap{ padding-top: 10px;}
+		.login-bg02{ height: 334px;}
+		body{min-width: 1000px; height: 100%; background: #fff; position: relative;}
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="wrap clearfix">
+        <a href="/" class="kuaimi-logo">
+            <img src="{/$siteurl['style']/}/img/blue/company/kuaimi_logo.png" alt="" width="29" height="28" />
+            <h1>{/$companyName/}</h1>
+        </a>
+    </div>
+</div>	
+	
+<div class="login-header">
+    <div class="login-bg01"></div>
+    <div class="login-bg02"></div>
+</div>
+<div class="login-wrap reg-wrap">
+    <p class="error">
+        <span class="errorTipx"></span>
+    </p>
+    <form id="registerDo" action="{/$siteurl['kmcompany']/}/register/ReisterDo" method="post">
+        <div class="login-form">
+            <div class="login-form-input reg-form-input clearfix">
+                <span>企业名称：</span>
+                <div class="reg-input">
+                    <input type="text" id="companyName" name="txtCompanyName" placeholder="请输入公司名称" value=""/>
+                </div>
+                <div class="clear"></div>
+                <p class="error error-txtCompanyName">
+
+                </p>
+            </div>
+
+
+            <div class="login-form-input reg-form-input clearfix">
+                <span>联系人：</span>
+                <div class="reg-input">
+                    <input type="text" id="user" name="txtLinkman" value=""/>
+                </div>
+                <div class="clear"></div>
+                <p class="error error-txtLinkman">
+
+                </p>
+            </div>
+
+            <div class="login-form-input reg-form-input clearfix">
+                <span>手机号：</span>
+                <div class="reg-input">
+                    <input type="text" id="tel" name="txtMobilePhone" value=""/>
+                </div>
+                <div class="clear"></div>
+                <p class="error error-txtMobilePhone"></p>
+            </div>
+            <div class="form-code login-form-input clearfix">
+                <div style="width: 80px;float: left;background: #fff;height: 30px;"></div>
+                <div class="reg-input" style="width: 130px;">
+                    <input type="text" id="msgCode" name="authCode" value="" style="width: 130px;" placeholder="请输入验证码" />
+                </div>
+                <a id="get_code1" class="getMsgCode authCodex" style="float: left">获取短信验证码</a>
+                <a  class="authCodeGray" style="line-height: 30px;"></a>
+                <div class="clear"></div>
+
+                <p class="error error-authCode">
+                </p>
+            </div>
+            <div class="login-form-input reg-form-input clearfix">
+                <span>用户名：</span>
+                <div class="reg-input">
+                    <input type="text" id="username" name="txtUserID" value=""
+                           placeholder="字母和数字组成，用于登录{/$companyName/}"/>
+                </div>
+                <div class="clear"></div>
+                <p class="error error-txtUserID">
+
+                </p>
+            </div>
+            <div class="login-form-input reg-form-input clearfix">
+                <span>创建密码：</span>
+                <div class="reg-input">
+                    <input type="text" id="password" name="txtPassword" value="" placeholder="6位以上的字母或数字"/>
+                </div>
+                <div class="clear"></div>
+                <p class="error error-txtPassword">
+
+                </p>
+            </div>
+            <div class="form-code login-form-input clearfix">
+                <div style="width: 80px;height: 30px;background: #fff;float: left;"></div>
+                <div class="reg-input" style="width: 171px;margin-top: 6px;">
+                    <input type="text" id="imgCode" style="width: 171px;" name="txtCatcha" value=""/>
+                </div>
+                <img id="change_code" style="float: left;" src="{/$siteurl['kmcompany']/}/register/verify/seed-{/$seed/}" alt="">
+                <div class="clear"></div>
+                <p class="error error-txtCatcha"></p>
+            </div>
+
+
+
+
+            <div class="login-btn reg-btn" id="regBtn">注册</div>
+        </div>
+        <input type="hidden" name="hidSeed" value="{/$seed/}">
+        <input type="hidden" id="vali_code_count" value="1" />
+    </form>
+</div>
+
+<div class="login-footer" style="background: #fff;">
+    <div class="copyright">
+        <p>©2020&nbsp;汇博网&nbsp;版权所有&nbsp;&nbsp;|&nbsp;&nbsp;增值电信业务经营许可证：渝B2-20060063&nbsp;&nbsp;|&nbsp;&nbsp;<a
+                target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50010502001182"
+                rel="nofollow" style="color:#999;">渝公网安备 50010502001182号</a></p>
+        <p>招聘单位无权收取任何费用,请求职人员加强自我保护意识,按劳动法规保护自身权益,警惕虚假招聘,避免上当受骗!</p>
+    </div>
+</div>
+
+</body>
+<script>
+	// 获取屏幕高
+	var windowHeight = window.screen.height;
+	if(windowHeight < 800){
+		$('body,html').css('height','800px');
+	}
+    hbjs.use('@jobDialog, @hbCommon, @form, @validator, @areaDrop, @confirmBox', function (m) {
+        var $ = m['product.hbCommon'].extend(m['cqjob.jobDialog'], m['cqjob.jobForm']);
+        var confirmBox = m['widge.overlay.confirmBox'];
+        var fontSize = 18;
+        $('input:text').placeHolder();  $('.error').css('visibility','hidden');
+
+        //切换图片验证码
+        var get_code_url = '';
+        $('#change_code').click(
+            function () {
+                if (!get_code_url)
+                    get_code_url = $('#change_code')[0].src;
+                var url = get_code_url + "?v=" + Math.random();
+                $('#change_code').attr('src', url);
+            }
+        )
+
+        //提交
+        $('#regBtn').click(function () {
+            if (valid_params.hasErrorCheck()) {
+                return false;
+            }
+            $('#registerDo').ajaxSubmit({
+                beforeSubmit: function(){}, data: {}, success: valid_params.success, dataType: 'json'
+            });
+
+        });
+
+        //参数提交处理
+        var valid_params = {
+            arr_post_params: [
+                {name: 'txtCompanyName', patt: /^[\u4e00-\u9fa50-9]{2,20}$/, errorMsg: '公司名称为2-20个字组成'},
+                {name: 'txtLinkman', patt: /^[\u4e00-\u9fa5}]{1,60}$/, errorMsg: '联系人为1-60个汉字组成'},
+                {name: 'txtMobilePhone', patt: /^(?:13|15|18|14|17|19|16)[0-9]\d{8}$/, errorMsg: '请正确输入11位手机号'},
+                {name: 'txtCatcha', patt: /^[0-9]{4}$/, errorMsg: '图像验证码为4位数字组成'},
+                {name: 'authCode', patt: /^[0-9]{6}$/, errorMsg: '短信验证码为6位数字组成'},
+                {name: 'txtUserID', patt: /^[a-zA-Z0-9]{3,30}$/, errorMsg: '用户名为6-30位字母、数字组成 '},
+                {name: 'txtPassword', patt: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]{6,18}$/, errorMsg: '密码为6-18位数字+字母组合'}
+            ],
+            hasErrorCheck: function () {
+                var has_error = false;
+                for (var i = 0, long = valid_params.arr_post_params.length; i < long; i++) {
+                    if (!valid_params.validParams(valid_params.arr_post_params[i].patt, valid_params.arr_post_params[i].name, valid_params.arr_post_params[i].errorMsg))
+                        has_error = true;
+                }
+                return has_error;
+            },
+            success: function (res) {
+                if(res.error){
+                    confirmBox.alert(res.error,'',{title:'注册失败'});
+                    $('#change_code').click();
+                }else if(res.successMsg){
+                    confirmBox.timeBomb(res.successMsg,{
+                      name:'success',
+                      timeout : 2000,
+                      width: 180
+                    });
+                  setTimeout(function () {
+                    window.location.href = "{/$siteurl['kmcompany']/}/account/BindCompanyWx";
+                  },1200)
+
+                }
+            },
+            validParams: function (patt, className, errorMsg) {
+                if (patt.test($('input[name=' + className + ']').val())) {
+                    $('.error-' + className).css('visibility','hidden');
+                    return true;
+                } else {
+                    $('.error-' + className).css('visibility','visible');
+                    $('.error-' + className).text(errorMsg);
+                    return false;
+                }
+            }
+        }
+
+        //短信获取
+        $('#get_code1').on('click',(function () {
+            var index_mobile = 2;
+            if(valid_params.validParams(valid_params.arr_post_params[index_mobile].patt, valid_params.arr_post_params[index_mobile].name, valid_params.arr_post_params[index_mobile].errorMsg)){
+                $.showModal("{/get_url rule='/register/validate/'/}"+"txtMobile-"+$('input[name=txtMobilePhone]').val()+"-vali_code_count-"+$('#vali_code_count').val(), {title:'请输入验证码'});
+            }
+        }))
+
+    })
+
+    function coundownV2(){
+        var seconds=$('.authCodeGray').find('b').text();
+        seconds = parseInt(seconds);
+        if(seconds > 0){
+            seconds--;
+            $('.authCodeGray').find('b').text(seconds);
+        }else{
+            window.clearInterval(interval);
+            $('#get_code1').show();
+            $('.authCodeGray').hide()
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>职位详情</title>
+	<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+	<link rel="stylesheet" type="text/css" href="{/version file='m_font_style.css'/}"/>
+	<link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-header.css,v2-widge.css,v2-resume.css,front.css,job.css,jobnew.css,prettyPhoto.css,icons.css,appeal.css,jobnew2018.css,leaveinfo.css'/}" />
+	<link rel="stylesheet" href="//api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+	<link rel="stylesheet" type="text/css" href="{/version file='kuaimi_pc.css'/}"/>
+	<script type="text/javascript" language="javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+	<script type="text/javascript" language="javascript" src="{/version file='jquery.cookie.js'/}"></script>
+	<script type="text/javascript" language="javascript" src="{/version file='base_script.js'/}"></script>
+	<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=33f9256a1a1ba5a80eb40f8ed45bce3c"></script>
+	<script type="text/javascript" src="//api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+	<script type="text/javascript">
+		window.CONFIG = {
+			HOST: '//assets.huibo.com',
+			COMBOPATH: '/js/v2/'
+		}
+	</script>
+	<script type="text/javascript" src="//assets.huibo.com/min.js?f=/js/v2/hbjs.js,/js/v2/jquery.min.js,/js/v2/base/util.js,/js/v2/base/class.js,/js/v2/base/shape.js,/js/v2/base/event.js,/js/v2/base/aspect.js,/js/v2/base/attribute.js,/js/v2/tools/cookie.js&amp;v=181362724"></script>
+	<script type="text/javascript" src="//assets.huibo.com/js/v2/global.js?v=20160118"></script>
+	<script type="text/javascript">
+		hbjs.loadJS('//assets.huibo.com/js/v2/cqjob/common.js');
+	</script>
+</head>
+<body class="jobdetail_body">
+	{/include 'common/header.html' search = 'true'/}
+	<div class="jobdetail_content">
+		<div class="jc_one">
+			<p class="jobdetail_name">{/$station/}</p>
+			<div class="jc_one_temp">
+				<span class="jobdetail_salary">{/$min_salary/}~{/$max_salary/}</span><span class="jobdetail_unit">{/$salary_type/}</span>
+			</div>
+			<div class="jc_one_describe">
+				<span class="jobdetail_require">{/if empty($degree)/}学历不限{/else/}{/$degree/}及其以上{//if/}</span><span class="cutoff">|</span><span class="jobdetail_require">{/if empty($sex)/}性别不限{/elseif $sex==1/}男{/elseif $sex==2/}女{//if/}</span><span class="cutoff">|</span><span class="jobdetail_require">{/$age/}</span>
+			</div>
+			<div class="jc_one_address">
+				<span class="icon-enterprise_chat_adress jobdetail_address"></span><span class="specific_address">{/$address/}</span><a href="javascript:void(0);" class="cheakAddress" id="work_map_btn">查看地图</a>
+			</div>
+			<a href="javascript:void(0);" class="jobdetail_apply">免费报名</a>
+		</div>
+		<div class="right_float">
+			<div class="float_one">
+				<div class="qrCode_one">
+					<h1 class="code_title">手机APP求职</h1>
+					<img src="{/$siteurl.style/}/img/blue/company/android1.png" alt="" class="code1">
+				</div>
+				<div class="qrCode_two">
+					<h1 class="code_title">手机微信求职</h1>
+					<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQFv8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya2JlRlo1Nno5bFQxMDAwME0wM3MAAgRCFEJeAwQAAAAA" alt="" class="code2">
+				</div>
+			</div>
+			<div class="float_two">
+				<div class="jc_companyName">
+					<a class="jc_companyName_top" href="{/$company_url/}">
+						<img src="{/$company_logo_path/}" alt="" class="company_ohoto">
+						<div class="jc_companyName_top_right">
+							<p class="jc_companyName_simple">{/$company_shortname/}</p>
+							<p class="jc_companyName_all">{/$company_name/}</p>
+							{/if $is_famous/}<span class="jc_companyName_mingqi"><span class="icon--016 icon_crown"></span>名企</span>{//if/}<span class="jc_companyName_guoyou">{/$property_text/}</span>
+						</div>
+					</a>
+					<div class="jc_companyName_bot">
+						<p class="jc_companyName_bot_unit"><span class="icon-icon-034 jccb_icon"></span>{/$size_text/}</p>
+						<p class="jc_companyName_bot_unit"><span class="icon-job_login_verification jccb_icon"></span>{/$property_text/}</p>
+						<p class="jc_companyName_bot_unit"><span class="icon-management-all jccb_icon"></span>{/$calling_text/}</p>
+					</div>
+					{/if $company_photos/}
+					<div class="nrtBanner">
+						<div class="infopicBg">
+							<div class="infopic">
+								<div class="picbox">
+									<ul class="gallery piclist">
+										{/foreach $company_photos as $key => $val/}
+										<li><a class="prettyPhoto" href="{/$val['photo_url']/}" rel="prettyPhoto[]"><img src="{/$val['photo_url']/}" /></a></li>
+										{//foreach/}
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					{//if/}
+				</div>
+			</div>
+		</div>
+		<div class="jc_two">
+			<div class="jc_two_content">
+				<div class="jc_two_welfare">
+					<span class="red_line"></span>
+					<span class="jc_two_name">薪资福利</span>
+				</div>
+				{/if $rewards/}
+				<div class="jc_two_unit">
+					{/foreach $rewards as $key => $val/}
+						<span class="unit_welfare">{/$val/}</span>
+					{//foreach/}
+				</div>
+				{//if/}
+				{/if $base_salary || $royalty_method || $other_subsidy/}
+				<div class="jc_two_three">
+					{/if $base_salary/}<div class="jc_two_three_temp"><span class="jc_two_three_name">底薪</span><span class="jc_two_three_unit">{/$base_salary/}</span></div>{//if/}
+					{/if $royalty_method/}<div class="jc_two_three_temp"><span class="jc_two_three_name">提成</span><span class="jc_two_three_unit">{/$royalty_method/}</span></div>{//if/}
+					{/if $other_subsidy/}<div class="jc_two_three_temp"><span class="jc_two_three_name">补贴</span><span class="jc_two_three_unit">{/$other_subsidy/}</span></div>{//if/}
+				</div>
+				{//if/}
+			</div>
+			{/if $accommodation_facility || $accommodation_other || $accommodation_price || $working_meal_reasons/}
+			<div class="jc_two_content">
+				<div class="jc_two_welfare">
+					<span class="red_line"></span>
+					<span class="jc_two_name">食宿详情</span>
+				</div>
+				<div class="jc_two_three">
+					{/if !empty($accommodation_facility)/}<div class="jc_two_three_temp"><span class="jc_two_three_name">住宿条件</span><span class="jc_two_three_unit_temp">{/$accommodation_facility/}</span></div>{//if/}
+					{/if !empty($accommodation_other)/}<div class="jc_two_three_temp"><span class="jc_two_three_name">住宿说明</span><span class="jc_two_three_unit_temp">{/$accommodation_other/}</span></div>{//if/}
+					{/if !empty($accommodation_price)/}<div class="jc_two_three_temp"><span class="jc_two_three_name">其他费用</span><span class="jc_two_three_unit_temp">{/$accommodation_price/}</span></div>{//if/}
+					{/if !empty($working_meal_reasons)/}<div class="jc_two_three_temp"><span class="jc_two_three_name">餐饮说明</span><span class="jc_two_three_unit_temp">{/$working_meal_reasons/}</span></div>{//if/}
+				</div>
+			</div>
+			{//if/}
+			{/if $is_dusters == 1 || in_array($examination,[1,2]) || in_array($work_posture,[1,2])/}
+			<div class="jc_two_content">
+				<div class="jc_two_welfare">
+					<span class="red_line"></span>
+					<span class="jc_two_name">工作说明</span>
+				</div>
+				<div class="jc_two_unit">
+					{/if $is_dusters == 1/}<span class="unit_welfare_temp">穿无尘服</span>{//if/}
+					{/if $examination == 1/}
+						<span class="unit_welfare_temp">体检自费</span>
+					{/else if $examination == 2/}
+						<span class="unit_welfare_temp">体检公司报销</span>
+					{//if/}
+					{/if $work_posture == 1/}
+						<span class="unit_welfare_temp">坐着上班</span>
+					{/else if $work_posture == 2/}
+						<span class="unit_welfare_temp">非坐着上班</span>
+					{//if/}
+				</div>
+				{/if $schedule || $content || $other_need/}
+				<div class="jc_two_three">
+					{/if !empty($schedule)/}<div class="jc_two_three_temp"><span class="jc_two_three_name">工作时间</span><span class="jc_two_three_unit_temp">{/$schedule/}</span></div>{//if/}
+					{/if !empty($content)/}<div class="jc_two_three_temp"><span class="jc_two_three_name">工作内容</span><span class="jc_two_three_unit_temp">{/html_encode content=$content/}</span></div>{//if/}
+					{/if !empty($other_need)/}<div class="jc_two_three_temp"><span class="jc_two_three_name">其他要求</span><span class="jc_two_three_unit_temp">{/html_encode content=$other_need/}</span></div>{//if/}
+				</div>
+				{//if/}
+			</div>
+			{//if/}
+		</div>
+		{/if $reommend_job_list/}
+		<div class="jc_three">
+			<div class="jc_two_welfare jc_two_welfare_temp">
+				<span class="red_line"></span>
+				<span class="jc_two_name">相似职位</span>
+				<a href="{/$more_job_url/}" class="jc_three_more">更多<span class="icon-uniE603 iconMore"></span></a>
+			</div>
+			<div class="simply_temp">
+				{/foreach $reommend_job_list as  $key => $val/}
+				<a href="{/$val['job_url']/}" target="_blank" class="jc_three_similarity">
+					<p class="jc_three_name">{/$val['station']/}<span class="jc_three_salary">{/$val['salary_text']/}</span></p>
+					<div class="jc_three_temp">
+						<span class="jobdetail_require">{/$val['area_name']/}</span>
+						<span class="cutoff">|</span>
+						<span class="jobdetail_require">{/$val['degree_name']/}</span>
+						<span class="cutoff">|</span>
+						<span class="jobdetail_require">{/$val['age_text']/}</span>
+					</div>
+					{/if !empty($val['rewards'])/}
+					<div class="simplyFuli">
+						{/foreach $val['rewards'] as $k => $v/}
+							{/if $k < 5/}
+							<span class="jc_three_unit">{/$v/}</span>
+							{//if/}
+						{//foreach/}
+					</div>
+					{//if/}
+				</a>
+				{//foreach/}
+			</div>
+		</div>
+		{//if/}
+		<div class="clear"></div>
+		<div class="jobdetail_crumbs">
+			<a href="/">首页</a>><a href="{/get_url rule='/wjob/search/'/}">搜索</a>><a href="javascript:void(0);">职位详情</a>
+		</div>
+	</div>
+	<div class="topFreeApply">
+		<div class="topFreeApply_temp">
+			<p class="jobdetail_name">{/$station/}</p>
+			<div class="jc_one_temp">
+				<span class="jobdetail_salary">{/$min_salary/}~{/$max_salary/}</span><span class="jobdetail_unit">{/$salary_type/}</span>
+			</div>
+			<div class="jc_one_describe jc_one_describe_temp">
+				<span class="jobdetail_require">{/if empty($degree)/}学历不限{/else/}{/$degree/}及其以上{//if/}</span><span class="cutoff">|</span><span class="jobdetail_require">{/if empty($sex)/}性别不限{/elseif $sex==1/}男{/elseif $sex==2/}女{//if/}</span><span class="cutoff">|</span><span class="jobdetail_require">{/$age/}</span>
+			</div>
+			<a href="javascript:void(0);" class="jobdetail_apply jobdetail_apply_temp">免费报名</a>
+		</div>
+	</div>
+	{/include 'common/footer.html'/}
+    <div id='load_page' style='display:none;'></div>
+    <script  type="text/javascript">
+        var action_url = '{/$siteurl.style/}';
+        console.log(action_url);
+        action_dom = [
+            ['#load_page', 430],
+            ['.jobdetail_apply', 431]
+        ];
+    </script>
+    <script type="text/javascript" language="javascript" src="{/version file='action.js'/}"></script>
+<script type="text/javascript">
+	hbjs.use('@jobPrettyPhoto, @checkLogin,@fileUploader, @confirmBox, @dialog, @jobsort, @calling, @hbCommon, @jobFlexSlider, @fancybox', function(m){
+		var $ = m['jquery'].extend(m['cqjob.jobPrettyPhoto'], m['cqjob.jobsort'], m['cqjob.calling'],  m['cqjob.jobFlexSlider'], m['cqjob.fancybox']),
+			fileUploader = m['widge.fileUploader'],
+			checkLogin = m['product.checkLogin'],
+	        cookie     = m['tools.cookie'],
+	        confirmBox = m['widge.overlay.confirmBox'],
+	        Dialog     = m['widge.overlay.hbDialog'],
+	        pWidth = 70,
+			fontWidth = 18;
+
+        $("#load_page").click();
+		$(".gallery:first a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:3000, hideflash: true});
+		var freeApply = new Dialog({
+			close : 'X',
+			idName : 'informTraining_dialog',
+			title : '免费报名',
+			width : 500,
+			height: 340,
+			isOverflow : false,
+			isAjax : true
+		});
+		var vmx = '<div class="freeApply">'+
+					'<img src="{/$apply_img_url/}" alt="" class="freeCode">'+
+					'<p>微信扫码关注，手机报名更快、更方便<img src="{/$siteurl.style/}/img/blue/person/freeApply.png" alt="" class="rocket"></p>'+
+				  '</div>'
+		$('.jobdetail_apply').click(function(){
+			freeApply.setContent(vmx).show();
+		});
+		var workMapPost = '{/get_url rule="/wjob/JobMap/" data="jobflag=$jobflag"/}'+'-v-'+Math.random();
+		var dialog = new Dialog({
+			idName : 'work_map',
+			content : workMapPost,
+			isOverflow : true,
+			close : '×',
+			title: "上班路线",
+			width: 850,
+			isAjax : true,
+			zIndex:9998
+		});
+		$("#work_map_btn").on('click',function(){
+			dialog.show();
+		});
+		dialog.on('closeX',function(){
+			window.location.reload();
+		});
+	})
+	
+	for(var i=0; i<$('.simply_temp').children('a').length;i++) {
+		var simpleLenth = $('.simply_temp').children('a').eq(i).children('.simplyFuli').children('span').length
+		if(simpleLenth > 4 && simpleLenth) {
+			$('.simply_temp').children('a').eq(i).children('.simplyFuli').children('span').eq(4).html('...')
+			$('.simply_temp').children('a').eq(i).children('.simplyFuli').children('span:gt(4)').remove()
+		}
+	}
+	
+	$(window).scroll(function(e){ 
+		if($(this).scrollTop() >147) {
+			$('.topFreeApply').show()
+			$('.kuaimi_pc_header').hide()
+		}else {
+			$('.topFreeApply').hide()
+			$('.kuaimi_pc_header').show()
+		}
+	})
+</script>
+</body>
+</html>

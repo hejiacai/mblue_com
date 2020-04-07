@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>企业详情</title>
+        <link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+        <link rel="stylesheet" type="text/css" href="{/version file='m_font_style.css'/}"/>
+		<link rel="stylesheet" href="//api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+		<link rel="stylesheet" type="text/css" href="{/version file='kuaimi_pc.css'/}"/>
+        <script type="text/javascript" language="javascript" src="{/version file='jquery-1.8.3.min.js'/}"></script>
+		<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=33f9256a1a1ba5a80eb40f8ed45bce3c"></script>
+		<script type="text/javascript" src="//api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+	</head>
+	<body class="company_detail_body">
+		{/include 'common/header.html'/}
+		<div class="nav_detail">
+			<div class="nav_detail_content">
+				<img src="{/$company['company_logo_path']/}" alt="">
+				<div class="nav_detail_content_right">
+					<div class="company_name">
+						<span class="company_name_sp">{/$company['company_shortname']/}</span>
+                        {/if !empty($company_tags)/}
+                        {/foreach $company_tags as $v/}
+                        <span class="company_name_mark">{/$v/}</span>
+                        {//foreach/}
+                        {//if/}
+					</div>
+					<div class="company_adress">{/$company['company_name']/}</div>
+					<div class="company_scri">
+						<span>{/$company['property_name']/}</span>
+						<span class="mark_center"></span>
+						<span>{/$company['size_name']/}</span>
+						<span class="mark_center"></span>
+						<span>{/$company['calling_name']/}</span>
+					</div>
+				</div>
+			</div>
+			<div class="nav_detail_ul">
+				<div class="nav_detail_li active_li" data-id="brief_box">
+					简介
+				</div>
+				<div class="nav_detail_li" data-id="apply_job">
+					在招职位
+				</div>
+			</div>
+		</div>
+		<div class="section_content">
+			<div class="brief_introduction">
+				<div class="company_introduction">
+					<div class="company_introduction_title">
+						<div class="company_introduction_title_mark"></div>
+						<div class="company_introduction_title_spn">公司介绍</div>
+					</div>
+					<div class="company_introduction_content">
+						<p>
+						{/$company['info']/}
+						</p>
+						<!-- <div class="more_introduc">
+							<span>展开</span>
+							<span class="icon iconfont icon-icon-AI-_-1"></span>
+						</div> -->
+					</div>
+					<div class="company_introduction_imgs" {/if empty($img_arr)/}style="display:none;"{//if/}>
+						<div class="swiper_img_box">
+							<ul class="company_introduction_img_box">
+                            {/foreach $img_arr as $v/}
+							<li><img src="{/$v['path']/}" alt=""></li>
+                            {//foreach/}
+							</ul>
+						</div>
+						<div class="icon_swiper_right_box icon_box">
+							<span class="icon-182 icon_swiper_right"></span>
+						</div>
+						<div class="icon_swiper_left_box icon_box">
+							<span class="icon-svg10 icon_swiper_left"></span>
+						</div>
+					</div>
+				
+				<div class="adree_map">
+					<div class="company_introduction_title">
+						<div class="company_introduction_title_mark"></div>
+						<div class="company_introduction_title_spn">公司地址</div>
+					</div>
+					
+					<div class="company_map" style="width: 1140px;height: 350px;font-size:12px;color:red;" id="dituContent" data-map-x="{/$company_address['map_x']/}" data-map-y="{/$company_address['map_y']/}" data-address-info="{/$company_address['address_info']/}">
+					</div>
+					<!-- <div id="allmap" style="width: 1140px;height: 350px;font-size:12px;color:red;"></div> -->
+					<!-- <input type="hidden" id="hidMapX" name="hidMapX" value="{/$company_address['map_x']/}" />
+					<input type="hidden" id="hidMapY" name="hidMapY" value="{/$company_address['map_y']/}" /> -->
+					<!-- <input type="hidden" id="hidMapZoom" name="hidMapZoom" value="{/$map['map_zoom']/}" /> -->
+				</div>
+				</div>
+				<div class="relation_company" {/if !$recommon_companys/}style="display:none;"{//if/}>
+					<div class="company_introduction_title">
+						<div class="company_introduction_title_mark"></div>
+						<div class="company_introduction_title_spn">相关公司</div>
+						<div class="more_re_cp">
+                            <!--<span><a href="{/get_url rule='/wjob/Search'/}?params=c{/$company['calling_id']/}">更多</a></span>-->
+                            <span><a href="{/$calling_url/}">更多</a></span>
+							<span class="icon-182 more_re_cp_icon"></span>
+						</div>
+					</div>
+					<div class="relation_company_box">
+                        {/if $recommon_companys/}
+                        {/foreach $recommon_companys as $v/}
+                        
+						<div class="relation_company_item">
+							<a href="{/get_url rule='/qiye/'/}{/$v['flag']/}.html">
+							<img src="{/$v['company_logo_path']/}" alt="">
+							<div class="company_descript">
+								<div class="company_descript_title">
+									<span class="company_descript_sp">{/$v['company_name_show']/}</span>
+                                    {/if $v['company_tags']/}
+                                    {/foreach $v['company_tags'] as $v1/}
+                                    <span class="company_descript_mark">{/$v1/}</span>
+                                    {//foreach/}
+                                    {//if/}
+								</div>
+								<div class="company_descript_content">
+									<span>{/$v['property_name']/}</span>
+									<span class="mark_center"></span>
+									<span>{/$v['size_name']/}</span>
+									<span class="mark_center"></span>
+									<span>{/$v['calling_name']/}</span>
+								</div>
+							</div>
+							</a>
+						</div>
+                        
+                        {//foreach/}
+                        {//if/}
+					</div>
+				</div>
+				<!-- <div class="guide_direct">
+					<a href="{/get_url rule='/'/}">首页</a>
+					<span>></span>
+					<a href="">企业详情</a>
+				</div> -->
+			</div>
+			<div class="employ_job">
+                {/if !empty($job_list)/}
+                {/foreach $job_list as $v/}
+                <a href="{/get_url rule='/zhiwei/'/}{/$v['job_flag']/}.html">
+				<div class="job_list">
+					<div class="job_list_title">
+						<span>{/$v['station']/}</span>
+						<!--<span class="issue">{/$v['issue_time_show']/}</span>-->
+						<span class="issue">{/$v['refresh_time']/}</span>
+					</div>
+					<div class="job_condition_list">
+						<span class="salary">{/$v['salary_text']/}</span>
+						<span>{/$v['area_name']/}</span>
+						<span class="mark_d"></span>
+						<span>{/$v['degree_name']/}</span>
+						<span class="mark_d"></span>
+						<span>{/$v['sex_text']/}</span>
+						<span class="mark_d"></span>
+						<span>{/$v['age_sex_text']/}</span>
+						<span class="sheet_type" {/if empty($v['schedule'])/}style="display:none;"{//if/}>{/$v['schedule']/}</span>
+					</div>
+					<div class="welfare_list" {/if empty($v['rewards'])/}style="display:none;"{//if/}>
+                        {/foreach $v['rewards'] as $v1/}
+						<div class="welfare_list_item">{/$v1/}</div>
+                        {//foreach/}
+					</div>
+				</div>
+                </a>
+                {//foreach/}
+                {/else/}
+                无数据
+                {//if/}
+				<!-- <div class="guide_direct second_guide_direct">
+					<a href="{/get_url rule='/'/}">首页</a>
+					<span>></span>
+					<a href="">企业详情</a>
+					<span>></span>
+					<a href="javascript:void(0)">职位列表</a>
+				</div> -->
+			</div>
+		</div>
+    {/include 'common/footer.html'/}
+    <div id='load_page' style='display:none;'></div>
+	</body>
+	<script  type="text/javascript">
+	        var action_url = '{/$siteurl.style/}';
+	        action_dom = [
+	            ['#load_page', 430]
+	        ];
+	</script>
+    <script type="text/javascript" language="javascript" src="{/version file='action.js'/}"></script>
+    <script type="text/javascript" language="javascript" src="{/version file='kuaimi_company_detail.js'/}"></script>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>快米视频面试</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="{/version file='alirtc.css'/}"/>
+    <script type="text/javascript" language="javascript" src='{/version file="jquery-1.8.3.min.js"/}'></script>
+    <script type="text/javascript" language="javascript"
+            src='{/version file="aliyun-webrtc-sdk-1.10.1.min.js"/}'></script>
+    {/if $can_chat/}
+    <script type="text/javascript" language="javascript" src='{/$siteurl.style/}/js/chat/json2.js'></script>
+    <script type="text/javascript" language="javascript"
+            src='{/$siteurl.style/}/js/chat/nim/NIM_Web_SDK_v6.10.0.js'></script>
+    <script type="text/javascript" language="javascript"
+            src='{/$siteurl.style/}/js/chat/nim/NIM_Web_NIM_v6.10.0.js'></script>
+    {//if/}
+</head>
+
+<body>
+<div style="height: 50px;">
+<button id="sendMsg">发送消息</button>
+</div>
+<div class='local-display-name'></div>
+
+<div class='local-video' style="width: 500px;height: 200px;background-color: #4bb6e7">
+    <video autoplay playsinline></video>
+</div>
+<div class="video-container" style="margin-top:500px;width: 500px;height: 200px;background-color: antiquewhite"></div>
+<script type="text/javascript" language="javascript" src='{/version file="blue_chat.js"/}'></script>
+<!--<script type="text/javascript" language="javascript" src='{/version file="blue_video.js"/}'></script>-->
+<script>
+    var nim = SDK.NIM.getInstance({
+        //debug: true,
+        appKey: "{/$swy_info['appkey']/}",
+        account: "{/$swy_info['accid']/}",
+        token: "{/$swy_info['token']/}",
+        db: true,
+        // privateConf: {}, // 私有化部署方案所需的配置
+        // 收到消息事件触发
+        onmsg: function (msg) {
+            // console.log('onmsg',msg);
+            if (msg.scene == "p2p") {
+                if ('in' == msg.flow) {
+                    // console.log('收到消息',msg);
+                    if (msg.text == "已拒绝") {
+                        chatVideo.hangupPerson();
+                    }
+                }
+            }
+        },
+        onconnect: onConnect,
+        onsyncdone: onSyncDone,
+        syncSessionUnread: true,
+        syncMsgReceipts: true,
+        //忽略某条通知类消息
+        shouldIgnoreNotification: function () {
+            return true;
+        }
+    });
+
+
+    function onConnect() {
+        console.log('nim 连接成功');
+    }
+
+    function onSyncDone() {
+        // nim.getLocalSessions({
+        //   limit: 100,
+        //   done: getLocalSessionsDone
+        // });
+    }
+
+    //连接成功后的获取会话数
+    function getLocalSessionsDone(error, obj) {
+
+    }
+
+    myWebim.setNim(nim);
+    myWebim.setBaseInfo(
+        {
+            "name": "{/$swy_info['nick_name']/}",
+            "url": "{/$swy_info['photo']/}",
+            "id": "{/$swy_info['accid']/}"
+        },
+        {
+            "name": "{/$swy_person_info['nick_name']/}",
+            "url": "{/$swy_person_info['photo']/}",
+            "id": "{/$swy_person_info['accid']/}"
+        }
+    );
+
+    var message = "{/$swy_info['nick_name']/}" + "邀请你视频面试";
+    $('#sendMsg').on('click',function () {
+        console.log(11111111111111);
+        myWebim.sendNormalMsg(message);
+    })
+
+    AliRtcEngine.isSupport().then(re => {
+        console.log('检测结果',re);
+    }).catch(err => {
+        console.log('检测结果',err);
+    })
+
+
+</script>
+<script>
+    var channelId =10000;
+    var person_id = "{/$person_id/}";
+    var userName = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+    var aliWebrtc;
+
+    $.post("{/$siteurl['kmcompany']/}/video/createRoom", {person_id:person_id}, function(re){
+        if (re.status) {
+           // channelId      = re.data.room_id;
+
+            function initialization(userId) {
+                if (aliWebrtc) {
+                    aliWebrtc.configRemoteAudio(userId, true);
+                    aliWebrtc.configRemoteCameraTrack(userId, true, true);
+                    aliWebrtc.configRemoteScreenTrack(userId, false);
+                }
+            }
+            function init() {
+                aliWebrtc = new AliRtcEngine("");
+                /**
+                 * remote用户加入房间 onJoin
+                 * 更新在线用户列表
+                 */
+                aliWebrtc.on('onJoin', (publisher) => {
+                    console.log(publisher);
+                });
+                /**
+                 * remote流发布事件 onPublish
+                 * 将该用户新增到推流列表
+                 */
+                aliWebrtc.on('onPublisher', (publisher) => {
+                    receivePublish(publisher);
+                    console.log("onPublisher", publisher);
+
+                });
+
+                /**
+                 * remote流结束发布事件 onUnPublisher
+                 * 推流列表删除该用户
+                 * 移除用户视图
+                 * 初始化订阅状态
+                 */
+                aliWebrtc.on('onUnPublisher', (publisher) => {
+                    console.log('onUnPublisher', publisher);
+                    initialization(publisher.userId);
+                    aliWebrtc.leaveChannel();
+                    aliWebrtc.dispose();
+                });
+
+                /**
+                 *  错误信息
+                 */
+                aliWebrtc.on('onError', (error) => {
+                    console.warn('error', error);
+                    var msg = error && error.message ? error.message : error;
+                    if (msg && msg.indexOf('no session') > -1) {
+                        msg = "请重新登录：" + msg;
+                    }
+                    if (msg && msg.indexOf('screen share error') > -1) {
+                        msg = "屏幕共享已取消";
+                    }
+
+                    if (error.code == 15) {
+                        msg = "没有开启H5兼容";
+                    }
+                    if (error.type === "publish") {
+                        console.log("推流断开 需要停止推流");
+                        $(".push-stream").click();
+                    }
+                    if (error.type === "subscribe") {
+                        console.log("订阅断开 取消订阅该userId的所有订阅并移除所有该userId的dom")
+                        aliWebrtc.unSubscribe(error.userId).then(re => {
+                            console.log("订阅断开 取消订阅成功");
+                        }).catch(err => console.log("订阅断开 取消订阅失败", err))
+                    }
+                    alert(msg);
+
+                });
+
+                /**
+                 * 检测到用户离开频道
+                 * 更新用户列表
+                 * 移除用户视图
+                 */
+                aliWebrtc.on('onLeave', (publisher) => {
+                    initialization(publisher.userId);
+                })
+            }
+            init();
+            var receivePublish = (publisher) => {
+                //5.订阅remote流
+                aliWebrtc.subscribe(publisher.userId).then((subscribeCallId) => {
+                    console.log('订阅成功')
+                   var video =  getDisplayRemoteVideo(publisher.userId,publisher.displayName);
+                    aliWebrtc.setDisplayRemoteVideo(publisher.userId, video, 1);
+                }, (error) => {
+                    alert(error.message);
+                });
+            };
+
+
+
+            var getDisplayRemoteVideo = function (userId, displayName) {
+                var id = userId;
+                var videoWrapper = $('#' + id);
+                if (videoWrapper.length == 0) {
+                    videoWrapper = $('<div class="remote-subscriber" id=' + id + '> <video autoplay playsinline></video><div class="display-name"></div></div>');
+                    $('.video-container').append(videoWrapper);
+                }
+                videoWrapper.find('.display-name').text(displayName);
+                return videoWrapper.find('video')[0];
+            }
+
+            //获取频道鉴权令牌参数这个方法需要客户重新实现，调用RTC服务的Open API获取
+            var getRTCAuthInfo = () => {
+                var url = "{/$siteurl['kmcompany']/}/video/GetToken" + "/?room=" + channelId;
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: url, //"https://alirtc.ossrs.net/app/v1/login?room="+channelId + "&user="+ userName + "&passwd=1234",
+                        type: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: (data) => {
+                            data.data.channel = channelId;
+                            console.log("进入房间成功，房间号：" + channelId);
+                            resolve(data.data);
+                        },
+                        failed: (error) => {
+                            reject(error);
+                        }
+                    });
+                });
+
+            }
+
+            var localVideo = $('.local-video video');
+            aliWebrtc.startPreview(localVideo[0]).then((obj) => {
+            }).catch((error) => {
+                alert(error.message);
+            });
+            //2. 获取频道鉴权令牌参数 -->
+            getRTCAuthInfo().then((authInfo) => {
+                //3. 加入房间 默认推音频视频流
+                aliWebrtc.joinChannel(authInfo, userName).then(() => {
+                    console.log('加入房间成功');
+                    // 4. 发布本地流
+                    aliWebrtc.configLocalAudioPublish = true;
+                    aliWebrtc.configLocalCameraPublish = true;
+                    aliWebrtc.publish().then((res) => {
+                        console.log('发布流成功');
+                    }, (error) => {
+                        alert(error);
+                    });
+                }).catch((error) => {
+                    alert(error.message);
+                })
+            }).catch((error) => {
+                alert(error.message);
+            });
+
+
+        } else {
+            if(typeof(VideoaAnchorMsg) != "undefined"){
+                VideoaAnchorMsg(re.msg,{ icon: 'warning' });
+                return;
+            }else{
+                alert(re.msg);return;
+            }
+        }
+    },'json');
+    //AliWebRTC code
+    // AliRtcEngine.isSupport().then(re => {
+    //     console.log(re);
+    //     init();
+    // }).catch(err => {
+    //     console.log(err);
+    // })
+
+
+
+
+    window.onbeforeunload = function (e) {
+        aliWebrtc.leaveChannel();
+        aliWebrtc.dispose();
+    };
+</script>
+</body>
+
+</html>

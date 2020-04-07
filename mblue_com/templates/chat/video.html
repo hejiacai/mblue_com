@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>快米视频面试</title>
+<meta charset="UTF-8">
+<meta name="viewport"content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}" />
+<link rel="stylesheet" type="text/css" href="{/version file='v2-reset.css,v2-icons.css,v2-widge.css,v2-job.css'/}" />
+<link rel="stylesheet" type="text/css" href="{/version file='base.css'/}"/>
+<!--<link rel="stylesheet" type="text/css" href="{/version file='p.css'/}"/>-->
+<link rel="stylesheet" type="text/css" href="{/version file='v2-widge.css'/}"/>
+<link rel="stylesheet" type="text/css" href="{/version file='kuaimijob.css'/}"/>
+
+<script type="text/javascript" language="javascript" src='{/version file="jquery-1.8.3.min.js"/}'></script>
+<script type="text/javascript" language="javascript" src="{/version file='dialog.js'/}"></script>
+<script type="text/javascript" src="{/version file='common.js'/}"></script>
+<script type="text/javascript" language="javascript"  src='{/version file="aliyun-webrtc-sdk-1.10.1.min.js"/}'></script>
+<!--    <script type="text/javascript" language="javascript"  src='{/version file="aliyun-webrtc-sdk-1.9.0.min.js"/}'></script>-->
+<!--    <script type="text/javascript" language="javascript"  src='{/version file="aliyun-webrtc-sdk-1.9.1.min.js"/}'></script>-->
+{/if $can_chat/}
+<script type="text/javascript" language="javascript" src='{/$siteurl.style/}/js/chat/json2.js'></script>
+<script type="text/javascript" language="javascript" src='{/$siteurl.style/}/js/chat/nim/NIM_Web_SDK_v6.10.0.js'></script>
+<script type="text/javascript" language="javascript" src='{/$siteurl.style/}/js/chat/nim/NIM_Web_NIM_v6.10.0.js'></script>
+{//if/}
+<script type="text/javascript">
+    window.CONFIG = {
+        HOST: "{/$siteurl['style']/}",
+        COMBOPATH: '/js/v2/'
+    }
+</script>
+<script type="text/javascript" src="{/version file='hbjs.js,jquery.min.js,util.js,class.js,shape.js,event.js,aspect.js,attribute.js,cookie.js'/}"></script>
+<script type="text/javascript" src="{/version file='global.js'/}"></script>
+
+	<style type="text/css">
+		body{background: #ececec;min-height: 1000px;}
+		.kuaimi-logo{width: 180px;}
+	</style>
+</head>
+
+<body>
+<div class="header pre-resume">
+  <div class="wrap clearfix">
+	<a href="{/get_url rule='/company/index'/}">
+	  <div class="kuaimi-logo">
+		<img src="{/base_lib_Constant::STYLE_URL/}/img/blue/company/kuaimi_white.png" alt="" width="27" height="27">
+		<h1>快米工作 | 简历</h1>
+	  </div>
+	</a>
+  </div>
+</div>
+  <div class='local-display-name'></div>
+
+  <div class='local-video'>
+
+    <div class="connection-video-detail" style="display: none">
+      <div class="connection-callName"><p>正在与{/$swy_person_info['nick_name']/}视频通话</p><div class="video-close-icon">×</div></div>
+    </div>
+      <div class="video-View" id="videoView" style="display: none">
+          <!--我的视角-->
+          <video autoplay playsinline class="mineView" id="mineView"></video>
+          <!--求职者视角-->
+          <video autoplay playsinline class="personView"></video>
+      </div>
+
+	<!--正在连接的信息页面-->
+	<div class="before-video-detail">
+		<p class="callName">正在呼叫{/$swy_person_info['nick_name']/}...</p>
+		<div class="video-default-img"><img src="{/base_lib_Constant::STYLE_URL/}/img/blue/company/video_default_img.png" ></div>
+	</div>
+  </div>
+  <div class="video-container">
+	  <div class="connection-times" id="connectTimes" style="display: none">00 : 00</div>
+	  <div class="closeVideoBtn">挂断</div>
+  </div>
+  <script type="text/javascript">
+ //  	var set = setInterval(function(){
+	// 	$('.before-video-detail').hide();
+	// 	clearInterval(set)
+	// },2000)
+	
+	/*我的视角可拖拽区域*/
+	var mineView = document.getElementById('mineView');
+	var videoView = document.getElementById('videoView');
+	// var box=document.querySelector(".box")
+	//绑定按下事件
+	mineView.onmousedown=function(event){
+		var event=event||window.event
+		var x=event.clientX-mineView.offsetLeft
+		var y=event.clientY-mineView.offsetTop
+
+		document.onmousemove = function(event){
+			var X=event.clientX-x
+			var Y=event.clientY-y
+			if(X <= 0){
+				X = 0
+			}
+			if(X >= videoView.offsetWidth-mineView.offsetWidth){
+				X = videoView.offsetWidth-mineView.offsetWidth
+			}
+			if(Y <= 0){
+				Y = 0
+			}
+			if(Y >= videoView.offsetHeight-mineView.offsetHeight){
+				Y = videoView.offsetHeight-mineView.offsetHeight
+			}
+			mineView.style.left=X+"px";
+			mineView.style.top=Y+"px"
+		}
+		document.onmouseup=function(){
+			document.onmousemove=null
+			mineView.onmouseup=null
+		}
+	}
+  </script>
+
+  <script type="text/javascript" language="javascript" src='{/version file="blue_chat.js"/}'></script>
+  <script type="text/javascript" language="javascript" src='{/version file="blue_video.js"/}'></script>
+  <script>
+      hbjs.use('@validator, @fileUploader, @confirmBox, @hbCommon, @jobDialog', function(m) {
+          var ConfirmBox = m['widge.overlay.confirmBox'];
+          var Dialog = m['widge.overlay.hbDialog'];
+          var $ = m['product.hbCommon'].extend(m['cqjob.jobDialog']);
+
+          var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+          if (userAgent.indexOf("Chrome") > -1){
+          }else{
+              ConfirmBox.alert("你的浏览器不支持，请安装指定的浏览器："+"<a class='downloadChromeIcon' href='{/$siteurl.style/}/down/chrome.exe'><i class='chromeIcon'></i>下载</a>",'',{title:'提示',width:300});
+          }
+
+      });
+
+    var nim = SDK.NIM.getInstance({
+      //debug: true,
+      appKey: "{/$swy_info['appkey']/}",
+      account: "{/$swy_info['accid']/}",
+      token: "{/$swy_info['token']/}",
+      db: true,
+      // privateConf: {}, // 私有化部署方案所需的配置
+      // 收到消息事件触发
+      onmsg: function (msg) {
+        // console.log('onmsg',msg);
+        if(msg.scene=="p2p"){
+          if('in'==msg.flow){
+           // console.log('收到消息',msg);
+            if(msg.text=="已拒绝"){
+                chatVideo.hangupPerson();
+            }
+            if(msg.text=="已取消"){
+                chatVideo.hangupPerson();
+            }
+          }
+        }
+      },
+      onconnect: onConnect,
+      onsyncdone: onSyncDone,
+      ondisconnect: onDisconnect,
+      syncSessionUnread :true,
+      syncMsgReceipts:true,
+      //忽略某条通知类消息
+      shouldIgnoreNotification:function () {
+        return true;
+      }
+    });
+
+
+    function onConnect() {
+      //console.log('nim 连接成功');
+    }
+
+    function onSyncDone() {
+      // nim.getLocalSessions({
+      //   limit: 100,
+      //   done: getLocalSessionsDone
+      // });
+    }
+    function onDisconnect(error) {
+        chatVideo.levelRoom(false);
+    }
+    //连接成功后的获取会话数
+    function getLocalSessionsDone(error, obj) {
+
+    }
+    myWebim.setNim(nim);
+    myWebim.setBaseInfo(
+        {
+            "name": "{/$swy_info['nick_name']/}",
+            "url": "{/$swy_info['photo']/}",
+            "id": "{/$swy_info['accid']/}"},
+        {
+            "name": "{/$swy_person_info['nick_name']/}",
+            "url": "{/$swy_person_info['photo']/}",
+            "id": "{/$swy_person_info['accid']/}"
+        }
+    );
+
+    window.onbeforeunload = function () {
+        chatVideo.levelRoom(true);
+    };
+    window.onunload = function (e) {
+        chatVideo.levelRoom(true);
+    }
+  </script>
+<script>
+
+
+
+  var videoInfo    = {
+    videoAuthInfoUrl    : "{/$siteurl['kmcompany']/}/video/GetToken",
+    createRoomUrl       : "{/$siteurl['kmcompany']/}/video/createRoom",
+    baseInfoUrl         : "{/$siteurl['kmcompany']/}/video/GetApplyBaseInfo",
+    updateInfoUrl       : "{/$siteurl['kmcompany']/}/video/UpdateRoomStatus",
+    nextUrl             : "{/$siteurl['kmcompany']/}/chat/",
+    schoolNetFairUrl    : "{/$siteurl['kmcompany']/}/videohall/VideoInterviewHall/?sid={/$sid/}",
+    companyName         : "{/$swy_info['nick_name']/}",
+    currentNimPersonAccount  :"{/$swy_person_info['accid']/}",
+    jobId               :"{/$job_id/}",
+    inviteId              :"{/$invite_id/}",
+  };
+
+  var VideoaAnchorMsg;
+  var VideoConfirmBox;
+  var anchorMsg;
+  hbjs.use('@validator, @fileUploader, @confirmBox, @hbCommon, @jobDialog', function(m) {
+      var validator = m['widge.validator.form'];
+      var fileUploader = m['widge.fileUploader'];
+      var ConfirmBox = m['widge.overlay.confirmBox'];
+      var Dialog = m['widge.overlay.hbDialog'];
+      var $ = m['product.hbCommon'].extend(m['cqjob.jobDialog']);
+      var cookie = m['tools.cookie'];
+      VideoaAnchorMsg = $.anchorMsg;
+      VideoConfirmBox = ConfirmBox;
+
+
+
+      chatVideo.init(videoInfo);
+      //chatVideo.createRoom("{/$person_id/}");
+      AliRtcEngine.isSupport().then(re => {
+          //创建房间
+          chatVideo.createRoom("{/$person_id/}");
+          console.log('AliRtcEngine.isSupport',re);
+      }).catch(err => {
+          console.log(err);
+          $(".before-video-detail").hide();//本地视频显示出来
+          if(!err.audioDevice){
+              ConfirmBox.alert("请检查你的视频设备，当前不能视频面试",'',{title:'提示',width:300});
+              return;
+          }
+          if(!err.videoDevice){
+              ConfirmBox.alert("请检查你的音频设备，当前不能视频面试",'',{title:'提示',width:300});
+              return;
+          }
+          if(err.browser!="Chrome"){
+              ConfirmBox.alert("你的浏览器不支持，请安装指定的浏览器："+"<a class='downloadChromeIcon' href='{/$siteurl.style/}/down/chrome.exe'><i class='chromeIcon'></i>下载</a>",'',{title:'提示',width:300});
+              return;
+          }
+          var browserVersion = err.browser_version;
+          var versionNo = browserVersion.split(".");
+          if(versionNo[0]<60){
+              ConfirmBox.alert("你的浏览器不支持，请安装指定的浏览器："+"<a class='downloadChromeIcon' href='{/$siteurl.style/}/down/chrome.exe'><i class='chromeIcon'></i>下载</a>",'',{title:'提示',width:300});
+              return;
+          }
+      });
+  });
+</script>
+</body>
+
+</html>
